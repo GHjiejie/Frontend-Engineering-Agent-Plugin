@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Implementation"
+  short_description: "Implement approved frontend feature plans safely"
+  default_prompt: "Use $frontend-implementation to implement this approved frontend plan."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Turn feature contracts into implementation designs"
+  default_prompt: "Use $frontend-design to turn this feature contract into an implementation plan."

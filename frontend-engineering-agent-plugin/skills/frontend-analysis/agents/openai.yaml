@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Analysis"
+  short_description: "Analyze frontend projects and define feature contracts"
+  default_prompt: "Use $frontend-analysis to analyze this frontend request and create its feature contract."

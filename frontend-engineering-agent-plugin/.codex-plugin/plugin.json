@@ -1,0 +1,35 @@
+{
+  "name": "frontend-engineering-agent-plugin",
+  "version": "1.0.0",
+  "description": "A persistent frontend engineering agent with project memory, domain memory, feature lifecycles, implementation, and review workflows.",
+  "author": {
+    "name": "Frontend Engineering Agent Plugin Contributors"
+  },
+  "keywords": [
+    "frontend",
+    "project-memory",
+    "feature-lifecycle",
+    "architecture",
+    "code-review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Frontend Engineering Agent",
+    "shortDescription": "Evolve frontend projects with persistent engineering memory.",
+    "longDescription": "Analyze frontend projects and requirements, design feature implementations, execute approved plans safely, review results, and preserve project, domain, and decision knowledge for future work.",
+    "developerName": "Frontend Engineering Agent Plugin Contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Analyze",
+      "Design",
+      "Write",
+      "Review",
+      "Project Memory"
+    ],
+    "defaultPrompt": [
+      "Analyze this frontend request and create a feature contract.",
+      "Design an implementation plan for this frontend feature.",
+      "Review this feature against its contract and project rules."
+    ]
+  }
+}

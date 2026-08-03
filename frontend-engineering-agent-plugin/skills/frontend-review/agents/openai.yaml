@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Review"
+  short_description: "Review frontend features against contracts and architecture"
+  default_prompt: "Use $frontend-review to review this feature against its contract and project rules."
