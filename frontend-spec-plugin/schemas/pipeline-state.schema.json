@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pipeline-state.schema.json",
+  "title": "Frontend specification pipeline state",
+  "type": "object",
+  "required": ["schema_version", "feature_id", "readiness", "stages"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "feature_id": { "type": "string", "minLength": 1 },
+    "readiness": { "enum": ["in_progress", "blocked", "ready_for_implementation"] },
+    "stages": {
+      "type": "object",
+      "required": ["project-context", "requirement-analysis", "requirement-clarification", "api-analysis", "ui-parsing", "interaction-design", "flow-generation", "spec-generation"],
+      "additionalProperties": false,
+      "properties": {
+        "project-context": { "$ref": "#/$defs/stage" },
+        "requirement-analysis": { "$ref": "#/$defs/stage" },
+        "requirement-clarification": { "$ref": "#/$defs/stage" },
+        "api-analysis": { "$ref": "#/$defs/stage" },
+        "ui-parsing": { "$ref": "#/$defs/stage" },
+        "interaction-design": { "$ref": "#/$defs/stage" },
+        "flow-generation": { "$ref": "#/$defs/stage" },
+        "spec-generation": { "$ref": "#/$defs/stage" }
+      }
+    }
+  },
+  "$defs": {
+    "stage": {
+      "type": "object",
+      "required": ["status", "artifacts", "blockers"],
+      "properties": {
+        "status": { "enum": ["pending", "in_progress", "blocked", "complete"] },
+        "artifacts": { "type": "array", "items": { "type": "string" } },
+        "blockers": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

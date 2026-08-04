@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze Requirements"
+  short_description: "Turn product requirements into structured features"
+  default_prompt: "Use $requirement-analyzer to extract pages, actors, features, rules, and acceptance criteria from this PRD."

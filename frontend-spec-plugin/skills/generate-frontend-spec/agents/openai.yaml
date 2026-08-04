@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Frontend Spec"
+  short_description: "Run the complete frontend specification pipeline"
+  default_prompt: "Use $generate-frontend-spec to turn my PRD and design inputs into a frontend development specification."

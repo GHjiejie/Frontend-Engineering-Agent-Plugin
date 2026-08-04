@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clarify Requirements"
+  short_description: "Find ambiguities and record product decisions"
+  default_prompt: "Use $requirement-clarifier to identify blocking ambiguities and record confirmed product decisions."

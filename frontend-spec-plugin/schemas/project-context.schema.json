@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-context.schema.json",
+  "title": "Frontend project context",
+  "type": "object",
+  "required": ["schema_version", "project", "stack", "conventions", "evidence", "gaps"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "project": { "type": "string" },
+    "stack": {
+      "type": "object",
+      "required": ["framework", "language", "package_manager", "build_tool", "ui", "state", "style", "router", "test"],
+      "properties": {
+        "framework": { "type": ["string", "null"] },
+        "language": { "type": ["string", "null"] },
+        "package_manager": { "type": ["string", "null"] },
+        "build_tool": { "type": ["string", "null"] },
+        "ui": { "type": ["string", "null"] },
+        "state": { "type": ["string", "null"] },
+        "style": { "type": ["string", "null"] },
+        "router": { "type": ["string", "null"] },
+        "test": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "conventions": { "type": "array", "items": { "type": "string" } },
+    "reusable_components": { "type": "array", "items": { "type": "object" } },
+    "commands": { "type": "object" },
+    "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+    "gaps": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["claim", "source"],
+      "properties": {
+        "claim": { "type": "string" },
+        "source": { "type": "string" },
+        "locator": { "type": "string" }
+      }
+    }
+  }
+}

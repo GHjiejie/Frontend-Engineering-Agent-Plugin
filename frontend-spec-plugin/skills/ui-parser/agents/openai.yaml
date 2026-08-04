@@ -1,0 +1,4 @@
+interface:
+  display_name: "Parse UI Prototype"
+  short_description: "Convert UI references into a semantic component tree"
+  default_prompt: "Use $ui-parser to extract pages, components, fields, and states from this UI reference."

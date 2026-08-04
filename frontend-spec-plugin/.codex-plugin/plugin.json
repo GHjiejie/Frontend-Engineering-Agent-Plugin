@@ -1,0 +1,32 @@
+{
+  "name": "frontend-spec-plugin",
+  "version": "1.0.0",
+  "description": "Turns product requirements, UI references, API contracts, and project constraints into an implementation-ready frontend specification.",
+  "author": {
+    "name": "Frontend Engineering Team"
+  },
+  "keywords": [
+    "frontend",
+    "requirements",
+    "specification",
+    "interaction-design",
+    "api-mapping"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Frontend Spec Generator",
+    "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
+    "longDescription": "A staged frontend analysis pipeline that captures project constraints, structures product requirements, resolves ambiguities, maps APIs and UI, designs interactions and flows, and assembles an implementation-ready development specification without generating application code.",
+    "developerName": "Frontend Engineering Team",
+    "category": "Productivity",
+    "capabilities": [
+      "Analyze",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Turn this PRD, UI reference, and API contract into a frontend specification.",
+      "Find the missing decisions in this frontend requirement before development starts.",
+      "Update this frontend specification while preserving confirmed manual decisions."
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Track Specification Changes"
+  short_description: "Preserve manual overrides and decision history"
+  default_prompt: "Use $change-tracker to update a generated frontend specification without losing human decisions."

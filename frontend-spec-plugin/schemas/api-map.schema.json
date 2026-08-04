@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "api-map.schema.json",
+  "title": "Frontend API map",
+  "type": "object",
+  "required": ["schema_version", "operations", "models", "gaps"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "requirement_ids", "method", "path", "responses", "source"],
+        "properties": {
+          "id": { "pattern": "^API-[0-9]{3,}$" },
+          "requirement_ids": { "type": "array", "items": { "type": "string" } },
+          "operation_id": { "type": ["string", "null"] },
+          "method": { "enum": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"] },
+          "path": { "type": "string" },
+          "authentication": { "type": ["string", "null"] },
+          "request": { "type": "object" },
+          "responses": { "type": "array", "items": { "type": "object" } },
+          "source": { "type": "string" }
+        }
+      }
+    },
+    "models": { "type": "array", "items": { "type": "object" } },
+    "gaps": { "type": "array", "items": { "type": "object" } }
+  }
+}

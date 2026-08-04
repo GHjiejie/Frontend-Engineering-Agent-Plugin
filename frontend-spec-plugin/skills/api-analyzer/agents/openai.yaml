@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze Frontend APIs"
+  short_description: "Map backend contracts to frontend capabilities"
+  default_prompt: "Use $api-analyzer to map the supplied API contract to frontend operations, models, and errors."

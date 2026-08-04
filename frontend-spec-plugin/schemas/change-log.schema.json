@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change-log.schema.json",
+  "title": "Frontend specification change log",
+  "type": "object",
+  "required": ["schema_version", "changes"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "timestamp", "actor", "type", "affected_ids", "artifact", "summary"],
+        "properties": {
+          "id": { "pattern": "^CHG-[0-9]{3,}$" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "actor": { "type": "string" },
+          "type": { "enum": ["source_update", "decision", "manual_override", "generated_update", "conflict", "superseded"] },
+          "affected_ids": { "type": "array", "items": { "type": "string" } },
+          "artifact": { "type": "string" },
+          "section": { "type": ["string", "null"] },
+          "summary": { "type": "string" },
+          "rationale": { "type": ["string", "null"] },
+          "supersedes": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

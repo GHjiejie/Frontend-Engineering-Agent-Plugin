@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ui-tree.schema.json",
+  "title": "Frontend UI tree",
+  "type": "object",
+  "required": ["schema_version", "pages", "unresolved"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "source", "components"],
+        "properties": {
+          "id": { "pattern": "^PAGE-[0-9]{3,}$" },
+          "name": { "type": "string" },
+          "source": { "type": "string" },
+          "components": { "type": "array", "items": { "$ref": "#/$defs/component" } },
+          "states": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "unresolved": { "type": "array", "items": { "type": "object" } }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "role", "label", "requirement_ids", "children"],
+      "properties": {
+        "id": { "pattern": "^UI-[0-9]{3,}$" },
+        "role": { "type": "string" },
+        "label": { "type": ["string", "null"] },
+        "requirement_ids": { "type": "array", "items": { "type": "string" } },
+        "conditions": { "type": "array", "items": { "type": "string" } },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/component" } }
+      }
+    }
+  }
+}

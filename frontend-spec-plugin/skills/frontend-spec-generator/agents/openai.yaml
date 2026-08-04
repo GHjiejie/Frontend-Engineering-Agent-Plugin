@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Frontend Specification"
+  short_description: "Assemble evidence into an implementation-ready spec"
+  default_prompt: "Use $frontend-spec-generator to assemble the approved artifacts into a frontend development specification."

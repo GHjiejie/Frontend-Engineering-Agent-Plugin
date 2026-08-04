@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design UI Interactions"
+  short_description: "Bind UI events, APIs, state, and feedback"
+  default_prompt: "Use $interaction-designer to define complete interaction flows from the requirements, UI, and API evidence."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Frontend Flows"
+  short_description: "Create sequence diagrams and page state machines"
+  default_prompt: "Use $flow-generator to turn interaction specifications into Mermaid sequences and state models."

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "requirement-analysis.schema.json",
+  "title": "Frontend requirement analysis",
+  "type": "object",
+  "required": ["schema_version", "feature_id", "pages", "features", "rules", "assumptions", "open_questions"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "feature_id": { "type": "string", "minLength": 1 },
+    "pages": { "type": "array", "items": { "$ref": "#/$defs/page" } },
+    "features": { "type": "array", "items": { "$ref": "#/$defs/feature" } },
+    "rules": { "type": "array", "items": { "$ref": "#/$defs/rule" } },
+    "non_functional": { "type": "array", "items": { "type": "object" } },
+    "assumptions": { "type": "array", "items": { "$ref": "#/$defs/assumption" } },
+    "open_questions": { "type": "array", "items": { "$ref": "#/$defs/question" } }
+  },
+  "$defs": {
+    "page": {
+      "type": "object",
+      "required": ["id", "name", "evidence"],
+      "properties": {
+        "id": { "pattern": "^PAGE-[0-9]{3,}$" },
+        "name": { "type": "string" },
+        "parent_id": { "type": ["string", "null"] },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "required": ["id", "name", "actor", "action", "acceptance_criteria", "evidence"],
+      "properties": {
+        "id": { "pattern": "^RQ-[0-9]{3,}$" },
+        "name": { "type": "string" },
+        "actor": { "type": "string" },
+        "trigger": { "type": ["string", "null"] },
+        "action": { "type": "string" },
+        "target": { "type": ["string", "null"] },
+        "preconditions": { "type": "array", "items": { "type": "string" } },
+        "outcome": { "type": ["string", "null"] },
+        "rule_ids": { "type": "array", "items": { "type": "string" } },
+        "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["id", "text", "evidence"],
+      "properties": {
+        "id": { "pattern": "^RULE-[0-9]{3,}$" },
+        "text": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "required": ["text", "owner", "status", "affected_ids"],
+      "properties": {
+        "text": { "type": "string" },
+        "owner": { "type": "string" },
+        "status": { "enum": ["unverified", "approved", "rejected"] },
+        "affected_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "question", "severity", "affected_ids", "status"],
+      "properties": {
+        "id": { "pattern": "^Q-[0-9]{3,}$" },
+        "question": { "type": "string" },
+        "severity": { "enum": ["blocking", "important", "non_blocking"] },
+        "affected_ids": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["open", "answered"] }
+      }
+    }
+  }
+}
