@@ -1,6 +1,6 @@
 {
   "name": "frontend-spec-plugin",
-  "version": "1.0.0+codex.20260804081311",
+  "version": "1.0.1",
   "description": "Collects missing PRD, prototype, and API inputs before turning a frontend feature request into an implementation-ready specification.",
   "author": {
     "name": "Frontend Engineering Team"
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Frontend Spec Generator",
     "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
-    "longDescription": "A frontend-focused specification pipeline for requests to add, create, design, or develop a frontend feature. It first asks for any missing PRD or requirement, UI prototype, and API contract, then structures requirements, resolves ambiguities, maps UI and APIs, and produces an implementation-ready specification without scanning the surrounding project or generating application code.",
+    "longDescription": "A frontend-focused specification pipeline for requests to add, create, design, or develop a frontend feature. It collects missing requirement, prototype, and API inputs, asks developers to resolve user-visible behavior, requires explicit approval of the interaction draft, and only then produces flows and an implementation-ready specification without scanning the surrounding project or generating application code.",
     "developerName": "Frontend Engineering Team",
     "category": "Productivity",
     "capabilities": [
@@ -26,7 +26,7 @@
     "defaultPrompt": [
       "Add a frontend feature. First ask me for any missing PRD, prototype, and API inputs.",
       "Design this frontend feature and collect the required specification inputs from me first.",
-      "Turn my requirement, UI prototype, and API contract into a frontend specification."
+      "Turn my inputs into a frontend specification and wait for my interaction approval before finalizing it."
     ]
   }
 }

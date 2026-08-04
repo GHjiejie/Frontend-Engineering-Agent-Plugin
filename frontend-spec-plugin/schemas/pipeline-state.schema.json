@@ -10,7 +10,7 @@
     "readiness": { "enum": ["in_progress", "blocked", "ready_for_implementation"] },
     "stages": {
       "type": "object",
-      "required": ["requirement-analysis", "requirement-clarification", "ui-parsing", "api-analysis", "interaction-design", "flow-generation", "spec-generation"],
+      "required": ["requirement-analysis", "requirement-clarification", "ui-parsing", "api-analysis", "interaction-design", "interaction-review", "flow-generation", "spec-generation"],
       "additionalProperties": false,
       "properties": {
         "requirement-analysis": { "$ref": "#/$defs/stage" },
@@ -18,6 +18,7 @@
         "ui-parsing": { "$ref": "#/$defs/stage" },
         "api-analysis": { "$ref": "#/$defs/stage" },
         "interaction-design": { "$ref": "#/$defs/stage" },
+        "interaction-review": { "$ref": "#/$defs/stage" },
         "flow-generation": { "$ref": "#/$defs/stage" },
         "spec-generation": { "$ref": "#/$defs/stage" }
       }

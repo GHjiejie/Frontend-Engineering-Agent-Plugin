@@ -4,6 +4,8 @@ Use `$generate-frontend-spec` for a complete run. Provide a feature name plus th
 
 The first turn always performs an input preflight. If the requirement, prototype, or API is missing, the plugin asks for all missing categories together and stops. It does not inspect files or initialize the artifact tree until the user supplies each category or explicitly says it is unavailable.
 
+After analyzing the inputs, the plugin pauses for every unresolved user-visible behavior. Once those decisions are recorded, it creates an interaction draft and pauses again with a review matrix. The developer must explicitly approve the current revision before flow diagrams or the final specification can be generated. Requested changes create a new revision and invalidate any earlier approval.
+
 Typical request:
 
 > Use `$generate-frontend-spec` for customer group management. The PRD is `customer-groups.md`, the API is `openapi.yaml`, and the UI source is the supplied Figma frame.

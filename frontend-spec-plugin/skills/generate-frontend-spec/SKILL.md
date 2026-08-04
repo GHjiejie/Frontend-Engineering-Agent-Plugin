@@ -5,7 +5,7 @@ description: Collect required inputs and generate an end-to-end frontend develop
 
 # Generate Frontend Spec
 
-Produce a reviewable specification through explicit intermediate artifacts and approval gates.
+Produce a reviewable specification through explicit intermediate artifacts and two mandatory human approval gates.
 
 Resolve resource paths in this file from the directory containing this `SKILL.md`. Use the resolved absolute path when invoking a bundled script from another working directory.
 
@@ -70,8 +70,9 @@ Run these stages in order. Before each stage, read and follow the referenced sib
 3. `../ui-parser/SKILL.md`
 4. `../api-analyzer/SKILL.md`
 5. `../interaction-designer/SKILL.md`
-6. `../flow-generator/SKILL.md`
-7. `../frontend-spec-generator/SKILL.md`
+6. `../interaction-reviewer/SKILL.md`
+7. `../flow-generator/SKILL.md`
+8. `../frontend-spec-generator/SKILL.md`
 
 Invoke `../change-tracker/SKILL.md` before changing any previously generated or manually overridden section.
 
@@ -80,9 +81,12 @@ Update `frontend-spec/pipeline-state.json` after each stage with `pending`, `in_
 ## Enforce quality gates
 
 - After preflight passes, record inputs explicitly marked unavailable as gaps or blockers with their impact.
-- Pause after requirement clarification when a blocking product decision remains. Ask only the minimum grouped questions needed to proceed.
+- Treat every unresolved user-visible behavior as blocking during requirement clarification. Ask the developer and stop; do not select a behavior on the developer's behalf.
 - Treat a developer answer as approved only when it is recorded in `requirement/decision-log.md`.
 - Do not mark API or UI mappings complete when an essential operation or control is inferred without evidence.
+- After interaction design, publish the interaction review and set `interaction-review` to `blocked`. Ask the developer to approve or request changes, then stop the turn.
+- Do not run flow generation or specification generation until the current interaction revision has an explicit developer approval record.
+- Any interaction change invalidates the prior approval and returns `interaction-review` to `blocked`.
 - Do not mark the final document `ready_for_implementation` while blocking questions, unmapped required interactions, or unresolved contract conflicts remain.
 - Label supported inferences as assumptions with owner and validation status. Never present guesses as source facts.
 

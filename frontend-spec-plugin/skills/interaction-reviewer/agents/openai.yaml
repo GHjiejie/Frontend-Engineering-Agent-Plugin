@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Interactions"
+  short_description: "Review and approve user-visible interaction behavior"
+  default_prompt: "Use $interaction-reviewer to review and approve this frontend interaction draft."

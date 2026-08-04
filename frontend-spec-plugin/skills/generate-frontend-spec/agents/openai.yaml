@@ -1,4 +1,4 @@
 interface:
   display_name: "Generate Frontend Spec"
-  short_description: "Collect inputs and generate a frontend specification"
-  default_prompt: "Use $generate-frontend-spec for this new frontend feature and ask me for any missing PRD, prototype, and API inputs first."
+  short_description: "Collect inputs, review interactions, and generate a frontend specification"
+  default_prompt: "Use $generate-frontend-spec for this frontend feature, ask me for missing PRD, prototype, and API inputs, and wait for my interaction approval before finalizing."

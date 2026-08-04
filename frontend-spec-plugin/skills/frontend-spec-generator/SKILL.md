@@ -10,16 +10,17 @@ Write `frontend-spec/document/frontend-development-spec.md` using `../../assets/
 ## Assemble the specification
 
 1. Read `../../references/artifact-contract.md` and every completed pipeline artifact.
-2. Preserve human overrides using the change-tracker skill.
-3. Include scope, non-goals, source inventory, page and UI structure, data models, API contracts, page states, user interactions, diagrams, proposed component responsibilities, proposed API/state/type responsibilities, validation, permissions, error handling, accessibility, tests, rollout considerations, open items, and traceability.
-4. Reference stable IDs rather than duplicating or silently rewriting authoritative decisions.
-5. Separate required implementation from recommendations and assumptions.
+2. Refuse to generate the final specification unless the current interaction revision is explicitly approved and `interaction-review` is complete.
+3. Preserve human overrides using the change-tracker skill.
+4. Include scope, non-goals, source inventory, interaction approval revision and decision ID, page and UI structure, data models, API contracts, page states, user interactions, diagrams, proposed component responsibilities, proposed API/state/type responsibilities, validation, permissions, error handling, accessibility, tests, rollout considerations, open items, and traceability.
+5. Reference stable IDs rather than duplicating or silently rewriting authoritative decisions.
+6. Separate required implementation from recommendations and assumptions.
 
 ## Readiness status
 
 Set exactly one status near the top:
 
-- `ready_for_implementation`: no blocking questions, contract conflicts, required design gaps, or unmapped requirements remain.
+- `ready_for_implementation`: the current interaction revision is approved and no blocking questions, contract conflicts, required design gaps, or unmapped requirements remain.
 - `blocked`: list each blocker, owner, affected IDs, and the evidence needed to resolve it.
 
 Do not claim file names or components already exist unless the user explicitly supplied the relevant frontend code as evidence. Label all proposed file names and component boundaries as `proposed`. Do not search the project to verify them and do not generate application code.

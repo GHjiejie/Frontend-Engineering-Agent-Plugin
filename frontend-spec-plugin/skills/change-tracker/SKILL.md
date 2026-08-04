@@ -16,4 +16,6 @@ Maintain `frontend-spec/manual/override.md` and `frontend-spec/history/change-lo
 5. When an override conflicts with a new authoritative source, keep both, mark the affected section blocked, and request disposition.
 6. Append a change record with timestamp, actor, type, affected IDs, artifact, section, before/after summary, rationale, and superseded entry when applicable.
 
+When a change affects user-visible behavior, increment the interaction revision, clear its approval, set `review_status` to `pending_review`, and return `interaction-review` to blocked.
+
 Never rewrite history entries. Never treat generated text as higher authority than a confirmed human decision. Report preserved overrides and unresolved conflicts after regeneration.

@@ -5,7 +5,7 @@ description: Bind product requirements, UI elements, API operations, and fronten
 
 # Interaction Designer
 
-Write `frontend-spec/interaction/interaction-spec.json`. Treat this as the central binding artifact.
+Write a draft to `frontend-spec/interaction/interaction-spec.json`. Treat this as the central binding artifact, not an approved specification.
 
 ## Design each interaction
 
@@ -14,6 +14,8 @@ Write `frontend-spec/interaction/interaction-spec.json`. Treat this as the centr
 3. Assign stable IDs `IX-###`.
 4. Capture requirement IDs, element IDs, event, preconditions, client validation, ordered actions, API calls, state transitions, success feedback, error mapping, retry/recovery, cancellation, refresh or cache invalidation, permission behavior, and postconditions.
 5. Cover duplicate submission, stale data, destructive confirmation, optimistic versus pessimistic update, partial failure, focus management, and accessibility feedback when relevant.
+6. Do not choose an unspecified user-visible behavior. Add it as a blocking conflict and return it to requirement clarification.
+7. Set `review_status` to `pending_review`, clear `approval`, and increment `revision` whenever any interaction changes.
 
 ## Enforce coverage
 
@@ -23,3 +25,5 @@ Write `frontend-spec/interaction/interaction-spec.json`. Treat this as the centr
 - Do not hide contract or design gaps inside prose. Add them to `unmapped_requirements` or `conflicts`.
 
 Complete the stage only when traceability is bidirectional or the remaining gaps are explicitly blocking.
+
+Completion means the draft is ready for developer review, not approved. Invoke the interaction-reviewer next and do not generate flows in the same turn.

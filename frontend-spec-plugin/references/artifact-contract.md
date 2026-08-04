@@ -15,7 +15,9 @@ frontend-spec/
 │   ├── api-map.json
 │   └── request-response.md
 ├── ui/ui-tree.json
-├── interaction/interaction-spec.json
+├── interaction/
+│   ├── interaction-spec.json
+│   └── interaction-review.md
 ├── flow/
 │   ├── sequence-diagrams.md
 │   └── state-models.md
@@ -51,8 +53,9 @@ Use these exact keys in `pipeline-state.json`:
 3. `ui-parsing`
 4. `api-analysis`
 5. `interaction-design`
-6. `flow-generation`
-7. `spec-generation`
+6. `interaction-review`
+7. `flow-generation`
+8. `spec-generation`
 
 Each stage contains `status`, `artifacts`, and `blockers`. Allowed statuses are `pending`, `in_progress`, `blocked`, and `complete`.
 
@@ -62,7 +65,11 @@ Evidence locators contain a source path or URL plus a section, heading, line, fr
 
 ## Completion contract
 
-`ready_for_implementation` requires all seven stages complete, no blocking question, no unresolved required API/UI mapping, no interaction coverage gap, no unresolved override conflict, and a final document that exposes all non-blocking open items.
+`ready_for_implementation` requires all eight stages complete, no blocking question, no unresolved required API/UI mapping, no interaction coverage gap, no unresolved override conflict, and explicit developer approval whose revision equals the current interaction revision.
+
+## Human approval gates
+
+Every unresolved user-visible behavior is blocking during requirement clarification. After interaction design, publish `interaction-review.md`, set `interaction-review` to blocked, ask the developer to approve or request changes, and stop. Flow and final specification generation are forbidden until `interaction-spec.json` has `review_status: approved` and a matching approval revision. Any later user-visible change increments the revision and invalidates approval.
 
 ## Source boundary
 

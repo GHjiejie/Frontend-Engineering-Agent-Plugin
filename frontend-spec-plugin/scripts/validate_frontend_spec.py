@@ -16,6 +16,7 @@ EXPECTED_STAGES = {
     "ui-parsing",
     "api-analysis",
     "interaction-design",
+    "interaction-review",
     "flow-generation",
     "spec-generation",
 }
@@ -29,6 +30,7 @@ REQUIRED_FILES = (
     "api/request-response.md",
     "ui/ui-tree.json",
     "interaction/interaction-spec.json",
+    "interaction/interaction-review.md",
     "flow/sequence-diagrams.md",
     "flow/state-models.md",
     "document/frontend-development-spec.md",
@@ -115,6 +117,35 @@ def validate(root: Path, require_complete: bool) -> list[str]:
             }:
                 errors.append(f"pipeline-state.json: invalid status for stage {name}")
 
+    revision = interactions.get("revision")
+    review_status = interactions.get("review_status")
+    approval = interactions.get("approval")
+    if not isinstance(revision, int) or isinstance(revision, bool) or revision < 1:
+        errors.append("interaction-spec.json: revision must be a positive integer")
+    if review_status not in {"pending_review", "changes_requested", "approved"}:
+        errors.append("interaction-spec.json: invalid review_status")
+    if review_status == "approved":
+        if not isinstance(approval, dict):
+            errors.append("interaction-spec.json: approved review requires an approval object")
+        else:
+            if not re.fullmatch(r"DEC-[0-9]{3,}", str(approval.get("decision_id", ""))):
+                errors.append("interaction-spec.json: approval decision_id must match DEC-###")
+            if approval.get("revision") != revision:
+                errors.append("interaction-spec.json: approval revision does not match current revision")
+            if not isinstance(approval.get("approved_by"), str) or not approval["approved_by"].strip():
+                errors.append("interaction-spec.json: approval approved_by must be non-empty")
+            if not isinstance(approval.get("approved_at"), str) or not approval["approved_at"].strip():
+                errors.append("interaction-spec.json: approval approved_at must be non-empty")
+    elif approval is not None:
+        errors.append("interaction-spec.json: unapproved interaction must not retain approval")
+
+    review_stage = stages.get("interaction-review") if isinstance(stages, dict) else None
+    review_stage_status = review_stage.get("status") if isinstance(review_stage, dict) else None
+    if review_status == "approved" and review_stage_status != "complete":
+        errors.append("pipeline-state.json: approved interaction requires interaction-review to be complete")
+    if review_status != "approved" and review_stage_status == "complete":
+        errors.append("pipeline-state.json: interaction-review cannot be complete without current approval")
+
     requirement_items = requirements.get("features", [])
     operation_items = api_map.get("operations", [])
     page_items = ui_tree.get("pages", [])
@@ -158,6 +189,11 @@ def validate(root: Path, require_complete: bool) -> list[str]:
             errors.append(f"Unmapped requirements remain: {', '.join(map(str, unmapped))}")
         if interactions.get("conflicts"):
             errors.append("Interaction conflicts remain unresolved")
+        if interactions.get("review_status") != "approved":
+            errors.append("Current interaction revision is not approved")
+        approval = interactions.get("approval")
+        if not isinstance(approval, dict) or approval.get("revision") != interactions.get("revision"):
+            errors.append("Interaction approval is missing or stale")
         document = (root / "document/frontend-development-spec.md").read_text(encoding="utf-8")
         if "Status: `ready_for_implementation`" not in document:
             errors.append("Final document does not declare ready_for_implementation")

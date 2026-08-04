@@ -3,9 +3,22 @@
   "$id": "interaction-spec.schema.json",
   "title": "Frontend interaction specification",
   "type": "object",
-  "required": ["schema_version", "interactions", "unmapped_requirements", "conflicts"],
+  "required": ["schema_version", "revision", "review_status", "approval", "interactions", "unmapped_requirements", "conflicts"],
   "properties": {
     "schema_version": { "const": "1.0" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "review_status": { "enum": ["pending_review", "changes_requested", "approved"] },
+    "approval": {
+      "type": ["object", "null"],
+      "required": ["decision_id", "revision", "approved_by", "approved_at"],
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": { "type": "string", "pattern": "^DEC-[0-9]{3,}$" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "approved_by": { "type": "string", "minLength": 1 },
+        "approved_at": { "type": "string", "format": "date-time" }
+      }
+    },
     "interactions": {
       "type": "array",
       "items": {

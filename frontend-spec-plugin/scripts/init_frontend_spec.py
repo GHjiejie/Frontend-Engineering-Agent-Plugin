@@ -16,6 +16,7 @@ STAGE_NAMES = (
     "ui-parsing",
     "api-analysis",
     "interaction-design",
+    "interaction-review",
     "flow-generation",
     "spec-generation",
 )
@@ -24,6 +25,7 @@ TEMPLATE_TARGETS = {
     "question-list.md": "requirement/question-list.md",
     "decision-log.md": "requirement/decision-log.md",
     "request-response.md": "api/request-response.md",
+    "interaction-review.md": "interaction/interaction-review.md",
     "sequence-diagrams.md": "flow/sequence-diagrams.md",
     "state-models.md": "flow/state-models.md",
     "frontend-development-spec.md": "document/frontend-development-spec.md",
@@ -86,6 +88,9 @@ def initialize(output: Path, feature_id: str) -> tuple[list[Path], list[Path]]:
         },
         "interaction/interaction-spec.json": {
             "schema_version": "1.0",
+            "revision": 1,
+            "review_status": "pending_review",
+            "approval": None,
             "interactions": [],
             "unmapped_requirements": [],
             "conflicts": [],

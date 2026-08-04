@@ -18,9 +18,16 @@ Status: `blocked`
 
 ## 8. User interactions
 
-## 9. Sequence diagrams and state models
+## 9. Interaction approval
 
-## 10. Frontend implementation plan
+- Approved revision:
+- Approval decision ID:
+- Approved by:
+- Approved at:
+
+## 10. Sequence diagrams and state models
+
+## 11. Frontend implementation plan
 
 ### Component responsibilities
 
@@ -30,13 +37,13 @@ Status: `blocked`
 
 ### Accessibility and localization
 
-## 11. Test strategy
+## 12. Test strategy
 
-## 12. Rollout and observability
+## 13. Rollout and observability
 
-## 13. Open items and blockers
+## 14. Open items and blockers
 
-## 14. Traceability matrix
+## 15. Traceability matrix
 
 | Requirement | UI | API | Interaction | Acceptance criteria |
 | --- | --- | --- | --- | --- |
