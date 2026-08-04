@@ -1,4 +1,4 @@
 interface:
-  display_name: "Generate Frontend Spec"
-  short_description: "Confirm output location and create an isolated frontend specification"
-  default_prompt: "Use $generate-frontend-spec, collect my PRD, prototype, and API inputs, explicitly ask me where to create frontend-spec, then create or resume an isolated feature."
+  display_name: "Deliver Frontend Feature"
+  short_description: "Specify, implement, and visually validate dashboard UI features"
+  default_prompt: "Use $generate-frontend-spec, collect my PRD, prototype, API, output path, and authorized frontend scope, then either generate only the specification when I explicitly ask for that or implement the approved Figma design and run visual validation."

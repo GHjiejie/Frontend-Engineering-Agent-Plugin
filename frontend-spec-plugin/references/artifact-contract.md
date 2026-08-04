@@ -23,6 +23,9 @@ All stages operate on one selected `<feature-root>` under a developer-confirmed 
         │   ├── sequence-diagrams.md
         │   └── state-models.md
         ├── document/frontend-development-spec.md
+        ├── implementation/                 # implement_and_validate only
+        │   ├── restoration-brief.md
+        │   └── visual-validation.md
         ├── manual/override.md
         └── history/change-log.json
 ```
@@ -79,9 +82,13 @@ Evidence locators contain a source path or URL plus a section, heading, line, fr
 
 `ready_for_implementation` requires all seven stages complete, no blocking question, no unresolved required API/UI mapping, no interaction coverage gap, no unresolved override conflict, and a final document that exposes all non-blocking open items.
 
+`ready_for_implementation` completes machine validation of the specification pipeline only. For an `implement_and_validate` run, the developer must approve the final specification before the restoration brief is prepared. Delivery additionally requires an approved `implementation/restoration-brief.md`, scoped application changes, and a completed `implementation/visual-validation.md` showing design and regression visual results. A skipped, failed, or blocked visual comparison must remain visible and must not be reported as delivery completion.
+
 ## Source boundary
 
 Do not discover project background. The allowed default inputs are requirements, prototypes, and API contracts. Read code only when the user explicitly supplies or names a path, and then only within the named frontend scope plus the minimum direct frontend dependencies needed to understand it. Missing evidence becomes a question or gap, never a reason to scan the repository.
+
+In `implement_and_validate` mode, the exact target page and dashboard frontend root are separate required approvals. The permitted implementation boundary includes the target page, minimum direct frontend imports, relevant semantic token/style files, focused tests, and the selected visual scenario's config and references. It excludes backend code, infrastructure, unrelated frontend pages, and general repository discovery.
 
 ## Input gate
 

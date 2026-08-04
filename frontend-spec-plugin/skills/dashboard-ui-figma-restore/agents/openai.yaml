@@ -1,0 +1,4 @@
+interface:
+  display_name: "Restore Dashboard UI from Figma"
+  short_description: "Implement Figma designs and verify dashboard visuals"
+  default_prompt: "Use $dashboard-ui-figma-restore to prepare an approval brief, restore this dashboard page from the supplied Figma frame, and run design plus regression visual validation."

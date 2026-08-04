@@ -1,7 +1,7 @@
 {
   "name": "frontend-spec-plugin",
-  "version": "1.0.3",
-  "description": "Collects missing PRD, prototype, and API inputs before turning a frontend feature request into an implementation-ready specification.",
+  "version": "1.1.0",
+  "description": "Turns approved requirements, Figma UI, and API contracts into a frontend specification, scoped dashboard implementation, and visual validation.",
   "author": {
     "name": "Frontend Engineering Team"
   },
@@ -10,13 +10,15 @@
     "requirements",
     "specification",
     "interaction-design",
-    "api-mapping"
+    "api-mapping",
+    "figma",
+    "visual-testing"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Spec Generator",
-    "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
-    "longDescription": "A frontend-focused specification pipeline that requires explicit confirmation of where frontend-spec will be created, then collects missing requirement, prototype, and API inputs and creates or resumes an isolated feature specification without scanning the surrounding project or mixing independent requirements.",
+    "shortDescription": "Specify, restore, and visually validate dashboard frontend features.",
+    "longDescription": "A frontend-focused delivery pipeline that confirms where frontend-spec will be created, collects missing requirement, prototype, and API inputs, isolates each feature specification, and for implementation requests restores an approved Figma frame in the explicitly selected dashboard-ui scope with design and regression visual testing. It does not scan the surrounding project for background.",
     "developerName": "Frontend Engineering Team",
     "category": "Productivity",
     "capabilities": [
@@ -24,9 +26,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Add a frontend feature. First ask me for any missing PRD, prototype, API inputs, and the exact frontend-spec output location.",
-      "Design this frontend feature and ask me to confirm where frontend-spec should be created before writing files.",
-      "Ask me to confirm the frontend-spec output path, then turn my requirement, UI prototype, and API contract into an isolated specification without mixing existing features."
+      "Add a dashboard frontend feature. First collect the PRD, node-specific Figma prototype, API contract, exact frontend-spec output location, target page, and authorized frontend path; then specify, implement, and visually validate it.",
+      "Generate only an implementation-ready frontend specification from my requirement, prototype, and API contract, after I confirm the exact frontend-spec output path.",
+      "Restore this dashboard page from Figma: create an approval brief before editing, stay inside my selected frontend path, and run design plus regression visual tests."
     ]
   }
 }
