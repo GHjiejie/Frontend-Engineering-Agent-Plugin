@@ -10,6 +10,8 @@ summary: ""
 contractTraceability:
   - contractId: REQ-001
     acceptanceCriteria: [AC-001]
+    prototypeRefs: [PROTO-001]
+    interactionRefs: [INT-001]
     steps: [STEP-001]
 approach:
   selected: ""
@@ -63,4 +65,4 @@ openQuestions: []
 
 Allowed file operations are `create`, `modify`, `move`, and `delete`. A deletion requires callers, migration, rollback, and explicit scope justification.
 
-For every contract item, preserve the chain `contract -> acceptance -> step -> file -> verification`. Mark the plan `READY` only when no open question can materially alter the patch.
+For every contract item, preserve the chain `contract -> prototype/interaction evidence -> acceptance -> step -> file -> verification` when the task is user-facing. Mark the plan `READY` only when no open question or design gap can materially alter the patch.

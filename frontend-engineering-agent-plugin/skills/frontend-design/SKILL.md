@@ -11,15 +11,17 @@ Design the smallest coherent implementation that satisfies the approved contract
 
 1. Read repository instructions, `runtime/task-context.yaml`, `runtime/change-contract.yaml`, and `runtime/approvals/analysis.yaml`.
 2. Require approval `APPROVED`. Never treat silence, a ready contract, or a prior implementation request as approval.
-3. Re-check the current worktree against the approved evidence. If code or requirements changed materially, enter `CONFLICT` and return to analysis.
-4. Move the orchestrator from `APPROVAL_REQUIRED` to `DESIGN` through the runtime CLI.
+3. For `uiImpact: USER_FACING`, require the approved contract to contain a human-provided prototype, complete click-result interaction flows, UI states, and no unresolved design gaps. If anything is missing or inaccessible, enter `BLOCKED` and return to analysis.
+4. For `uiImpact: NONE`, require a non-empty prototype exception reason and UI-invariant evidence.
+5. Re-check the current worktree and design inputs against the approved evidence. If code, requirements, prototype, or interactions changed materially, enter `CONFLICT` and return to analysis.
+6. Move the orchestrator from `APPROVAL_REQUIRED` to `DESIGN` through the runtime CLI.
 
 ## Workflow
 
-1. Trace every contract item to files, symbols, entities, steps, and verification.
+1. Trace every contract item to prototype nodes, interaction flows, UI states, files, symbols, entities, steps, and verification where applicable.
 2. Read `memory/project/constitution.yaml`, relevant ADRs, Feature/Bug/Change history, project index relations, and current implementation patterns.
 3. Compare viable approaches. Prefer reuse, narrow state lifetime, established API layers, design tokens, compatibility, and reversible change.
-4. Define routes/pages, components, API mapping, state ownership, UI states, interactions, validation, error handling, accessibility, performance, security, and observability.
+4. Translate the approved prototype and interaction effects into routes/pages, components, API mapping, state ownership, UI states, interactions, validation, error handling, accessibility, performance, security, and observability. Do not redesign or fill gaps without returning to analysis for human input.
 5. Identify user-modified or high-conflict files and prescribe preservation or reconciliation.
 6. Specify file operations, dependency order, test coverage, rollout, rollback, and proposed knowledge updates.
 7. Write `runtime/implementation-plan.yaml` according to [references/implementation-plan.md](references/implementation-plan.md).
@@ -28,6 +30,7 @@ Design the smallest coherent implementation that satisfies the approved contract
 ## Design gate
 
 - Every requirement or bug condition maps to implementation steps and verification.
+- Every user-facing UI and interaction decision traces to approved prototype or interaction evidence.
 - Every file operation has a reason and an ownership boundary.
 - The plan obeys Constitution and Decisions or proposes an explicit new Decision.
 - No unresolved issue could materially change the approach.

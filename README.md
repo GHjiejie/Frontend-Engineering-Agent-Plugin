@@ -4,7 +4,7 @@
 
 它不把一次开发任务简单处理成“理解需求 → 修改代码 → 结束”，而是把项目约束、业务域知识、功能与缺陷历史、架构决策、代码变更和验证证据组织成可持续维护的工程知识，并通过强制人工审批控制设计、改码和知识写入。
 
-当前版本：`2.0.0`（v2 MVP）
+当前版本：`2.1.0`（v2.1 MVP）
 
 ## 这个插件解决什么问题
 
@@ -26,6 +26,7 @@ Frontend Engineering Knowledge Agent 在项目仓库内建立一套可审计的�
 | 项目知识库 | 在 Git 仓库中长期保存项目约束、领域知识、功能、Bug、变更和架构决策 |
 | Memory Router | 优先按实体 ID、文件、路由、符号等明确线索检索，再沿结构关系扩展上下文 |
 | Task Context | 为单个任务构建最小且可追溯的上下文，减少无关信息干扰 |
+| 原型与交互证据门槛 | 用户可见变更必须由用户提供原型及完整点击结果，缺失时阻止进入设计 |
 | Feature / Bug / Refactor 分析 | 将需求、缺陷或重构目标转换成可验证的 Change Contract |
 | 影响分析 | 识别关联文件、组件、接口、状态、测试、历史变更和风险 |
 | 方案设计 | 从已批准的 Change Contract 生成可追踪的 Implementation Plan |
@@ -82,7 +83,7 @@ flowchart TD
 
 1. **Analysis Approval Gate**
 
-   开发者审核 `change-contract.yaml`，确认目标、范围、验收标准、影响面、风险、未知项和非目标。没有明确批准，插件不会进入设计阶段。
+   开发者审核 `change-contract.yaml`，确认用户提供的原型、点击后的交互效果、目标、范围、验收标准、影响面、风险、未知项和非目标。用户可见变更缺少可检查的原型或完整交互结果时，契约只能保持 `DRAFT` 并进入 `BLOCKED`；没有明确批准，插件不会进入设计阶段。
 
 2. **Patch Approval Gate**
 
@@ -218,6 +219,21 @@ codex plugin add frontend-engineering-agent-plugin@<marketplace-name>
 
 ## 如何使用
 
+### 第一阶段必须提供的设计输入
+
+对于任何会改变用户所见或所做行为的需求，调用 `frontend-analysis` 时必须提供：
+
+- 可检查的原型，例如具体的 Figma 文件、Page、Frame、Node，带标注的图片或线框图；
+- 受影响页面或组件在原型中的准确位置；
+- 每个按钮、链接、菜单、表单动作或手势触发后的结果；
+- 跳转、弹窗、抽屉、提示、状态和数据变化；
+- 适用的 loading、success、failure、empty、disabled、permission、validation、cancel/back 和 retry 路径；
+- 响应式或不同设备上的差异。
+
+仅提供无法访问的链接不算完成输入；静态原型没有描述点击结果时，也必须补充交互说明。插件不能用 AI 猜测或当前源码替代用户意图。
+
+纯内部重构等完全不改变 UI 和交互的任务可以不提供新原型，但 Change Contract 必须记录不需要原型的理由，以及证明 UI/交互保持不变的仓库证据。
+
 ### 触发方式
 
 你可以直接描述任务，让 Codex 根据 Skill 描述自动选择阶段：
@@ -247,13 +263,17 @@ $frontend-engineering-agent-plugin:frontend-review
 ```text
 使用 $frontend-engineering-agent-plugin:frontend-analysis 分析：
 为订单列表增加失败任务重试功能。
-请读取仓库实现、现有工程知识和历史变更，构建 Task Context，
+原型：<Figma Frame/Node 链接或已附加原型图>。
+交互：点击“重试”后进入 loading；成功后刷新该行状态；失败后保留失败状态并显示错误；
+重复点击、无权限和请求超时的处理分别为……。
+请检查原型和交互是否完整，读取仓库实现、现有工程知识和历史变更，构建 Task Context，
 输出 Change Contract；不要设计方案，也不要修改产品代码。
 ```
 
 分析阶段会重点产出：
 
 - 目标、非目标和验收标准；
+- 原型引用、UI 状态和完整点击交互路径；
 - 涉及的页面、组件、路由、API、状态和测试；
 - 相关 Feature、Bug、Change 和 Decision；
 - 已确认事实、推断、假设和未知项；
@@ -308,6 +328,7 @@ docs/frontend-ai/runtime/patch-proposal.diff
 重点检查：
 
 - diff 是否只覆盖已批准范围；
+- 实际 UI 和交互是否逐项追踪已批准的原型与点击结果；
 - 是否保留当前工作区的人工修改；
 - 文件、依赖和实现方式是否与计划一致；
 - 是否包含必要的 loading、empty、error、permission、responsive 和 accessibility 状态；
@@ -540,6 +561,7 @@ Task:    TASK-2026-001
 - JSON 知识索引；
 - 显式检索和结构关系检索；
 - Task Context 构建；
+- 用户可见变更的原型、点击结果与 UI 状态硬门槛；
 - Change Contract、Implementation Plan、Patch Proposal、Review 与 Memory Proposal 工作流；
 - 三个人工审批记录；
 - Orchestrator 状态守卫；
@@ -589,6 +611,10 @@ docs/frontend-ai/runtime/approvals/analysis.yaml
 
 可以把 Bug 描述得很小，但插件仍会保留必要的分析和补丁审批。小任务的产物可以更精简，审批门不会因此取消。
 
+### 没有原型可以先开始分析吗？
+
+可以先收集仓库事实并形成 `DRAFT`，但只要任务会改变用户可见界面或交互，插件必须进入 `BLOCKED` 并向用户索要原型和点击结果，不能生成可批准的 `READY` Change Contract。只有能够证明 UI 与交互完全不变的内部任务，才可以记录例外理由后继续。
+
 ### 旧版 `docs/frontend-ai/` 会被覆盖吗？
 
 不会。初始化采用非破坏方式，并会识别旧版布局，但 v2 MVP 不会自动迁移旧知识。建议先备份并人工制定迁移方案。
@@ -628,7 +654,7 @@ Frontend-Engineering-Agent-Plugin/
 
 ## 设计文档
 
-- [v2.0 架构设计文档](Architecture-Design-Document-v2.0.md)
+- [v2.0 架构设计基础与 v2.1 原型门槛修订](Architecture-Design-Document-v2.0.md)
 - [初版架构设计文档](Architecture-Design-Document.md)
 
 ## Codex 官方资料

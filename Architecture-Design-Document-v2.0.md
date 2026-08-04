@@ -4,6 +4,8 @@
 状态：Architecture Proposal
 目标：构建一个长期驻留在前端项目中的工程知识代理（Frontend Engineering Knowledge Agent）
 
+修订：v2.1 将“用户提供的原型与点击交互效果”提升为 `frontend-analysis` 对所有用户可见变更的强制输入门槛。
+
 ---
 
 # 1. 背景与目标
@@ -1114,6 +1116,14 @@ human
 ```text
 Task Context
 
++
+
+Human-provided Prototype
+
++
+
+Click / Action Interaction Effects
+
 ```
 
 输出：
@@ -1128,11 +1138,30 @@ Change Contract
 分析：
 
 * 需求；
+* 原型页面、Frame、Node 或标注区域；
+* 每个受影响点击或动作的结果；
+* loading、success、failure、disabled、permission、validation、cancel/back 等状态；
 * API；
 * UI；
 * 代码影响；
 * 历史知识；
 * 风险。
+
+强制门槛：
+
+```text
+USER_FACING
+    ↓
+用户提供可检查原型？ ── 否 ──> DRAFT + BLOCKED
+    ↓ 是
+用户提供完整点击结果？ ── 否 ──> DRAFT + BLOCKED
+    ↓ 是
+Change Contract READY
+    ↓
+Analysis Approval Gate
+```
+
+纯内部重构只有在能够证明 UI 与交互完全不变时，才允许记录 `uiImpact: NONE`，并必须提供不需要原型的理由和 UI invariant 证据。
 
 ---
 

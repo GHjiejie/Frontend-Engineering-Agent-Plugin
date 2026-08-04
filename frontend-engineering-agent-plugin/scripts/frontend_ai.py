@@ -531,6 +531,95 @@ def yaml_scalar(path: Path, key: str) -> str | None:
     return value
 
 
+def yaml_list_has_item(path: Path, key: str) -> bool:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return False
+    pattern = re.compile(rf"^(\s*){re.escape(key)}:\s*(.*?)\s*$")
+    for index, line in enumerate(lines):
+        match = pattern.match(line)
+        if match is None:
+            continue
+        base_indent = len(match.group(1))
+        inline = match.group(2).strip()
+        if inline:
+            return inline.startswith("[") and inline.endswith("]") and bool(inline[1:-1].strip())
+        for nested in lines[index + 1 :]:
+            stripped = nested.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            indent = len(nested) - len(nested.lstrip())
+            if indent <= base_indent:
+                break
+            if nested.lstrip().startswith("- "):
+                return True
+        return False
+    return False
+
+
+def contract_design_evidence_errors(path: Path) -> list[str]:
+    errors: list[str] = []
+    require_keys(
+        path,
+        [
+            "designEvidence",
+            "uiImpact",
+            "prototypeRequired",
+            "prototypeStatus",
+            "prototypeProvidedBy",
+            "prototypes",
+            "interactionStatus",
+            "interactionProvidedBy",
+            "interactionFlows",
+            "uiStates",
+            "unresolvedDesignGaps",
+            "prototypeNotRequiredReason",
+            "uiInvariantEvidence",
+        ],
+        errors,
+    )
+    ui_impact = yaml_scalar(path, "uiImpact")
+    if ui_impact not in {"USER_FACING", "NONE"}:
+        errors.append(f"{path}: uiImpact must be USER_FACING or NONE; found {ui_impact!r}")
+        return errors
+    if yaml_list_has_item(path, "unresolvedDesignGaps"):
+        errors.append(f"{path}: unresolvedDesignGaps must be empty before analysis approval")
+    if ui_impact == "USER_FACING":
+        expected = {
+            "prototypeRequired": "true",
+            "prototypeStatus": "PROVIDED",
+            "prototypeProvidedBy": "human",
+            "interactionStatus": "COMPLETE",
+            "interactionProvidedBy": "human",
+        }
+        for key, value in expected.items():
+            actual = yaml_scalar(path, key)
+            if actual != value:
+                errors.append(f"{path}: USER_FACING requires {key}: {value}; found {actual!r}")
+        for key in ("prototypes", "interactionFlows", "uiStates"):
+            if not yaml_list_has_item(path, key):
+                errors.append(f"{path}: USER_FACING requires a non-empty {key} list")
+    else:
+        expected = {
+            "prototypeRequired": "false",
+            "prototypeStatus": "NOT_REQUIRED",
+            "prototypeProvidedBy": "not-required",
+            "interactionStatus": "NOT_REQUIRED",
+            "interactionProvidedBy": "not-required",
+        }
+        for key, value in expected.items():
+            actual = yaml_scalar(path, key)
+            if actual != value:
+                errors.append(f"{path}: uiImpact NONE requires {key}: {value}; found {actual!r}")
+        reason = yaml_scalar(path, "prototypeNotRequiredReason")
+        if not reason:
+            errors.append(f"{path}: uiImpact NONE requires a non-empty prototypeNotRequiredReason")
+        if not yaml_list_has_item(path, "uiInvariantEvidence"):
+            errors.append(f"{path}: uiImpact NONE requires non-empty uiInvariantEvidence")
+    return errors
+
+
 def approval_path(base: Path, gate: str) -> Path:
     return base / "runtime" / "approvals" / f"{gate}.yaml"
 
@@ -587,6 +676,16 @@ def transition_state(root: Path, target: str, task_id: str, waiting_for: str, re
         print(f"Invalid orchestrator transition: {current} -> {target}", file=sys.stderr)
         return 2
     gate_error: str | None = None
+    if target in {"APPROVAL_REQUIRED", "DESIGN"}:
+        contract = base / "runtime" / "change-contract.yaml"
+        if yaml_scalar(contract, "status") != "READY":
+            print("Change Contract must have status READY before analysis approval or design.", file=sys.stderr)
+            return 2
+        design_errors = contract_design_evidence_errors(contract)
+        if design_errors:
+            for error in design_errors:
+                print(error, file=sys.stderr)
+            return 2
     if target == "DESIGN":
         gate_error = require_gate(base, "analysis")
     elif current == "WAITING_HUMAN" and target == "IMPLEMENTATION":
@@ -706,6 +805,8 @@ def validate(root: Path, phase: str) -> int:
     if phase in {"analysis", "design", "patch-proposal", "implementation", "review", "memory-update"}:
         require_file(contract, errors)
         expect(contract, "status", {"READY"}, errors)
+        if contract.is_file():
+            errors.extend(contract_design_evidence_errors(contract))
     if phase == "analysis":
         require_file(analysis_approval, errors)
         expect(analysis_approval, "status", {"PENDING", "APPROVED"}, errors)

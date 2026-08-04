@@ -1,5 +1,26 @@
 # Task context and Change Contract
 
+## Prototype and interaction input gate
+
+Classify every task before completing analysis:
+
+- `USER_FACING`: changes anything a user can see or do. A human-provided prototype and complete interaction effects are mandatory.
+- `NONE`: changes only internal implementation while UI and interaction behavior remain invariant. Record both the reason and repository evidence.
+
+For `USER_FACING`, require an inspectable prototype that identifies the affected screen, frame, node, or annotated region. Record the source locator and version when available. A link that the agent cannot inspect is not sufficient evidence.
+
+Require human-provided interaction details for every affected click or action:
+
+- trigger and preconditions;
+- resulting visual state, navigation, modal, drawer, menu, or message;
+- client and server state changes and side effects;
+- loading, success, failure, empty, disabled, permission, validation, cancel/back, retry, and repeated-action behavior where applicable;
+- responsive or device-specific differences.
+
+Use `DRAFT`, enter `BLOCKED`, and request the missing evidence when the prototype or interaction effects are missing, inaccessible, contradictory, or incomplete. Do not infer them and do not move to analysis approval.
+
+For `NONE`, `prototypeNotRequiredReason` and `uiInvariantEvidence` must both be non-empty. Reclassify the task as `USER_FACING` if the evidence cannot prove that UI and interaction behavior remain unchanged.
+
 ## Canonical v2 knowledge layout
 
 Store authoritative knowledge under `docs/frontend-ai/memory/`:
@@ -83,6 +104,47 @@ facts: []
 inferences: []
 assumptions: []
 unknowns: []
+designEvidence:
+  uiImpact: USER_FACING
+  prototypeRequired: true
+  prototypeStatus: PROVIDED
+  prototypeProvidedBy: human
+  prototypes:
+    - id: PROTO-001
+      type: figma
+      locator: "Figma file/page/frame-or-node"
+      version: ""
+      scope: []
+  interactionStatus: COMPLETE
+  interactionProvidedBy: human
+  interactionFlows:
+    - id: INT-001
+      prototypeRef: PROTO-001
+      trigger: ""
+      preconditions: []
+      action: ""
+      result:
+        visual: ""
+        navigation: ""
+        stateChanges: []
+        sideEffects: []
+      alternateStates:
+        loading: ""
+        success: ""
+        failure: ""
+        disabled: ""
+        permission: ""
+        validation: ""
+        cancelOrBack: ""
+  uiStates:
+    - id: UI-STATE-001
+      prototypeRef: PROTO-001
+      name: default
+      expected: ""
+  responsiveRules: []
+  unresolvedDesignGaps: []
+  prototypeNotRequiredReason: ""
+  uiInvariantEvidence: []
 goals: []
 nonGoals: []
 currentBehavior: []
@@ -116,4 +178,6 @@ constitutionRules: []
 memoryEvidence: []
 ```
 
-Use `DRAFT` while blocking ambiguity remains. Use `READY` only after every requested behavior or bug condition has acceptance evidence. Approval belongs in `runtime/approvals/analysis.yaml`, never inside the contract.
+For `uiImpact: NONE`, use `prototypeRequired: false`, `prototypeStatus: NOT_REQUIRED`, `prototypeProvidedBy: not-required`, `interactionStatus: NOT_REQUIRED`, and `interactionProvidedBy: not-required`; leave prototype/interaction lists empty and provide non-empty `prototypeNotRequiredReason` and `uiInvariantEvidence`.
+
+Use `DRAFT` while blocking ambiguity or any unresolved design gap remains. Use `READY` only after every requested behavior or bug condition has acceptance evidence and the prototype/interaction gate is valid. Approval belongs in `runtime/approvals/analysis.yaml`, never inside the contract.

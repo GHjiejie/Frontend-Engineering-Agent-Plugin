@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Change Analysis"
-  short_description: "Build context and analyze features, bugs, or refactors"
-  default_prompt: "Use $frontend-analysis to build task context and analyze this frontend change."
+  short_description: "Require prototypes and analyze frontend changes"
+  default_prompt: "Use $frontend-analysis to require prototype and click-result evidence, then analyze this frontend change."

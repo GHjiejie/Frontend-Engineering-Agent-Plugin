@@ -1,13 +1,15 @@
 {
   "name": "frontend-engineering-agent-plugin",
-  "version": "2.0.0",
-  "description": "A frontend engineering knowledge agent with governed memory, task-context retrieval, engineering entities, human approval gates, patch proposals, and review-driven memory updates.",
+  "version": "2.1.0",
+  "description": "A prototype-driven frontend engineering knowledge agent with governed memory, mandatory interaction evidence, human approval gates, patch proposals, and review-driven memory updates.",
   "author": {
     "name": "Frontend Engineering Agent Plugin Contributors"
   },
   "keywords": [
     "frontend",
     "engineering-knowledge",
+    "prototype-driven",
+    "interaction-contract",
     "memory-runtime",
     "human-approval",
     "change-management",
@@ -17,19 +19,20 @@
   "interface": {
     "displayName": "Frontend Engineering Knowledge Agent",
     "shortDescription": "Operate frontend projects with governed engineering knowledge.",
-    "longDescription": "Build task-scoped context from project memory, analyze features, bugs, and refactors, design approved changes, apply human-reviewed patches, validate results, and convert code evolution into trusted engineering knowledge.",
+    "longDescription": "Require human-provided prototypes and click-result interactions for user-facing changes, build task-scoped context from project memory, analyze features, bugs, and refactors, design approved changes, apply human-reviewed patches, validate results, and convert code evolution into trusted engineering knowledge.",
     "developerName": "Frontend Engineering Agent Plugin Contributors",
     "category": "Developer Tools",
     "capabilities": [
       "Memory Routing",
       "Task Context",
+      "Prototype and Interaction Gates",
       "Feature and Bug Analysis",
       "Human Approval Gates",
       "Patch Proposals",
       "Review and Memory Governance"
     ],
     "defaultPrompt": [
-      "Build task context and analyze this frontend change.",
+      "Validate the prototype and click-result interactions, then analyze this frontend change.",
       "Design an implementation plan from this approved Change Contract.",
       "Review this implementation and propose memory updates."
     ]
