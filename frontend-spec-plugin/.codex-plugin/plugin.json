@@ -1,7 +1,7 @@
 {
   "name": "frontend-spec-plugin",
-  "version": "1.0.0+codex.20260804080346",
-  "description": "Turns product requirements, UI prototypes, and API contracts into an implementation-ready frontend specification.",
+  "version": "1.0.0+codex.20260804081311",
+  "description": "Collects missing PRD, prototype, and API inputs before turning a frontend feature request into an implementation-ready specification.",
   "author": {
     "name": "Frontend Engineering Team"
   },
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Frontend Spec Generator",
     "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
-    "longDescription": "A frontend-focused pipeline that structures product requirements, resolves ambiguities, parses UI prototypes, maps API contracts, designs interactions and flows, and assembles an implementation-ready specification without scanning the surrounding project or generating application code.",
+    "longDescription": "A frontend-focused specification pipeline for requests to add, create, design, or develop a frontend feature. It first asks for any missing PRD or requirement, UI prototype, and API contract, then structures requirements, resolves ambiguities, maps UI and APIs, and produces an implementation-ready specification without scanning the surrounding project or generating application code.",
     "developerName": "Frontend Engineering Team",
     "category": "Productivity",
     "capabilities": [
@@ -24,9 +24,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Turn this PRD, UI reference, and API contract into a frontend specification.",
-      "Find the missing decisions in this frontend requirement before development starts.",
-      "Update this frontend specification while preserving confirmed manual decisions."
+      "Add a frontend feature. First ask me for any missing PRD, prototype, and API inputs.",
+      "Design this frontend feature and collect the required specification inputs from me first.",
+      "Turn my requirement, UI prototype, and API contract into a frontend specification."
     ]
   }
 }

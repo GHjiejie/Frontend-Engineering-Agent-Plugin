@@ -67,3 +67,7 @@ Evidence locators contain a source path or URL plus a section, heading, line, fr
 ## Source boundary
 
 Do not discover project background. The allowed default inputs are requirements, prototypes, and API contracts. Read code only when the user explicitly supplies or names a path, and then only within the named frontend scope plus the minimum direct frontend dependencies needed to understand it. Missing evidence becomes a question or gap, never a reason to scan the repository.
+
+## Input gate
+
+Before reading user workspace files or initializing artifacts, classify requirement, prototype, and API input as `provided`, `explicitly_unavailable`, or `missing`. A feature title or one-line command is not a provided requirement; a project/page name is not a provided prototype; a vague claim of backend support is not a provided API contract. Stop and ask for all `missing` categories in one response. Silence never means unavailable. Continue only when every category is provided or the user explicitly confirms it is unavailable.

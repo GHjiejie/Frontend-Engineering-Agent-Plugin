@@ -1,6 +1,8 @@
 # Workflow
 
-Use `$generate-frontend-spec` for a complete run. Provide a feature name plus the PRD or requirement, UI prototype, and API contract. Missing inputs become explicit gaps; blocking product decisions pause the pipeline after clarification.
+Use `$generate-frontend-spec` for a complete run. Provide a feature name plus the PRD or requirement, UI prototype, and API contract. Inputs the user explicitly marks unavailable become visible gaps; blocking product decisions pause the pipeline after clarification.
+
+The first turn always performs an input preflight. If the requirement, prototype, or API is missing, the plugin asks for all missing categories together and stops. It does not inspect files or initialize the artifact tree until the user supplies each category or explicitly says it is unavailable.
 
 Typical request:
 

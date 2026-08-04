@@ -1,6 +1,6 @@
 ---
 name: generate-frontend-spec
-description: Run an end-to-end frontend specification pipeline from product requirements, UI prototypes, and API contracts. Use when Codex must turn a PRD or feature request plus Figma, screenshots, Axure, HTML prototypes, OpenAPI, Swagger, protobuf, or explicitly supplied frontend code into a traceable frontend development specification without scanning the surrounding project or writing application code.
+description: Collect required inputs and generate an end-to-end frontend development specification. Use whenever a user asks to add, create, build, design, plan, or develop a frontend feature—including phrases such as “增加功能”, “新增页面”, “开发前端功能”, or “现在要做”—even when no PRD, prototype, or API has been provided yet. First ask for every missing requirement or PRD, UI prototype, and API contract; then create a traceable specification. Do not use this skill to implement application code or scan the surrounding project.
 ---
 
 # Generate Frontend Spec
@@ -9,16 +9,52 @@ Produce a reviewable specification through explicit intermediate artifacts and a
 
 Resolve resource paths in this file from the directory containing this `SKILL.md`. Use the resolved absolute path when invoking a bundled script from another working directory.
 
+## Mandatory input preflight
+
+Run this gate before reading any user workspace file, invoking a workspace tool, initializing artifacts, proposing an implementation, or analyzing the feature.
+
+Classify each required input independently:
+
+1. **Requirement** — a PRD, product document, issue, or pasted requirement with enough behavior to identify the user or actor, action or trigger, and expected outcome. A feature title or one-line command such as “增加微信绑定和解绑功能” is not a provided requirement.
+2. **Prototype** — Figma, Axure, screenshot, HTML prototype, wireframe, or an explicit written UI description containing actual page structure, controls, or interaction. A project or page name alone is not a provided prototype.
+3. **API** — OpenAPI, Swagger, protobuf, endpoint documentation, a typed frontend client selected by the user, or an explicit statement that no API exists yet. A vague statement that backend support exists is not a provided API contract.
+
+Use exactly one state for each category:
+
+- `provided`: the current conversation contains or points to usable evidence.
+- `explicitly_unavailable`: the user has explicitly said the input does not exist or is not available. Preserve this as a gap or blocker.
+- `missing`: neither evidence nor an explicit unavailable statement exists.
+
+If any category is `missing`:
+
+- Stop before all other workflow steps.
+- Ask for every missing category together in one concise response, using the user's language.
+- State that the plugin generates a frontend specification and will not browse the project for the missing information.
+- Tell the user they may reply that an item is unavailable; do not assume unavailability from silence.
+- Do not create files, inspect the named project or directory, initialize the pipeline, analyze requirements, propose flows, or produce a specification in the same response.
+
+Use this response pattern and omit categories already provided:
+
+```text
+我会为这个功能生成前端开发规格，不会扫描项目代码。开始前还需要：
+1. 需求/PRD：…
+2. 原型：…
+3. 接口：…
+如果某项暂时没有，请直接说明“暂无”，我会把它记录为缺口。
+```
+
+Re-run the preflight after every user reply. Continue only when all three categories are either `provided` or `explicitly_unavailable`.
+
 ## Start the run
 
 1. Read `../../references/artifact-contract.md`.
-2. Identify the feature scope and every user-supplied source. Do not silently widen the scope.
+2. Confirm that the mandatory input preflight passed. Identify the feature scope and every user-supplied source without widening the scope.
 3. Run `python3 ../../scripts/init_frontend_spec.py --output <workspace>/frontend-spec --feature-id <feature-id>` when the artifact tree does not exist.
 4. Reuse an existing artifact tree. Never overwrite manual decisions or history during initialization.
 
 ## Enforce the input boundary
 
-- Use only product requirements, UI prototypes, and API contracts by default.
+- Use only the preflight-approved product requirements, UI prototypes, and API contracts by default.
 - Do not enumerate or scan the project root for background. Do not read package manifests, build configuration, README files, directory trees, backend code, infrastructure, or unrelated source files merely because they exist.
 - Treat the existence of a repository as no permission to browse it.
 - Inspect code only when the user explicitly supplies or names a path. The path must be frontend code or another exact path selected by the user.
@@ -43,7 +79,7 @@ Update `frontend-spec/pipeline-state.json` after each stage with `pending`, `in_
 
 ## Enforce quality gates
 
-- Continue through missing optional evidence by recording an explicit gap and its impact.
+- After preflight passes, record inputs explicitly marked unavailable as gaps or blockers with their impact.
 - Pause after requirement clarification when a blocking product decision remains. Ask only the minimum grouped questions needed to proceed.
 - Treat a developer answer as approved only when it is recorded in `requirement/decision-log.md`.
 - Do not mark API or UI mappings complete when an essential operation or control is inferred without evidence.
