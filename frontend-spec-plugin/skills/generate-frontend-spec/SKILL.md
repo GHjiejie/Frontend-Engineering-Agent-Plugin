@@ -1,6 +1,6 @@
 ---
 name: generate-frontend-spec
-description: Run an end-to-end frontend specification pipeline from product requirements, project context, API contracts, and UI references. Use when Codex must turn a PRD, feature request, Figma design, screenshot, HTML prototype, OpenAPI or Swagger definition, or a combination of these inputs into a traceable frontend development specification without writing application code.
+description: Run an end-to-end frontend specification pipeline from product requirements, UI prototypes, and API contracts. Use when Codex must turn a PRD or feature request plus Figma, screenshots, Axure, HTML prototypes, OpenAPI, Swagger, protobuf, or explicitly supplied frontend code into a traceable frontend development specification without scanning the surrounding project or writing application code.
 ---
 
 # Generate Frontend Spec
@@ -16,18 +16,26 @@ Resolve resource paths in this file from the directory containing this `SKILL.md
 3. Run `python3 ../../scripts/init_frontend_spec.py --output <workspace>/frontend-spec --feature-id <feature-id>` when the artifact tree does not exist.
 4. Reuse an existing artifact tree. Never overwrite manual decisions or history during initialization.
 
+## Enforce the input boundary
+
+- Use only product requirements, UI prototypes, and API contracts by default.
+- Do not enumerate or scan the project root for background. Do not read package manifests, build configuration, README files, directory trees, backend code, infrastructure, or unrelated source files merely because they exist.
+- Treat the existence of a repository as no permission to browse it.
+- Inspect code only when the user explicitly supplies or names a path. The path must be frontend code or another exact path selected by the user.
+- Within an allowed frontend path, read only the named files and the minimum direct frontend dependencies needed to understand the requested behavior. Do not expand into unrelated modules.
+- If required information is absent from the three primary inputs, record a gap or ask a focused question instead of searching the project for an answer.
+
 ## Execute the pipeline
 
 Run these stages in order. Before each stage, read and follow the referenced sibling skill:
 
-1. `../project-context-loader/SKILL.md`
-2. `../requirement-analyzer/SKILL.md`
-3. `../requirement-clarifier/SKILL.md`
+1. `../requirement-analyzer/SKILL.md`
+2. `../requirement-clarifier/SKILL.md`
+3. `../ui-parser/SKILL.md`
 4. `../api-analyzer/SKILL.md`
-5. `../ui-parser/SKILL.md`
-6. `../interaction-designer/SKILL.md`
-7. `../flow-generator/SKILL.md`
-8. `../frontend-spec-generator/SKILL.md`
+5. `../interaction-designer/SKILL.md`
+6. `../flow-generator/SKILL.md`
+7. `../frontend-spec-generator/SKILL.md`
 
 Invoke `../change-tracker/SKILL.md` before changing any previously generated or manually overridden section.
 

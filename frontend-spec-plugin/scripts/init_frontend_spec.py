@@ -11,11 +11,10 @@ from typing import Any
 
 
 STAGE_NAMES = (
-    "project-context",
     "requirement-analysis",
     "requirement-clarification",
-    "api-analysis",
     "ui-parsing",
+    "api-analysis",
     "interaction-design",
     "flow-generation",
     "spec-generation",
@@ -63,26 +62,6 @@ def initialize(output: Path, feature_id: str) -> tuple[list[Path], list[Path]]:
             "feature_id": feature_id,
             "readiness": "in_progress",
             "stages": stages,
-        },
-        "context/project-context.json": {
-            "schema_version": "1.0",
-            "project": "",
-            "stack": {
-                "framework": None,
-                "language": None,
-                "package_manager": None,
-                "build_tool": None,
-                "ui": None,
-                "state": None,
-                "style": None,
-                "router": None,
-                "test": None,
-            },
-            "conventions": [],
-            "reusable_components": [],
-            "commands": {},
-            "evidence": [],
-            "gaps": [],
         },
         "requirement/requirement-analysis.json": {
             "schema_version": "1.0",

@@ -6,7 +6,7 @@ Status: `blocked`
 
 ## 2. Source inventory and authority
 
-## 3. Project constraints
+## 3. Input boundaries and evidence gaps
 
 ## 4. Requirements and acceptance criteria
 

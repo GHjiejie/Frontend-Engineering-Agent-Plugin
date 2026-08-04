@@ -11,11 +11,10 @@ from typing import Any, Iterable
 
 
 EXPECTED_STAGES = {
-    "project-context",
     "requirement-analysis",
     "requirement-clarification",
-    "api-analysis",
     "ui-parsing",
+    "api-analysis",
     "interaction-design",
     "flow-generation",
     "spec-generation",
@@ -23,7 +22,6 @@ EXPECTED_STAGES = {
 
 REQUIRED_FILES = (
     "pipeline-state.json",
-    "context/project-context.json",
     "requirement/requirement-analysis.json",
     "requirement/question-list.md",
     "requirement/decision-log.md",
@@ -101,7 +99,6 @@ def validate(root: Path, require_complete: bool) -> list[str]:
         return errors
 
     state = load_json(root / "pipeline-state.json", errors)
-    context = load_json(root / "context/project-context.json", errors)
     requirements = load_json(root / "requirement/requirement-analysis.json", errors)
     api_map = load_json(root / "api/api-map.json", errors)
     ui_tree = load_json(root / "ui/ui-tree.json", errors)
@@ -117,9 +114,6 @@ def validate(root: Path, require_complete: bool) -> list[str]:
                 "pending", "in_progress", "blocked", "complete"
             }:
                 errors.append(f"pipeline-state.json: invalid status for stage {name}")
-
-    if not isinstance(context.get("stack"), dict):
-        errors.append("project-context.json: stack must be an object")
 
     requirement_items = requirements.get("features", [])
     operation_items = api_map.get("operations", [])

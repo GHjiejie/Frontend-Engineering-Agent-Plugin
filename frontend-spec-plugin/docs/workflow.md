@@ -1,10 +1,12 @@
 # Workflow
 
-Use `$generate-frontend-spec` for a complete run. Provide a feature name plus any available PRD, target project, API contract, and UI reference. Missing optional inputs become explicit gaps; blocking product decisions pause the pipeline after clarification.
+Use `$generate-frontend-spec` for a complete run. Provide a feature name plus the PRD or requirement, UI prototype, and API contract. Missing inputs become explicit gaps; blocking product decisions pause the pipeline after clarification.
 
 Typical request:
 
-> Use `$generate-frontend-spec` for customer group management. The PRD is `customer-groups.md`, the target project is `console-ui`, the API is `openapi.yaml`, and the UI source is the supplied Figma frame.
+> Use `$generate-frontend-spec` for customer group management. The PRD is `customer-groups.md`, the API is `openapi.yaml`, and the UI source is the supplied Figma frame.
+
+The plugin does not inspect the project for general background. If existing frontend code matters, explicitly name the exact frontend file or directory that may be read.
 
 Use an individual stage skill when the user only needs one artifact, such as `$api-analyzer` for a contract map or `$requirement-clarifier` for a question and decision pass.
 

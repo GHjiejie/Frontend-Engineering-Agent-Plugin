@@ -1,7 +1,7 @@
 {
   "name": "frontend-spec-plugin",
-  "version": "1.0.0",
-  "description": "Turns product requirements, UI references, API contracts, and project constraints into an implementation-ready frontend specification.",
+  "version": "1.0.0+codex.20260804080346",
+  "description": "Turns product requirements, UI prototypes, and API contracts into an implementation-ready frontend specification.",
   "author": {
     "name": "Frontend Engineering Team"
   },
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Frontend Spec Generator",
     "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
-    "longDescription": "A staged frontend analysis pipeline that captures project constraints, structures product requirements, resolves ambiguities, maps APIs and UI, designs interactions and flows, and assembles an implementation-ready development specification without generating application code.",
+    "longDescription": "A frontend-focused pipeline that structures product requirements, resolves ambiguities, parses UI prototypes, maps API contracts, designs interactions and flows, and assembles an implementation-ready specification without scanning the surrounding project or generating application code.",
     "developerName": "Frontend Engineering Team",
     "category": "Productivity",
     "capabilities": [

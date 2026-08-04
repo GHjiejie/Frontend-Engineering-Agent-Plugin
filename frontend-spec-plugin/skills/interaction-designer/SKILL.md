@@ -10,7 +10,7 @@ Write `frontend-spec/interaction/interaction-spec.json`. Treat this as the centr
 ## Design each interaction
 
 1. Read `../../references/artifact-contract.md` and `../../schemas/interaction-spec.schema.json`.
-2. Use only approved requirements, parsed UI IDs, API IDs, project constraints, and recorded decisions.
+2. Use only approved requirements, parsed UI IDs, API IDs, recorded decisions, and explicitly supplied frontend code evidence.
 3. Assign stable IDs `IX-###`.
 4. Capture requirement IDs, element IDs, event, preconditions, client validation, ordered actions, API calls, state transitions, success feedback, error mapping, retry/recovery, cancellation, refresh or cache invalidation, permission behavior, and postconditions.
 5. Cover duplicate submission, stale data, destructive confirmation, optimistic versus pessimistic update, partial failure, focus management, and accessibility feedback when relevant.

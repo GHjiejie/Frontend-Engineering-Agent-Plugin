@@ -1,4 +1,0 @@
-interface:
-  display_name: "Load Project Context"
-  short_description: "Capture frontend stack, structure, and local rules"
-  default_prompt: "Use $project-context-loader to capture the implementation constraints of this frontend project."

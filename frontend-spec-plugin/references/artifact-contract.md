@@ -7,7 +7,6 @@ All stages operate on one `frontend-spec/` directory. JSON artifacts use `schema
 ```text
 frontend-spec/
 ├── pipeline-state.json
-├── context/project-context.json
 ├── requirement/
 │   ├── requirement-analysis.json
 │   ├── question-list.md
@@ -31,10 +30,11 @@ When sources conflict, use this order and record the conflict:
 
 1. Latest explicit user instruction
 2. Active manual override or confirmed decision
-3. Authoritative machine-readable API or repository contract
-4. Product requirement source
-5. UI source
-6. Supported inference
+3. Product requirement source for product behavior
+4. UI prototype for visible structure and visual states
+5. Authoritative machine-readable API contract for backend capability
+6. Explicitly supplied frontend code for existing implementation facts only
+7. Supported inference
 
 An earlier decision remains in history after it is superseded.
 
@@ -46,14 +46,13 @@ Use `PAGE-###`, `RQ-###`, `RULE-###`, `Q-###`, `DEC-###`, `API-###`, `UI-###`, `
 
 Use these exact keys in `pipeline-state.json`:
 
-1. `project-context`
-2. `requirement-analysis`
-3. `requirement-clarification`
+1. `requirement-analysis`
+2. `requirement-clarification`
+3. `ui-parsing`
 4. `api-analysis`
-5. `ui-parsing`
-6. `interaction-design`
-7. `flow-generation`
-8. `spec-generation`
+5. `interaction-design`
+6. `flow-generation`
+7. `spec-generation`
 
 Each stage contains `status`, `artifacts`, and `blockers`. Allowed statuses are `pending`, `in_progress`, `blocked`, and `complete`.
 
@@ -63,4 +62,8 @@ Evidence locators contain a source path or URL plus a section, heading, line, fr
 
 ## Completion contract
 
-`ready_for_implementation` requires all eight stages complete, no blocking question, no unresolved required API/UI mapping, no interaction coverage gap, no unresolved override conflict, and a final document that exposes all non-blocking open items.
+`ready_for_implementation` requires all seven stages complete, no blocking question, no unresolved required API/UI mapping, no interaction coverage gap, no unresolved override conflict, and a final document that exposes all non-blocking open items.
+
+## Source boundary
+
+Do not discover project background. The allowed default inputs are requirements, prototypes, and API contracts. Read code only when the user explicitly supplies or names a path, and then only within the named frontend scope plus the minimum direct frontend dependencies needed to understand it. Missing evidence becomes a question or gap, never a reason to scan the repository.

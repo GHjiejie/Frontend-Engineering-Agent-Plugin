@@ -1,6 +1,6 @@
 ---
 name: change-tracker
-description: Preserve manual overrides, approved decisions, and regeneration history for frontend specification artifacts. Use when Codex updates, regenerates, compares, or reconciles an existing frontend specification after requirement, API, design, project, or developer feedback changes.
+description: Preserve manual overrides, approved decisions, and regeneration history for frontend specification artifacts. Use when Codex updates, regenerates, compares, or reconciles an existing frontend specification after requirement, prototype, API, explicitly supplied frontend code, or developer feedback changes.
 ---
 
 # Change Tracker

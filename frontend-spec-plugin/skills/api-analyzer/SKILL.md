@@ -11,9 +11,10 @@ Write `frontend-spec/api/api-map.json` and `frontend-spec/api/request-response.m
 
 1. Read `../../references/artifact-contract.md` and `../../schemas/api-map.schema.json`.
 2. Prefer machine-readable contracts over examples or prose when they conflict. Record the conflict.
-3. Assign stable IDs `API-###` and map each operation to requirement IDs.
-4. Capture method, path, operation identifier, authentication, path/query/header/body fields, response variants, error codes, pagination, sorting, filtering, rate limits, idempotency, and cancellation behavior when specified.
-5. Derive frontend models from declared schemas while preserving nullability, optionality, enums, formats, and discriminators.
+3. Read only the supplied API contract or explicitly named frontend client files. Do not search the repository for endpoints, backend implementations, or additional project context.
+4. Assign stable IDs `API-###` and map each operation to requirement IDs.
+5. Capture method, path, operation identifier, authentication, path/query/header/body fields, response variants, error codes, pagination, sorting, filtering, rate limits, idempotency, and cancellation behavior when specified.
+6. Derive frontend models from declared schemas while preserving nullability, optionality, enums, formats, and discriminators.
 
 ## Identify gaps
 
