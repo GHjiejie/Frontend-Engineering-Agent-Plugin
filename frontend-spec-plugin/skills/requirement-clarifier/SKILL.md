@@ -5,7 +5,7 @@ description: Detect consequential gaps in analyzed frontend requirements, ask fo
 
 # Requirement Clarifier
 
-Produce `frontend-spec/requirement/question-list.md` and maintain `frontend-spec/requirement/decision-log.md`.
+Produce `<feature-root>/requirement/question-list.md` and maintain `<feature-root>/requirement/decision-log.md`.
 
 ## Classify gaps
 

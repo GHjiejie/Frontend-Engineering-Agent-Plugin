@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frontend-spec-catalog.schema.json",
+  "title": "Frontend specification feature catalog",
+  "type": "object",
+  "required": ["schema_version", "features"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["feature_id", "title", "path", "created_at"],
+        "additionalProperties": false,
+        "properties": {
+          "feature_id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "pattern": "^(\\.|features/[a-z0-9]+(?:-[a-z0-9]+)*)$" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ description: Generate Mermaid sequence diagrams and explicit frontend page or co
 
 # Flow Generator
 
-Write `frontend-spec/flow/sequence-diagrams.md` and `frontend-spec/flow/state-models.md`.
+Write `<feature-root>/flow/sequence-diagrams.md` and `<feature-root>/flow/state-models.md`.
 
 ## Generate diagrams
 

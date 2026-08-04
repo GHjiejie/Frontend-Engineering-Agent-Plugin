@@ -5,7 +5,7 @@ description: Analyze OpenAPI, Swagger, protobuf, typed clients, or backend contr
 
 # API Analyzer
 
-Write `frontend-spec/api/api-map.json` and `frontend-spec/api/request-response.md`.
+Write `<feature-root>/api/api-map.json` and `<feature-root>/api/request-response.md`.
 
 ## Build the contract map
 

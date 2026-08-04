@@ -1,6 +1,6 @@
 ---
 name: generate-frontend-spec
-description: Collect required inputs and generate an end-to-end frontend development specification. Use whenever a user asks to add, create, build, design, plan, or develop a frontend feature—including phrases such as “增加功能”, “新增页面”, “开发前端功能”, or “现在要做”—even when no PRD, prototype, or API has been provided yet. First ask for every missing requirement or PRD, UI prototype, and API contract; then create a traceable specification. Do not use this skill to implement application code or scan the surrounding project.
+description: Collect required inputs and generate or resume an isolated end-to-end frontend development specification. Use whenever a user asks to add, create, build, design, plan, continue, or update a frontend feature—including phrases such as “增加功能”, “新增页面”, “继续这个需求”, “开发前端功能”, or “现在要做”—even when no PRD, prototype, or API has been provided yet. First ask for every missing requirement or PRD, UI prototype, and API contract; then explicitly select an existing feature run or create a separate one. Do not use this skill to implement application code or scan the surrounding project.
 ---
 
 # Generate Frontend Spec
@@ -45,12 +45,19 @@ Use this response pattern and omit categories already provided:
 
 Re-run the preflight after every user reply. Continue only when all three categories are either `provided` or `explicitly_unavailable`.
 
-## Start the run
+## Select the feature run
 
 1. Read `../../references/artifact-contract.md`.
 2. Confirm that the mandatory input preflight passed. Identify the feature scope and every user-supplied source without widening the scope.
-3. Run `python3 ../../scripts/init_frontend_spec.py --output <workspace>/frontend-spec --feature-id <feature-id>` when the artifact tree does not exist.
-4. Reuse an existing artifact tree. Never overwrite manual decisions or history during initialization.
+3. Run `python3 ../../scripts/manage_frontend_specs.py --output <workspace>/frontend-spec list`. This reads only plugin-owned artifacts; do not enumerate the workspace.
+4. Select exactly one mode:
+   - **Resume** only when the user explicitly names an existing feature or the current conversation unambiguously continues it. Run `... resume --feature-id <feature-id>`.
+   - **Create** only when the user explicitly says this is a new feature and its normalized lowercase hyphen-case ID is not registered. Run `... create --feature-id <feature-id> --title <title>`.
+   - **Adopt legacy** when `list` reports `LEGACY`. Explain that the existing root-level artifacts belong to the reported feature. Ask whether to continue that feature or register it before creating another one. After explicit confirmation, run `... adopt-legacy --feature-id <reported-feature-id> --title <title>`.
+5. If intent is ambiguous, show the known feature IDs and titles, ask whether to resume one or create a new feature, and stop. Never infer that a new request updates an existing feature merely because it uses the same workspace.
+6. Store the command's `Feature root` output as `<feature-root>`. Every downstream stage must read and write only inside that directory.
+
+Do not initialize, modify, or reuse any feature artifacts before this selection is resolved. Never merge independent features into one feature root.
 
 ## Enforce the input boundary
 
@@ -75,7 +82,7 @@ Run these stages in order. Before each stage, read and follow the referenced sib
 
 Invoke `../change-tracker/SKILL.md` before changing any previously generated or manually overridden section.
 
-Update `frontend-spec/pipeline-state.json` after each stage with `pending`, `in_progress`, `blocked`, or `complete`. Include artifact paths and blockers.
+Update `<feature-root>/pipeline-state.json` after each stage with `pending`, `in_progress`, `blocked`, or `complete`. Include artifact paths and blockers.
 
 ## Enforce quality gates
 
@@ -88,7 +95,7 @@ Update `frontend-spec/pipeline-state.json` after each stage with `pending`, `in_
 
 ## Finish
 
-1. Run `python3 ../../scripts/validate_frontend_spec.py <workspace>/frontend-spec --require-complete`.
+1. Run `python3 ../../scripts/validate_frontend_spec.py <feature-root> --require-complete`.
 2. If validation fails, repair deterministic issues and report genuine product or contract blockers.
 3. Return the final document path, readiness status, unresolved items, and the next required human action.
 

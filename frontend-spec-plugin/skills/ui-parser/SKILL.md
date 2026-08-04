@@ -5,7 +5,7 @@ description: Convert Figma designs, screenshots, Axure exports, HTML prototypes,
 
 # UI Parser
 
-Write `frontend-spec/ui/ui-tree.json` from the supplied visual evidence.
+Write `<feature-root>/ui/ui-tree.json` from the supplied visual evidence.
 
 ## Parse the design
 

@@ -1,28 +1,39 @@
 # Artifact contract
 
-All stages operate on one `frontend-spec/` directory. JSON artifacts use `schema_version: "1.0"`, stable IDs, relative source locators, and UTF-8 encoding. Generated content never outranks confirmed human decisions.
+All stages operate on one selected `<feature-root>`. `frontend-spec/catalog.json` registers isolated feature roots. JSON artifacts use `schema_version: "1.0"`, stable IDs, relative source locators, and UTF-8 encoding. Generated content never outranks confirmed human decisions.
 
 ## Directory layout
 
 ```text
 frontend-spec/
-├── pipeline-state.json
-├── requirement/
-│   ├── requirement-analysis.json
-│   ├── question-list.md
-│   └── decision-log.md
-├── api/
-│   ├── api-map.json
-│   └── request-response.md
-├── ui/ui-tree.json
-├── interaction/interaction-spec.json
-├── flow/
-│   ├── sequence-diagrams.md
-│   └── state-models.md
-├── document/frontend-development-spec.md
-├── manual/override.md
-└── history/change-log.json
+├── catalog.json
+└── features/
+    └── <feature-id>/              # selected <feature-root>
+        ├── pipeline-state.json
+        ├── requirement/
+        │   ├── requirement-analysis.json
+        │   ├── question-list.md
+        │   └── decision-log.md
+        ├── api/
+        │   ├── api-map.json
+        │   └── request-response.md
+        ├── ui/ui-tree.json
+        ├── interaction/interaction-spec.json
+        ├── flow/
+        │   ├── sequence-diagrams.md
+        │   └── state-models.md
+        ├── document/frontend-development-spec.md
+        ├── manual/override.md
+        └── history/change-log.json
 ```
+
+For backward compatibility, a catalog may register one legacy feature with `path: "."`; its existing root-level artifacts remain in place. New features still use `features/<feature-id>/`.
+
+## Feature isolation
+
+Use a normalized lowercase hyphen-case `feature_id` for every new feature. An adopted legacy feature preserves its existing ID even when it predates that rule. The catalog path is either `features/<feature-id>` or `.` for one adopted legacy feature. Stable IDs, decisions, overrides, history, readiness, and validation are scoped to one feature root. Never resolve references across feature roots or silently reuse an existing root for a different requirement.
+
+Before any feature artifact is changed, list registered features and choose `resume`, `create`, or explicitly approved legacy adoption. If that choice is ambiguous, ask the developer and stop.
 
 ## Authority order
 

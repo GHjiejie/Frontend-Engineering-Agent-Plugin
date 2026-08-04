@@ -5,7 +5,7 @@ description: Bind product requirements, UI elements, API operations, and fronten
 
 # Interaction Designer
 
-Write `frontend-spec/interaction/interaction-spec.json`. Treat this as the central binding artifact.
+Write `<feature-root>/interaction/interaction-spec.json`. Treat this as the central binding artifact.
 
 ## Design each interaction
 

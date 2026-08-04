@@ -5,7 +5,7 @@ description: Preserve manual overrides, approved decisions, and regeneration his
 
 # Change Tracker
 
-Maintain `frontend-spec/manual/override.md` and `frontend-spec/history/change-log.json` before modifying existing generated artifacts.
+Maintain `<feature-root>/manual/override.md` and `<feature-root>/history/change-log.json` before modifying existing generated artifacts. Never read or update another feature root.
 
 ## Reconcile changes
 

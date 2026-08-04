@@ -5,7 +5,7 @@ description: Convert product requirements into traceable frontend pages, actors,
 
 # Requirement Analyzer
 
-Write `frontend-spec/requirement/requirement-analysis.json` from product evidence.
+Write `<feature-root>/requirement/requirement-analysis.json` from product evidence.
 
 ## Analyze
 

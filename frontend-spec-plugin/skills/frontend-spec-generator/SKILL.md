@@ -5,7 +5,7 @@ description: Assemble approved requirements, decisions, UI trees, API mappings, 
 
 # Frontend Spec Generator
 
-Write `frontend-spec/document/frontend-development-spec.md` using `../../assets/templates/frontend-development-spec.md`.
+Write `<feature-root>/document/frontend-development-spec.md` using `../../assets/templates/frontend-development-spec.md`.
 
 ## Assemble the specification
 
