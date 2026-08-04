@@ -1,4 +1,4 @@
 interface:
-  display_name: "Frontend Implementation"
-  short_description: "Implement approved frontend feature plans safely"
-  default_prompt: "Use $frontend-implementation to implement this approved frontend plan."
+  display_name: "Frontend Patch Implementation"
+  short_description: "Propose, approve, apply, and verify frontend patches"
+  default_prompt: "Use $frontend-implementation to prepare a reviewable patch for this approved plan."

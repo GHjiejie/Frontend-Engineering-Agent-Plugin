@@ -1,41 +1,38 @@
 ---
 name: frontend-design
-description: Convert a ready frontend Feature Contract into an evidence-backed implementation design covering pages, components, API adapters, state ownership, interactions, tests, rollout, rollback, and file-level changes while honoring project memory and architecture decisions. Use after frontend analysis, when planning a frontend feature, evaluating implementation approaches, or updating a technical design before code changes.
+description: Convert a human-approved frontend Change Contract for a feature, bug, or refactor into a traceable Implementation Plan that honors task context, project constitution, historical decisions, user edits, architecture, component reuse, API and state boundaries, tests, rollout, and rollback. Use only after the analysis approval gate is explicitly approved and before producing or applying any code patch.
 ---
 
 # Frontend Design
 
-Produce an executable design without modifying product code.
+Design the smallest coherent implementation that satisfies the approved contract. Do not modify product code.
 
 ## Preconditions
 
-1. Read repository instructions and inspect the worktree.
-2. Load the target `feature.yaml`, `contract.yaml`, project memory, domain memory, and relevant ADRs.
-3. Require `contract.yaml` to have `status: READY` and `feature.yaml` to have `contractReady: true`.
-4. If the contract is incomplete or contradicts repository facts, stop the design, record `BLOCKED` or `CONFLICT`, and return to `frontend-analysis`.
+1. Read repository instructions, `runtime/task-context.yaml`, `runtime/change-contract.yaml`, and `runtime/approvals/analysis.yaml`.
+2. Require approval `APPROVED`. Never treat silence, a ready contract, or a prior implementation request as approval.
+3. Re-check the current worktree against the approved evidence. If code or requirements changed materially, enter `CONFLICT` and return to analysis.
+4. Move the orchestrator from `APPROVAL_REQUIRED` to `DESIGN` through the runtime CLI.
 
 ## Workflow
 
-1. Trace each requirement and acceptance criterion to current routes, components, APIs, stores, composables, styles, and tests.
-2. Compare viable approaches. Prefer existing project patterns and the smallest coherent change surface.
-3. Define page boundaries, component responsibilities, data flow, state ownership, API adaptation, validation, error handling, accessibility, responsive behavior, and observability.
-4. Decide which state is local, composable-owned, store-owned, URL-derived, or server-derived. Avoid persistent global state for short-lived page state unless project decisions require it.
-5. Specify file-level operations as create, modify, move, or delete. Identify user-owned or high-conflict files.
-6. Map each acceptance criterion to automated or manual verification and include failure-path tests.
-7. Define rollout, rollback, compatibility, data migration, and documentation or memory updates.
-8. Write `implementation.yaml` according to [references/implementation-plan.md](references/implementation-plan.md).
-9. Update `feature.yaml` to `status: DESIGNED`, `orchestratorState: DESIGN_READY`, and `implementationReady: true` only after the design gate passes.
-10. Run `python3 <plugin-root>/scripts/frontend_ai.py validate --root <repository-root> --feature <feature-id> --phase design`.
+1. Trace every contract item to files, symbols, entities, steps, and verification.
+2. Read `memory/project/constitution.yaml`, relevant ADRs, Feature/Bug/Change history, project index relations, and current implementation patterns.
+3. Compare viable approaches. Prefer reuse, narrow state lifetime, established API layers, design tokens, compatibility, and reversible change.
+4. Define routes/pages, components, API mapping, state ownership, UI states, interactions, validation, error handling, accessibility, performance, security, and observability.
+5. Identify user-modified or high-conflict files and prescribe preservation or reconciliation.
+6. Specify file operations, dependency order, test coverage, rollout, rollback, and proposed knowledge updates.
+7. Write `runtime/implementation-plan.yaml` according to [references/implementation-plan.md](references/implementation-plan.md).
+8. Set the plan to `READY` only when traceability and risk handling are complete, then validate phase `design`.
 
 ## Design gate
 
-- Every contract requirement and acceptance criterion has traceability.
-- Every planned file change has a reason and ownership boundary.
-- API, state, component, interaction, accessibility, responsive, error, and test designs are explicit.
-- Decisions align with project memory and ADRs, or a new decision is proposed with consequences.
-- Risks, dependencies, rollout, and rollback are actionable.
-- No unresolved issue could materially change the implementation approach.
+- Every requirement or bug condition maps to implementation steps and verification.
+- Every file operation has a reason and an ownership boundary.
+- The plan obeys Constitution and Decisions or proposes an explicit new Decision.
+- No unresolved issue could materially change the approach.
+- Patch scope, diff review method, and rollback are executable.
 
-## Safety and handoff
+## Handoff
 
-Do not edit application code, install dependencies, or mutate external systems. Report the chosen approach, rejected alternatives, impacted files, risks, verification strategy, and any human approvals needed. Recommend `frontend-implementation` only after the design gate passes.
+Report the selected approach, rejected alternatives, files, risks, tests, rollback, and any required Decision proposal. Hand off to `frontend-implementation`; approval of the design does not waive the later Patch Approval Gate.

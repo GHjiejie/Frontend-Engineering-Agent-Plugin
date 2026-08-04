@@ -1,44 +1,39 @@
 ---
 name: frontend-review
-description: Review an implemented frontend feature against its Feature Contract, implementation plan, UI and API inputs, interaction paths, repository rules, architecture memory, decisions, tests, accessibility, and actual diff; produce a severity-ranked review report and finalize feature and memory state only when evidence supports release. Use for pre-merge quality review, acceptance validation, regression assessment, or release readiness of a frontend feature.
+description: Review an applied frontend patch against its Change Contract, task context, bug or feature history, implementation plan, project Constitution, regression surface, tests, and actual diff; produce a severity-ranked report and a governed Memory Update Proposal that is persisted only after explicit human confirmation. Use for final validation, pre-merge review, bug-fix verification, regression assessment, architecture compliance, or memory synchronization after a frontend change.
 ---
 
 # Frontend Review
 
-Determine release readiness from evidence. Review first; do not silently repair implementation defects in the same pass unless the user explicitly asks for fixes.
+Establish release readiness and propose knowledge changes. Review first; do not silently fix defects unless the user separately requests implementation.
 
 ## Preconditions
 
-1. Read repository instructions and inspect the actual worktree and diff.
-2. Load the feature contract, implementation plan, change log, project memory, domain memory, relevant ADRs, and source inputs such as designs or API documentation.
-3. Require the feature to be in lifecycle `IMPLEMENTING` with orchestrator state `VERIFYING`. If artifacts are stale, record `CONFLICT`.
+1. Require an applied, human-approved patch and load all runtime artifacts, current diff, repository rules, Constitution, entities, tests, and source inputs.
+2. Require orchestrator state `REVIEW`. If the applied diff no longer matches the approved proposal, enter `CONFLICT`.
 
-## Review dimensions
+## Review
 
-1. **Feature coverage:** Trace every requirement and acceptance criterion to implemented code and evidence.
-2. **UI coverage:** Compare layout, content, states, responsiveness, accessibility, and token usage to the specified design or contract.
-3. **API coverage:** Verify endpoint, method, parameters, types, mapping, cancellation, loading, retry, success, and failure behavior.
-4. **Interaction coverage:** Follow each trigger through request, pending state, success, failure, recovery, duplicate action, and permission path.
-5. **Architecture:** Check repository rules, dependency direction, component boundaries, API layer, state lifetime, duplication, and ADR compliance.
-6. **Code quality:** Check correctness, typing, maintainability, security, performance, compatibility, and unintended scope.
-7. **Verification:** Inspect tests and run the most relevant typecheck, lint, test, build, and targeted UI checks. Distinguish passing, failing, and not run.
-8. **Memory integrity:** Verify memory changes describe durable facts and do not claim unreviewed or nonexistent capabilities.
+1. Verify each feature requirement, bug reproduction/root cause, or refactor invariant against evidence.
+2. Check UI, API, interaction, loading, error, empty, permission, accessibility, responsive, security, performance, and compatibility behavior where applicable.
+3. Assess regression risk using related Feature, Bug, Change, Decision, file, route, and symbol knowledge.
+4. Check dependency direction, component reuse, API layer, state lifetime, tokens, and every Constitution rule.
+5. Run or inspect relevant typecheck, lint, tests, build, and targeted UI verification. Distinguish pass, fail, and not run.
+6. Write `reports/<task-id>-review.md` using [references/review-and-memory-sync.md](references/review-and-memory-sync.md). Rank findings `P0` through `P3` with exact evidence.
 
-## Findings and outcome
+## Memory governance
 
-Write `docs/frontend-ai/reports/<feature-id>-review-report.md` using [references/review-report.md](references/review-report.md). Rank actionable findings as `P0`, `P1`, `P2`, or `P3`, cite exact file and line evidence, and avoid speculative findings.
+1. Convert engineering meaning—not raw file churn—into `runtime/memory-update-proposal.yaml`.
+2. Include the proposed Change Entity and any Feature, Bug, Decision, Project, Domain, index, confidence, or verification changes.
+3. Move to `MEMORY_UPDATE`, record pending memory approval, then move to `WAITING_HUMAN` with gate `memory`.
+4. Validate phase `review`, stop, and ask the human to approve or reject the memory proposal.
+5. After explicit approval, move back to `MEMORY_UPDATE`, persist only approved items, update the knowledge index, mark the proposal `APPLIED`, validate phase `memory-update`, and move to `COMPLETED`.
 
-- `PASS`: no open P0-P2 findings, required checks pass, and every acceptance criterion is supported by evidence.
-- `NEED_HUMAN_REVIEW`: product, design, API, or business intent requires a human decision.
+## Outcome rules
+
+- `PASS`: no open P0-P2 finding and every required criterion has evidence.
+- `FAIL`: confirmed defects block completion; route code fixes to implementation and require a new patch proposal.
 - `BLOCKED`: required evidence or environment is unavailable.
-- `FAIL`: confirmed defects prevent release.
+- `WAITING_HUMAN`: intent or governance requires human judgment.
 
-On `PASS`, set feature status to `RELEASED`, orchestrator state to `MEMORY_UPDATING`, update the feature registry, append one capability-oriented JSON object to `evolution-log.jsonl`, update `history.yaml` and `memory-index.json`, then set orchestrator state to `COMPLETED`.
-
-On any other outcome, keep the lifecycle at `IMPLEMENTING`, set `reviewStatus` to the outcome, set orchestrator state to `FAILED`, `BLOCKED`, or `NEED_HUMAN_REVIEW` as applicable, and route code fixes back to `frontend-implementation` or contract issues to `frontend-analysis`.
-
-Run `python3 <plugin-root>/scripts/frontend_ai.py validate --root <repository-root> --feature <feature-id> --phase review` after writing the report and final state.
-
-## Handoff
-
-Lead with findings ordered by severity. Then report the outcome, acceptance coverage, checks run, residual risks, and exact next owner. If there are no findings, say so explicitly and still disclose verification gaps.
+Lead the handoff with findings, then outcome, verification, regressions, Constitution compliance, and the exact memory decision requested.

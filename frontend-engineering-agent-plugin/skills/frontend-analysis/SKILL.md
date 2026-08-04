@@ -1,44 +1,36 @@
 ---
 name: frontend-analysis
-description: Understand an existing frontend repository, refresh its persistent project and domain memory, analyze a new or changed requirement, reconcile API/UI/interaction inputs, identify reusable capabilities and risks, and create or update a durable Feature Entity and Feature Contract. Use when onboarding a frontend codebase, receiving a feature request, clarifying requirements, assessing change impact, or preparing work for frontend technical design.
+description: Build a task-scoped frontend engineering context from governed project memory and repository evidence, then analyze a feature, bug, or refactor into a Change Contract with impact, history, risk, and explicit unknowns. Use when onboarding a task, investigating a bug, analyzing a requested feature or refactor, reconciling manual code changes, detecting relevant historical knowledge, or preparing work for the mandatory human approval gate before technical design.
 ---
 
 # Frontend Analysis
 
-Create an evidence-backed Feature Contract before design or implementation. Treat repository facts and user-provided requirements as authoritative; treat memory files as a cache that may be stale.
+Understand the requested change without modifying product code. Treat repository and human-provided facts as authoritative; treat memory as retrieved evidence with provenance and confidence, not truth.
 
 ## Workflow
 
-1. Read repository instructions, especially `AGENTS.md`, then inspect the worktree without changing it.
-2. Load `docs/frontend-ai/project-memory/`, `domain-memory/`, `decisions/`, and the feature registry when present.
-3. If memory is absent, initialize it non-destructively with `python3 <plugin-root>/scripts/frontend_ai.py init --root <repository-root>`. Never overwrite existing memory merely to normalize it.
-4. Verify memory against `package.json`, lockfiles, TypeScript config, build config, routing, state, API, component, test, README, and recent Git history. Mark contradictions explicitly and update only facts supported by the repository.
-5. Parse the request into goals, actors, in-scope and out-of-scope behavior, UI states, API behavior, interactions, acceptance criteria, constraints, and open questions.
-6. Inspect provided API documents, designs, screenshots, or links when available. Distinguish observed facts from inference.
-7. Search the project index and source for reusable routes, components, composables, stores, services, patterns, and tests.
-8. Create the feature with `python3 <plugin-root>/scripts/frontend_ai.py new-feature <feature-id> --root <repository-root> --domain <domain> --title <title>` when it does not already exist.
-9. Write `feature.yaml`, `contract.yaml`, and `risk-report.md` according to [references/analysis-artifacts.md](references/analysis-artifacts.md). Preserve feature history when updating an existing feature.
-10. Refresh `project-context.yaml`, `project-index.json`, `architecture-map.yaml`, domain memory, and `memory-index.json` only where the analysis discovered durable facts.
-11. Run `python3 <plugin-root>/scripts/frontend_ai.py validate --root <repository-root> --feature <feature-id> --phase analysis`.
+1. Read repository instructions and inspect Git status, recent changes, package/configuration files, and the requested sources.
+2. Initialize v2 knowledge storage non-destructively when absent:
+   `python3 <plugin-root>/scripts/frontend_ai.py init --root <repository-root>`.
+3. Move the orchestrator through `MEMORY_SYNC` and `CONTEXT_BUILD` using the runtime CLI. Detect manual code changes, but propose memory changes rather than trusting them automatically.
+4. Build `docs/frontend-ai/runtime/task-context.yaml` with the `context` command. Prefer explicit id/path/route/symbol retrieval, then structural relations. Do not claim semantic retrieval in the MVP.
+5. Read the returned entities, project constitution, relevant domain memory, source files, tests, Feature/Bug history, Changes, and Decisions. Exclude unrelated memory.
+6. Move to `ANALYSIS` and analyze the task as `feature`, `bug`, or `refactor`:
+   - Feature: desired behavior, UI, API, interaction, acceptance, compatibility.
+   - Bug: observed/expected behavior, reproduction, regression range, hypotheses, evidence, related feature.
+   - Refactor: invariant behavior, motivation, affected dependencies, migration and regression risk.
+7. Write `runtime/change-contract.yaml` according to [references/change-contract.md](references/change-contract.md). Separate facts, inferences, assumptions, and unknowns.
+8. Set the contract to `READY` only when every requirement has acceptance evidence and all blocking ambiguity is explicit.
+9. Record a pending analysis approval with the CLI, move to `APPROVAL_REQUIRED`, and validate phase `analysis`.
+10. Stop and ask the human to approve or reject the Change Contract. Never record approval without an explicit human decision.
 
-## Contract gate
+## Gate and safety
 
-Do not hand off to design until all of the following are true:
-
-- Every requirement is mapped to at least one acceptance criterion.
-- UI, API, interaction, error, loading, empty, permission, and boundary behavior are either specified or explicitly not applicable.
-- Reuse candidates and affected areas cite repository evidence.
-- Assumptions and open questions are separated.
-- Blocking ambiguity is resolved or the orchestrator state is recorded as `BLOCKED` or `NEED_HUMAN_REVIEW`.
-- `contract.yaml` has `status: READY`, and `feature.yaml` records `contractReady: true` while the lifecycle remains `ANALYZING`.
-
-## Safety
-
-- Do not implement product code in this skill.
-- Do not invent endpoints, design details, business rules, or architectural conventions.
-- Preserve unrelated user changes and never use destructive Git commands.
-- Do not commit, push, or open a pull request unless the user separately requests it.
+- Do not invoke design until `runtime/approvals/analysis.yaml` says `APPROVED`.
+- Do not create durable Feature, Bug, Change, or Decision knowledge from unapproved analysis.
+- Do not implement code, install dependencies, commit, push, or mutate external systems.
+- On stale memory or conflicting evidence, enter `CONFLICT`; on missing required input, enter `BLOCKED`.
 
 ## Handoff
 
-Report the feature id, contract path, material risks, unresolved decisions, and the evidence used to refresh memory. Recommend `frontend-design` only after the contract gate passes.
+Report the task id, retrieved evidence by layer, contract path, risks, unknowns, and the exact decision requested from the human.

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Frontend Design"
-  short_description: "Turn feature contracts into implementation designs"
-  default_prompt: "Use $frontend-design to turn this feature contract into an implementation plan."
+  display_name: "Frontend Change Design"
+  short_description: "Design an approved change with full traceability"
+  default_prompt: "Use $frontend-design to design this approved frontend Change Contract."

@@ -1,41 +1,38 @@
 ---
 name: frontend-implementation
-description: Safely implement an approved frontend feature design in an existing repository, preserving user changes while modifying Vue, React, TypeScript, JavaScript, routing, components, API adapters, state, styles, and tests; verify the implementation, record a change log, and update durable project memory. Use when a Feature Contract and implementation plan are ready and the user asks to build, change, or fix the planned frontend feature.
+description: Execute a ready frontend Implementation Plan through a proposal-first patch workflow that preserves manual user changes, produces a reviewable patch and diff before mutation, waits for explicit human patch approval, applies only the approved change, runs relevant verification, and generates a Change Entity proposal. Use when an approved Change Contract and ready plan exist and the user asks to implement the frontend feature, bug fix, or refactor.
 ---
 
 # Frontend Implementation
 
-Execute the approved plan and keep code, feature artifacts, and memory synchronized.
+Follow `Plan -> Patch Proposal -> Human Diff Review -> Apply -> Test -> Change Entity Proposal`. Never edit product files before the Patch Approval Gate.
 
 ## Preconditions
 
-1. Read repository instructions and `git status` before editing.
-2. Load `feature.yaml`, `contract.yaml`, `implementation.yaml`, project memory, domain memory, and relevant ADRs.
-3. Require `contract.status: READY`, `implementation.status: READY`, `contractReady: true`, and `implementationReady: true`.
-4. Compare planned files with current code. If the plan is stale or overlaps unexplained user changes, record `CONFLICT` and stop or redesign the affected step.
-5. Do not start from a dirty file by assuming its changes are disposable.
+1. Load task context, approved Change Contract, Implementation Plan, Constitution, relevant entities, repository instructions, and current Git status.
+2. Require analysis approval `APPROVED` and plan status `READY`.
+3. Reconcile unexplained manual changes. Preserve them or enter `CONFLICT`; never assume they are disposable.
+4. Move the orchestrator to `IMPLEMENTATION`.
 
-## Workflow
+## Proposal phase
 
-1. Set the feature lifecycle to `IMPLEMENTING` and orchestrator state to `IMPLEMENTING` while preserving history.
-2. Implement steps in dependency order, using existing project abstractions, tokens, naming, linting, test, and accessibility conventions.
-3. Keep API transport in the established API layer and keep state at the narrowest correct lifetime.
-4. Add or update tests alongside behavior. Cover success, failure, loading, empty, permission, validation, and boundary paths that the contract requires.
-5. Run focused checks after each coherent step, then the repository's relevant typecheck, lint, unit, component, integration, end-to-end, and build commands.
-6. Review the actual diff against `implementation.yaml` and the contract. Explain any deviation and update the plan if the deviation is accepted.
-7. Write `docs/frontend-ai/reports/<feature-id>-change-log.md` according to [references/implementation-records.md](references/implementation-records.md).
-8. Update durable memory only with verified facts: project index, architecture map, feature registry, ADRs, domain memory, and memory index. Do not mark the feature `RELEASED` or append a release evolution event before review passes.
-9. Set the orchestrator state to `VERIFYING` and keep feature status `IMPLEMENTING` for review.
-10. Run `python3 <plugin-root>/scripts/frontend_ai.py validate --root <repository-root> --feature <feature-id> --phase implementation`.
+1. Derive the exact patch from the plan without applying it.
+2. Write `runtime/patch-proposal.yaml` and `runtime/patch-proposal.diff` using [references/patch-and-change.md](references/patch-and-change.md).
+3. Review the proposed diff against contract, plan, user edits, Constitution, and scope. Mark the proposal `PENDING_APPROVAL`.
+4. Record pending patch approval, move to `WAITING_HUMAN` with gate `patch`, validate phase `patch-proposal`, and stop.
+5. Ask the human to approve or reject the exact patch. Do not infer approval from the original implementation request.
 
-## Safety
+## Apply phase
 
-- Never discard, reset, or overwrite unrelated changes.
-- Do not widen scope merely because nearby cleanup is attractive.
-- Do not change architecture decisions silently; create or propose an ADR.
-- Do not commit, push, deploy, or communicate externally unless the user explicitly requests that action.
-- If required verification cannot run, report the exact command, failure, and residual risk.
+Continue only after an explicit human approval has been recorded through the runtime CLI.
 
-## Handoff
+1. Move back to `IMPLEMENTATION`, re-check that the worktree still matches the patch base, and regenerate the proposal if it drifted.
+2. Apply only the approved patch. Use patch-aware editing and never overwrite whole user-owned files unnecessarily.
+3. Inspect the actual diff. If it differs materially from the approved patch, stop and request approval again.
+4. Run focused tests, then relevant typecheck, lint, unit/component/integration/e2e checks and build.
+5. Set patch status `APPLIED`; write `runtime/change-entity-proposal.yaml` and `reports/<task-id>-change-log.md`.
+6. Do not persist the proposed Change Entity or other memory updates yet. Move to `REVIEW` and validate phase `implementation`.
 
-Report implemented acceptance criteria, changed files, deviations, checks run with results, memory updates, and residual risks. Hand the feature to `frontend-review`; do not claim release before that review passes.
+## Safety and handoff
+
+Do not commit, push, deploy, or update durable memory unless separately authorized. Report the approved patch, actual diff, checks, deviations, user changes preserved, and the Change Entity proposal.

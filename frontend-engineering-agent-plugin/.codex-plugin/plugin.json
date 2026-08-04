@@ -1,35 +1,37 @@
 {
   "name": "frontend-engineering-agent-plugin",
-  "version": "1.0.0",
-  "description": "A persistent frontend engineering agent with project memory, domain memory, feature lifecycles, implementation, and review workflows.",
+  "version": "2.0.0",
+  "description": "A frontend engineering knowledge agent with governed memory, task-context retrieval, engineering entities, human approval gates, patch proposals, and review-driven memory updates.",
   "author": {
     "name": "Frontend Engineering Agent Plugin Contributors"
   },
   "keywords": [
     "frontend",
-    "project-memory",
-    "feature-lifecycle",
-    "architecture",
+    "engineering-knowledge",
+    "memory-runtime",
+    "human-approval",
+    "change-management",
     "code-review"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Frontend Engineering Agent",
-    "shortDescription": "Evolve frontend projects with persistent engineering memory.",
-    "longDescription": "Analyze frontend projects and requirements, design feature implementations, execute approved plans safely, review results, and preserve project, domain, and decision knowledge for future work.",
+    "displayName": "Frontend Engineering Knowledge Agent",
+    "shortDescription": "Operate frontend projects with governed engineering knowledge.",
+    "longDescription": "Build task-scoped context from project memory, analyze features, bugs, and refactors, design approved changes, apply human-reviewed patches, validate results, and convert code evolution into trusted engineering knowledge.",
     "developerName": "Frontend Engineering Agent Plugin Contributors",
     "category": "Developer Tools",
     "capabilities": [
-      "Analyze",
-      "Design",
-      "Write",
-      "Review",
-      "Project Memory"
+      "Memory Routing",
+      "Task Context",
+      "Feature and Bug Analysis",
+      "Human Approval Gates",
+      "Patch Proposals",
+      "Review and Memory Governance"
     ],
     "defaultPrompt": [
-      "Analyze this frontend request and create a feature contract.",
-      "Design an implementation plan for this frontend feature.",
-      "Review this feature against its contract and project rules."
+      "Build task context and analyze this frontend change.",
+      "Design an implementation plan from this approved Change Contract.",
+      "Review this implementation and propose memory updates."
     ]
   }
 }

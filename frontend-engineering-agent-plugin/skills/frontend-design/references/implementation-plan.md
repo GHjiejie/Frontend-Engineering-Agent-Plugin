@@ -1,14 +1,14 @@
-# Implementation plan contract
+# Implementation Plan
 
-Write `docs/frontend-ai/features/<feature-id>/implementation.yaml` with this minimum shape:
+Write `docs/frontend-ai/runtime/implementation-plan.yaml`:
 
 ```yaml
-schemaVersion: 1
-featureId: customer-import
+schemaVersion: 2
+taskId: TASK-001
 status: READY
 summary: ""
 contractTraceability:
-  - requirementId: REQ-001
+  - contractId: REQ-001
     acceptanceCriteria: [AC-001]
     steps: [STEP-001]
 approach:
@@ -26,11 +26,14 @@ architecture:
   interactions: []
   styling: []
   accessibility: []
+  security: []
+  performance: []
 fileChanges:
   - path: src/example.ts
     operation: modify
     reason: ""
     symbols: []
+    preserveUserChanges: []
 steps:
   - id: STEP-001
     description: ""
@@ -43,15 +46,21 @@ tests:
   integration: []
   e2e: []
   manual: []
+patchStrategy:
+  baseRevision: ""
+  proposalPath: docs/frontend-ai/runtime/patch-proposal.diff
+  conflictChecks: []
+  diffReview: []
 dependencies: []
 risks: []
 rollout: []
 rollback: []
-memoryUpdates: []
-decisions: []
+constitutionCompliance: []
+decisionProposals: []
+memoryUpdateCandidates: []
 openQuestions: []
 ```
 
-Allowed operations are `create`, `modify`, `move`, and `delete`. Use `status: READY` only after the design gate passes. A planned deletion must include its callers, migration, and rollback path.
+Allowed file operations are `create`, `modify`, `move`, and `delete`. A deletion requires callers, migration, rollback, and explicit scope justification.
 
-For traceability, each requirement must map to one or more acceptance criteria, steps, files, and verification items. Do not substitute broad prose for these links.
+For every contract item, preserve the chain `contract -> acceptance -> step -> file -> verification`. Mark the plan `READY` only when no open question can materially alter the patch.
