@@ -211,7 +211,7 @@ def adopt_legacy(root: Path, feature_id: str, title: str | None) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Manage isolated frontend specification runs.")
-    parser.add_argument("--output", type=Path, default=Path("frontend-spec"))
+    parser.add_argument("--output", type=Path, required=True)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("list")
     for command in ("create", "adopt-legacy"):
@@ -222,6 +222,10 @@ def main() -> int:
     resume.add_argument("--feature-id", required=True)
     args = parser.parse_args()
 
+    if not args.output.is_absolute():
+        parser.error("--output must be the confirmed absolute frontend-spec path")
+    if args.output.name != "frontend-spec":
+        parser.error("--output must end with the frontend-spec directory name")
     root = args.output.resolve()
     try:
         if args.command == "list":

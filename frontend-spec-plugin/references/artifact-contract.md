@@ -1,11 +1,11 @@
 # Artifact contract
 
-All stages operate on one selected `<feature-root>`. `frontend-spec/catalog.json` registers isolated feature roots. JSON artifacts use `schema_version: "1.0"`, stable IDs, relative source locators, and UTF-8 encoding. Generated content never outranks confirmed human decisions.
+All stages operate on one selected `<feature-root>` under a developer-confirmed absolute `<spec-root>`. `<spec-root>/catalog.json` registers isolated feature roots. JSON artifacts use `schema_version: "1.0"`, stable IDs, relative source locators, and UTF-8 encoding. Generated content never outranks confirmed human decisions.
 
 ## Directory layout
 
 ```text
-frontend-spec/
+<confirmed-parent>/frontend-spec/       # selected <spec-root>
 ├── catalog.json
 └── features/
     └── <feature-id>/              # selected <feature-root>
@@ -34,6 +34,10 @@ For backward compatibility, a catalog may register one legacy feature with `path
 Use a normalized lowercase hyphen-case `feature_id` for every new feature. An adopted legacy feature preserves its existing ID even when it predates that rule. The catalog path is either `features/<feature-id>` or `.` for one adopted legacy feature. Stable IDs, decisions, overrides, history, readiness, and validation are scoped to one feature root. Never resolve references across feature roots or silently reuse an existing root for a different requirement.
 
 Before any feature artifact is changed, list registered features and choose `resume`, `create`, or explicitly approved legacy adoption. If that choice is ambiguous, ask the developer and stop.
+
+## Output location gate
+
+Before listing, reading, or creating plugin artifacts, display the exact absolute `<spec-root>` and obtain explicit developer confirmation. The workspace root is only a suggested parent and is never an automatic default. A terminal `cd`, repository selection, existing folder, relative path, or silence does not confirm the location. When the developer names a parent directory, append `frontend-spec`; when they name an exact path ending in `frontend-spec`, preserve it. Confirmation grants access only to plugin artifacts inside `<spec-root>` and does not widen the frontend source boundary.
 
 ## Authority order
 
@@ -81,4 +85,4 @@ Do not discover project background. The allowed default inputs are requirements,
 
 ## Input gate
 
-Before reading user workspace files or initializing artifacts, classify requirement, prototype, and API input as `provided`, `explicitly_unavailable`, or `missing`. A feature title or one-line command is not a provided requirement; a project/page name is not a provided prototype; a vague claim of backend support is not a provided API contract. Stop and ask for all `missing` categories in one response. Silence never means unavailable. Continue only when every category is provided or the user explicitly confirms it is unavailable.
+Before reading user workspace files or initializing artifacts, classify requirement, prototype, and API input as `provided`, `explicitly_unavailable`, or `missing`, and classify output location as `confirmed`, `proposed`, or `missing`. A feature title or one-line command is not a provided requirement; a project/page name is not a provided prototype; a vague claim of backend support is not a provided API contract. Stop and ask for every missing source plus exact output-location confirmation in one response. Silence never means unavailable or confirmed. Continue only when every source category is provided or explicitly unavailable and the exact absolute `<spec-root>` is confirmed.

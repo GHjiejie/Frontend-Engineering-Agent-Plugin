@@ -1,6 +1,6 @@
 {
   "name": "frontend-spec-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Collects missing PRD, prototype, and API inputs before turning a frontend feature request into an implementation-ready specification.",
   "author": {
     "name": "Frontend Engineering Team"
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Frontend Spec Generator",
     "shortDescription": "Generate traceable, implementation-ready frontend specifications.",
-    "longDescription": "A frontend-focused specification pipeline for requests to add, create, continue, or update frontend features. It first asks for missing requirement, prototype, and API inputs, then explicitly creates or resumes an isolated feature specification without scanning the surrounding project or mixing independent requirements.",
+    "longDescription": "A frontend-focused specification pipeline that requires explicit confirmation of where frontend-spec will be created, then collects missing requirement, prototype, and API inputs and creates or resumes an isolated feature specification without scanning the surrounding project or mixing independent requirements.",
     "developerName": "Frontend Engineering Team",
     "category": "Productivity",
     "capabilities": [
@@ -24,9 +24,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Add a frontend feature. First ask me for any missing PRD, prototype, and API inputs.",
-      "Design this frontend feature and collect the required specification inputs from me first.",
-      "Turn my requirement, UI prototype, and API contract into an isolated frontend specification without mixing it with existing features."
+      "Add a frontend feature. First ask me for any missing PRD, prototype, API inputs, and the exact frontend-spec output location.",
+      "Design this frontend feature and ask me to confirm where frontend-spec should be created before writing files.",
+      "Ask me to confirm the frontend-spec output path, then turn my requirement, UI prototype, and API contract into an isolated specification without mixing existing features."
     ]
   }
 }

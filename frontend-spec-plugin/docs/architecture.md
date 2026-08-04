@@ -1,9 +1,12 @@
 # Architecture
 
-Frontend Spec Generator is an artifact-driven pipeline. A catalog selects one isolated feature root before the orchestration skill runs seven bounded analysis stages plus change tracking. Stable IDs provide traceability within a feature from requirements through UI, API, interactions, diagrams, and the final handoff.
+Frontend Spec Generator is an artifact-driven pipeline. An explicit location gate selects the absolute `frontend-spec` root, then a catalog selects one isolated feature root before the orchestration skill runs seven bounded analysis stages plus change tracking. Stable IDs provide traceability within a feature from requirements through UI, API, interactions, diagrams, and the final handoff.
 
 ```text
-PRD + prototype + API
+PRD + prototype + API + confirmed output path
+          │
+          ▼
+         location gate
           │
           ▼
 feature catalog → create / resume gate
@@ -24,7 +27,7 @@ requirements → clarification gate
               overrides + change history
 ```
 
-The plugin intentionally stops before code generation and never scans the surrounding project for background. Its default evidence boundary is product requirements, UI prototypes, API contracts, and its own catalog. Explicitly supplied frontend code may be inspected only within the user-selected scope. `catalog.json` selects the feature data plane; each feature's `pipeline-state.json` is its resumable control plane.
+The plugin intentionally stops before code generation and never scans the surrounding project for background. Its default evidence boundary is product requirements, UI prototypes, API contracts, and its own catalog at the confirmed path. Explicitly supplied frontend code may be inspected only within the user-selected scope. `catalog.json` selects the feature data plane; each feature's `pipeline-state.json` is its resumable control plane.
 
 Manual decisions have higher authority than generated text. Regeneration uses the change tracker to preserve overrides and surface conflicts rather than silently replacing them.
 

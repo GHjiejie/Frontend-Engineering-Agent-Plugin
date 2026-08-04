@@ -115,7 +115,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Initialize frontend specification artifacts without overwriting existing files."
     )
-    parser.add_argument("--output", type=Path, default=Path("frontend-spec"))
+    parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--feature-id", required=True)
     args = parser.parse_args()
 

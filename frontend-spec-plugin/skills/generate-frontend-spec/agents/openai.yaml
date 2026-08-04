@@ -1,4 +1,4 @@
 interface:
   display_name: "Generate Frontend Spec"
-  short_description: "Create or resume an isolated frontend specification"
-  default_prompt: "Use $generate-frontend-spec, collect my PRD, prototype, and API inputs, then ask whether to resume an existing feature or create an isolated new one."
+  short_description: "Confirm output location and create an isolated frontend specification"
+  default_prompt: "Use $generate-frontend-spec, collect my PRD, prototype, and API inputs, explicitly ask me where to create frontend-spec, then create or resume an isolated feature."
