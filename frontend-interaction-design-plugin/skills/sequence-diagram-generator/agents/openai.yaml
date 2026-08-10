@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sequence Diagram Generator"
+  short_description: "Map UI actions and APIs into frontend sequence diagrams."
+  default_prompt: "Use $sequence-diagram-generator to map these flows, states, and APIs into sequence diagrams."

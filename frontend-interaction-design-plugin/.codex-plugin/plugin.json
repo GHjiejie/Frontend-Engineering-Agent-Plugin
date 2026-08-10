@@ -1,0 +1,35 @@
+{
+  "name": "frontend-interaction-design-plugin",
+  "version": "1.0.0",
+  "description": "Turns product requirements, frontend prototypes, and backend API contracts into reviewable interaction models and frontend development plans without generating code.",
+  "author": {
+    "name": "Frontend Interaction Design Plugin Contributors"
+  },
+  "keywords": [
+    "frontend",
+    "interaction-design",
+    "user-flow",
+    "state-machine",
+    "sequence-diagram",
+    "development-plan"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Frontend Interaction Design",
+    "shortDescription": "Turn requirements into reviewable frontend design plans.",
+    "longDescription": "Analyze a product PRD, frontend prototype, and backend API contract in a strict pipeline that produces a user flow, frontend state model, API sequence diagrams, and an implementation-ready frontend development plan. The plugin creates design documents only and never generates or modifies application code.",
+    "developerName": "Frontend Interaction Design Plugin Contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Requirements Analysis",
+      "Interaction Modeling",
+      "API Mapping",
+      "Document Generation"
+    ],
+    "defaultPrompt": [
+      "Turn this PRD, prototype, and API contract into a complete frontend interaction design package.",
+      "Generate a Mermaid user flow from this product requirement and prototype.",
+      "Create the final frontend development plan from these approved interaction artifacts."
+    ]
+  }
+}
