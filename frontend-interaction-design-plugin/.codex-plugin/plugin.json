@@ -1,13 +1,15 @@
 {
   "name": "frontend-interaction-design-plugin",
-  "version": "1.0.0",
-  "description": "Turns product requirements, frontend prototypes, and backend API contracts into reviewable interaction models and frontend development plans without generating code.",
+  "version": "2.0.0+codex.20260810085411",
+  "description": "Clarifies product requirements, frontend prototypes, and backend API contracts before producing reviewable interaction models and frontend development plans without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"
   },
   "keywords": [
     "frontend",
     "interaction-design",
+    "requirement-clarification",
+    "uncertainty-management",
     "user-flow",
     "state-machine",
     "sequence-diagram",
@@ -16,20 +18,21 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Interaction Design",
-    "shortDescription": "Turn requirements into reviewable frontend design plans.",
-    "longDescription": "Analyze a product PRD, frontend prototype, and backend API contract in a strict pipeline that produces a user flow, frontend state model, API sequence diagrams, and an implementation-ready frontend development plan. The plugin creates design documents only and never generates or modifies application code.",
+    "shortDescription": "Clarify requirements before creating frontend design plans.",
+    "longDescription": "Check a product PRD, frontend prototype, and backend API contract for conflicts, missing rules, and ambiguous behavior before a strict pipeline produces user flows, frontend state models, API sequence diagrams, and an implementation-ready development plan. The clarification gate blocks downstream generation until every consequential question is confirmed. The plugin creates design documents only and never generates or modifies application code.",
     "developerName": "Frontend Interaction Design Plugin Contributors",
     "category": "Productivity",
     "capabilities": [
       "Requirements Analysis",
+      "Uncertainty Management",
       "Interaction Modeling",
       "API Mapping",
       "Document Generation"
     ],
     "defaultPrompt": [
-      "Turn this PRD, prototype, and API contract into a complete frontend interaction design package.",
-      "Generate a Mermaid user flow from this product requirement and prototype.",
-      "Create the final frontend development plan from these approved interaction artifacts."
+      "Check this PRD, prototype, and API contract for conflicts before generating the frontend design package.",
+      "Clarify every unresolved product, UI, and API decision, then generate the interaction artifacts.",
+      "Create the final frontend development plan only after the clarification gate passes."
     ]
   }
 }

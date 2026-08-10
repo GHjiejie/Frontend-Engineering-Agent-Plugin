@@ -1,11 +1,14 @@
 # 客户管理用户流程（节选）
 
-## 范围与来源
+## 范围、来源与澄清 Gate
+
+`clarification.md`: Status `Resolved`, Gate `PASS`。
 
 | 来源 | 定位 | 已确认信息 |
 | --- | --- | --- |
 | 客户管理 PRD | 新增客户 | 用户可从列表页创建客户 |
 | 客户管理原型 | Customer List / Create Dialog | 列表页含“新增客户”，弹窗含名称、邮箱、提交、取消 |
+| clarification.md | CL-03、CL-04 | 禁用重复提交和自动重试；提交中不能取消或关闭 |
 
 ## 页面与交互元素
 
@@ -45,10 +48,13 @@ flowchart TD
     J --> C
 ```
 
-## 待确认项
+## 澄清决策引用
 
-- 创建成功后是否定位或高亮新客户，PRD 与原型均未说明。
+| Flow ID / 步骤 | 来源或 CL ID | 已确认行为 |
+| --- | --- | --- |
+| UF-01 / 提交中 | CL-03 | 禁用重复提交，不自动重试 |
+| UF-01 / 提交中 | CL-04 | 禁用取消和关闭，等待请求完成 |
 
 ## 下游交接
 
-- `state-machine-generator` 可基于 UF-01 建模列表加载状态与创建弹窗状态。
+- 澄清 Gate 仍为 PASS；`state-machine-generator` 可基于 UF-01 建模列表加载状态与创建弹窗状态。

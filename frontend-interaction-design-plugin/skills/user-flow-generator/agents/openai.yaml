@@ -1,4 +1,4 @@
 interface:
   display_name: "User Flow Generator"
-  short_description: "Map PRDs and prototypes into reviewable user flows."
-  default_prompt: "Use $user-flow-generator to turn this PRD and prototype into a Mermaid user flow."
+  short_description: "Generate user flows from clarified product decisions."
+  default_prompt: "Use $user-flow-generator to generate a Mermaid user flow after the clarification gate passes."

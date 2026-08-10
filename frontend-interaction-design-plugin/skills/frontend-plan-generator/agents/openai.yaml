@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Plan Generator"
-  short_description: "Assemble interaction artifacts into a frontend delivery plan."
-  default_prompt: "Use $frontend-plan-generator to produce the final frontend development plan from these approved inputs."
+  short_description: "Assemble clarified interaction artifacts into a delivery plan."
+  default_prompt: "Use $frontend-plan-generator to create the final plan only after the clarification gate passes."
