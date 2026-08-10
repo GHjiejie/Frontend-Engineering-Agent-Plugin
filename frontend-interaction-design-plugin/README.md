@@ -1,61 +1,81 @@
 # Frontend Interaction Design Plugin
 
-将产品 PRD、前端原型和后端 API 契约转换为可评审、可版本管理的前端交互设计文档。V3 在需求澄清之前增加“目标前端项目”和“Feature 版本目录”两个强制人工 Gate：AI 负责发现与推荐，开发者负责关键决策。
+将 Product PRD、持久化原型证据和后端 API 合同转换为可供产品、研发、测试和 Coding Agent 使用的前端设计包。
 
-## 输入与输出
+V5 的核心约束是：任何影响最终方案的信息都不得只存在于当前会话中。飞书文档是面向人类的主要 Review 载体，本地 Markdown 是指定飞书 Revision 的工程快照；飞书操作优先使用 `lark-cli`。
 
-输入：
+## 输入
 
-- 产品 PRD
-- Figma、Axure、截图或文字形式的前端原型
-- 后端 API PRD、OpenAPI 或等价接口契约
+- Product PRD、需求正文或可访问的需求链接。
+- Figma/Axure 链接、会话中粘贴的原型图片或本地图片。
+- API PRD、OpenAPI、Swagger 或等价后端合同。
 
-输出到已确认的版本目录：
+## 输出
 
 ```text
 <confirmed-frontend-project-root>/
 └── docs/frontend-design/<feature-name>/<YYYY-MM-DD[-vN]>/
+    ├── source-manifest.md
+    ├── clarification.md
+    ├── user-flow.md
+    ├── state-machine.md
+    ├── sequence-diagram.md
+    ├── frontend-development-plan.md
+    ├── sync-manifest.json
+    └── assets/prototype/       # 仅 offline-media 导出模式
 ```
 
-目录内包含：
+同时生成或更新一份飞书 Review 文档，用于内嵌原型图片、展示完整上下文和承载 Technical Review。
 
-1. `clarification.md`
-2. `user-flow.md`
-3. `state-machine.md`
-4. `sequence-diagram.md`
-5. `frontend-development-plan.md`
+## 七个 Skill
 
-## 三个人工 Gate
+1. `source-evidence-manager`：确认项目与版本后，持久化 PRD、原型和 API 证据；会话图片和 Figma 截图优先使用 `lark-cli` 上传飞书。
+2. `requirement-clarification`：比较 PRD、Prototype、API 和已确认决策，记录 `CL-xx`。
+3. `user-flow-generator`：生成引用 `PT-xx` 和 `CL-xx` 的用户流程。
+4. `state-machine-generator`：生成可见 UI 状态及转换模型。
+5. `sequence-diagram-generator`：将用户动作、前端状态和 API 映射为时序。
+6. `frontend-plan-generator`：编排全流程并生成具有完整 Review Context 的 Plan Draft。
+7. `review-package-publisher`：发布飞书 Review 文档、固定 Revision、显式导出本地快照并运行 Reviewability Gate。
 
-1. 只读扫描当前工作区，推荐目标前端项目；开发者确认后锁定 `frontend-project-root`。
-2. 识别 Feature 与历史版本，推荐继续当前版本或创建 `YYYY-MM-DD[-vN]`；开发者确认后锁定输出目录。
-3. 对 PRD、Prototype、API 做一致性检查；所有影响流程、状态、API 或实现的歧义均由开发者确认。
+## 五道 Gate
 
-在 Gate #1 和 Gate #2 通过前，不得创建 `docs/frontend-design` 文件。后续 Skill 必须复用锁定的项目、Feature 和版本，不得重新推断。
+1. 确认目标前端项目。
+2. 确认 Feature 和版本目录。
+3. 确认来源完整、原型已持久化且可访问。
+4. 确认影响流程、状态、API 或实现的业务歧义。
+5. 确认脱离当前会话后仍然可理解、可访问、可追踪且同步一致。
 
 ## 严格流水线
 
-`Project Discovery` → `Human Gate #1` → `Feature / Version Resolve` → `Human Gate #2` → `requirement-clarification` → `Human Gate #3` → `user-flow-generator` → `state-machine-generator` → `sequence-diagram-generator` → `frontend-plan-generator`
+```text
+Project Discovery
+→ Gate #1
+→ Feature / Version Resolution
+→ Gate #2
+→ Source Evidence Manager
+→ Gate #3
+→ Requirement Clarification
+→ Gate #4
+→ User Flow
+→ State Machine
+→ Sequence Diagram
+→ Frontend Plan Draft
+→ Feishu Publish
+→ Revision-pinned Local Export
+→ Gate #5
+→ Technical Review
+```
 
-`clarification.md` 始终生成：
+如果下游发现新的来源缺失或业务歧义，必须回到同一版本的 `source-manifest.md` 或 `clarification.md`，阻塞流水线后等待确认；不得创建新版本规避问题。
 
-- 没有问题时为 `Cleared`。
-- 存在未决问题时为 `Waiting Confirmation`，流水线立即暂停。
-- 用户确认全部问题后更新为 `Resolved`，流水线才可继续。
+## 飞书与同步边界
 
-后续三个技能负责交互建模，最后一个技能只汇总已确认的输入并形成开发方案。每个技能只写自己的 Markdown 产物；任何阶段发现新的歧义，都必须返回澄清 Skill 并重新阻塞流水线。
-
-## 使用示例
-
-- “先识别这个需求对应的前端项目和版本目录，确认后再检查 PRD、Figma 原型和 OpenAPI。”
-- “澄清全部问题后，根据已确认决策生成用户流程。”
-- “根据已确认的用户流程和原型补齐页面状态机。”
-- “把用户流程、状态模型和 OpenAPI 映射成前后端时序图。”
-- “用这些已确认的产物生成前端开发方案。”
-- “从 PRD、原型和 API 开始，生成完整的前端交互设计包。”
+- 会话图片必须上传飞书并获得稳定 `PT-xx`，不得用“聊天中的第几张图”引用。
+- Figma 必须记录具体 Node/Frame URL 和截图时间，再将关键状态截图上传飞书。
+- 飞书在线文档不能依赖普通 `drive sync`；最终使用 `lark-cli docs +fetch --api-version v2 --doc <doc> --doc-format markdown --revision-id <id>` 显式导出。
+- `sync-manifest.json` 记录飞书 URL、Token、Revision、导出模式和同步状态。
+- 本地已有人工修改时进入 `Sync Drift`，不得静默覆盖。
 
 ## 边界
 
-插件只分析和生成版本化设计文档，不生成应用代码，不修改前端源码，不创建业务组件，也不提交 Git Commit 或 PR。不得未经确认选择前端项目、创建新版本、覆盖历史独立版本，或把业务推测写成已确认事实。
-
-当前 Codex 插件规范使用 `.codex-plugin/plugin.json`；它对应架构设计中的 `plugin.yaml` 角色。
+Plugin 只分析、建模、发布和同步设计文档，不生成应用代码，不修改前端源码，不创建业务组件，不提交 Git Commit 或 PR，也不未经授权改变飞书文档权限。

@@ -1,4 +1,4 @@
 interface:
   display_name: "User Flow Generator"
-  short_description: "Generate versioned flows from confirmed product decisions."
-  default_prompt: "Use $user-flow-generator to generate the user flow in the confirmed frontend project and feature version."
+  short_description: "Map evidence-backed user goals and visible outcomes."
+  default_prompt: "Use $user-flow-generator to generate versioned user flows from passed evidence and confirmed decisions."

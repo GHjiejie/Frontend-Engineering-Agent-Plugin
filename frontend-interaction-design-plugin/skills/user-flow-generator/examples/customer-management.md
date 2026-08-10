@@ -1,48 +1,35 @@
-# 客户管理用户流程（节选）
+# 客户管理用户流程（V5 节选）
 
-## 已确认运行上下文
+## 来源与 Gate 状态
 
-| Frontend Project Root | Feature | Version | Output Directory |
-| --- | --- | --- | --- |
-| `/workspace/console-ui` | `customer-management` | `2026-08-10` | `/workspace/console-ui/docs/frontend-design/customer-management/2026-08-10` |
-
-## 范围、来源与澄清 Gate
-
-`clarification.md`: Status `Resolved`, Gate `PASS`。
-
-| 来源 | 定位 | 已确认信息 |
-| --- | --- | --- |
-| 客户管理 PRD | 新增客户 | 用户可从列表页创建客户 |
-| 客户管理原型 | Customer List / Create Dialog | 列表页含“新增客户”，弹窗含名称、邮箱、提交、取消 |
-| clarification.md | CL-03、CL-04 | 禁用重复提交和自动重试；提交中不能取消或关闭 |
+- `source-manifest.md`: Source Gate `PASS`。
+- `clarification.md`: Clarification Gate `PASS`。
 
 ## 页面与交互元素
 
-| 页面/容器 | 元素 | 类型 | 支持的动作 | 来源 |
+| 页面/容器 | 元素 | 类型 | 支持动作 | PRD / Prototype Evidence |
 | --- | --- | --- | --- | --- |
-| Customer List | 新增客户 | 按钮 | click | 原型 |
-| Create Dialog | 名称、邮箱 | 输入框 | input | 原型 |
-| Create Dialog | 提交、取消 | 按钮 | submit、cancel | 原型 |
+| Customer List | 新增客户 | 按钮 | click | PRD-01、PT-01 |
+| Create Dialog | 名称、邮箱 | 输入框 | input | PT-02 |
+| Create Dialog | 提交、取消 | 按钮 | submit、cancel | PT-02、CL-04 |
 
 ## 流程清单
 
-| Flow ID | 用户目标 | 入口 | 成功结果 | 其他结果 |
-| --- | --- | --- | --- | --- |
-| UF-01 | 新增客户 | Customer List | 新客户出现在列表 | 取消、校验失败、提交失败 |
+| Flow ID | 用户目标 | 入口 | 成功结果 | 其他结果 | Prototype IDs |
+| --- | --- | --- | --- | --- | --- |
+| UF-01 | 新增客户 | Customer List | 新客户出现在列表 | 取消、校验失败、提交失败 | PT-01、PT-02 |
 
 ## UF-01 新增客户
 
-1. 用户进入客户列表。
-2. 用户点击“新增客户”。
-3. 页面打开创建弹窗。
-4. 用户填写名称和邮箱并提交。
-5. 页面校验输入；通过后发起创建。
-6. 创建成功后关闭弹窗并刷新列表；失败时保留输入并显示错误。
+1. 用户在 PT-01 客户列表点击“新增客户”。
+2. 页面展示 PT-02 创建弹窗。
+3. 用户填写并提交；无效输入显示字段错误。
+4. 创建成功后关闭弹窗并刷新列表；失败时保留输入并显示错误。
 
 ```mermaid
 flowchart TD
-    A[进入客户列表] --> B[点击新增客户]
-    B --> C[打开创建弹窗]
+    A["PT-01 客户列表"] --> B[点击新增客户]
+    B --> C["PT-02 创建弹窗"]
     C --> D{用户选择}
     D -->|取消| E[关闭弹窗]
     D -->|提交| F{表单有效}
@@ -54,13 +41,9 @@ flowchart TD
     J --> C
 ```
 
-## 澄清决策引用
+## 证据与澄清决策引用
 
-| Flow ID / 步骤 | 来源或 CL ID | 已确认行为 |
+| Flow ID / Step | Source or CL ID | Confirmed Behavior |
 | --- | --- | --- |
-| UF-01 / 提交中 | CL-03 | 禁用重复提交，不自动重试 |
-| UF-01 / 提交中 | CL-04 | 禁用取消和关闭，等待请求完成 |
-
-## 下游交接
-
-- 三个 Gate 仍为 PASS；`state-machine-generator` 必须在同一版本目录基于 UF-01 建模列表与创建弹窗状态。
+| UF-01 / 页面与弹窗 | PT-01、PT-02 | 列表入口和创建表单可见 |
+| UF-01 / 提交中 | CL-03、CL-04 | 禁止重复提交、取消和关闭 |

@@ -1,34 +1,34 @@
 ---
 name: user-flow-generator
-description: Generate a reviewable Markdown user-flow artifact with Mermaid flowcharts, actors, pages, controls, actions, and evidence-backed branches inside a developer-confirmed frontend project and feature version. Use to map an end-user journey or write user-flow.md only after the project gate, version gate, and clarification gate have all passed.
+description: Generate a reviewable Markdown user flow from a passed source manifest, durable PT-xx prototype evidence, and resolved CL-xx decisions for one confirmed frontend feature version. Use to map end-user goals, pages, controls, actions, cancellation, validation, and supported alternative outcomes after Source Gate #3 and Clarification Gate #4 pass.
 ---
 
 # User Flow Generator
 
-Create only `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/user-flow.md`. Do not generate code or write any downstream artifact.
+Create only `<confirmed-output-directory>/user-flow.md`. Do not generate code or write source, state, sequence, plan, or publishing artifacts.
 
 ## Require inputs
 
-Require the product PRD, readable prototype evidence, and `clarification.md`. Accept Figma, Axure, screenshots, or written UI descriptions. Read its confirmed absolute project root, feature, version, and output directory; verify `Gate: PASS` and `Status: Cleared` or `Resolved` before writing. If any context is absent, a gate is blocked, or an input is missing, return to `requirement-clarification` and pause without creating or updating `user-flow.md`.
+Require `source-manifest.md` with `Source Gate: PASS` and `clarification.md` with `Clarification Gate: PASS` from the same confirmed project/feature/version. Require readable PRD scope and durable `PT-xx` evidence. If paths disagree or a gate is blocked, return to the owning skill and pause without updating the flow.
 
-Reuse the confirmed context exactly. Never rediscover the project, derive another feature name, choose another version, create a new version, or fall back to a workspace-level output root.
+Reuse confirmed context exactly. Never rediscover the project, derive a new feature/version, or use a chat-only image.
 
 ## Build the flow
 
-1. Read `prompt.md` for the output contract and `examples/customer-management.md` when a concrete shape is helpful.
-2. Inventory source evidence: actors, entry conditions, pages, dialogs, controls, fields, and visible prototype states.
-3. Identify user actions such as click, input, submit, confirm, cancel, retry, navigate, and return.
-4. Model each meaningful goal as a stable `UF-xx` flow. Include success, cancellation, validation, empty, permission, and recoverable failure branches only when supported by evidence or a confirmed `CL-xx` decision.
-5. If a new conflict, gap, or multiple-choice behavior appears, append or reopen a clarification item in the same confirmed version, block the gate, and stop. Never leave an unresolved decision inside a completed user-flow artifact.
-6. Write the Markdown artifact with Mermaid `flowchart TD` diagrams and a decision trace to relevant `CL-xx` IDs.
+1. Read `prompt.md` and the example when useful.
+2. Inventory actors, entry conditions, pages, dialogs, controls, fields, and visible states using `PRD-xx` and `PT-xx`.
+3. Model each meaningful user goal as a stable `UF-xx`.
+4. Include success, validation, cancellation, empty, permission, and recoverable failure branches only when evidenced or resolved by `CL-xx`.
+5. Cite the exact prototype page/state at relevant steps.
+6. If a new consequential choice appears, reopen clarification in the same version and stop.
+7. Write Mermaid `flowchart TD` diagrams, numbered steps, visible outcomes, and evidence traces.
 
 ## Preserve evidence
 
-- Cite input filenames, URLs, page/frame names, or PRD sections in the evidence inventory.
-- Treat developer-confirmed `CL-xx` decisions as highest priority, followed by non-conflicting source evidence; do not add assumptions.
-- Do not invent controls, navigation, permissions, API calls, or hidden system behavior.
-- If `user-flow.md` already exists, preserve reviewer notes and manual decisions while applying the requested update.
+- Treat developer-confirmed decisions as highest priority, followed by non-conflicting source evidence.
+- Do not invent controls, navigation, permissions, API calls, or hidden behavior.
+- Preserve reviewer notes and approved manual decisions on same-version updates.
 
 ## Validate and hand off
 
-Verify that the artifact path matches the confirmed context, every Mermaid node is reachable, every branch rejoins or terminates, every referenced UI element exists in the inventory, every flow has an entry and terminal outcome, and every non-obvious decision traces to a source or `CL-xx`. End with a handoff confirming all gates still pass and listing what `state-machine-generator` may consume.
+Verify every node is reachable, every branch rejoins or terminates, every UI element exists in the evidence inventory, every flow has entry and terminal outcomes, and every non-obvious behavior cites `PRD-xx`, `PT-xx`, or `CL-xx`. Hand off stable `UF-xx` IDs to `state-machine-generator`.

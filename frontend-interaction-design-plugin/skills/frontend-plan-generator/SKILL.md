@@ -1,48 +1,61 @@
 ---
 name: frontend-plan-generator
-description: Orchestrate frontend project discovery, feature-version confirmation, requirement clarification, and approved interaction artifacts into a reviewable, implementation-ready but code-free frontend development plan. Use for end-to-end frontend design requests, the final delivery plan, task breakdown, page/component design, state strategy, API mapping, exception handling, or frontend-development-plan.md.
+description: Orchestrate an end-to-end, Feishu-first frontend design workflow from project/version confirmation through durable source evidence, requirement clarification, user flows, state machines, API sequences, a self-explanatory frontend plan, and review-package publication. Use for frontend design plans, task breakdowns, page/component responsibilities, state/API strategies, Figma or pasted-prototype inputs, technical-review packages, or frontend-development-plan.md; never use it to generate application code.
 ---
 
 # Frontend Plan Generator
 
-Create only `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/frontend-development-plan.md`. Never generate or modify application code, create business components, commit changes, or open a pull request.
+Orchestrate the complete V5 pipeline and create a Draft `<confirmed-output-directory>/frontend-development-plan.md`. Delegate final Feishu publication, fixed-revision export, `sync-manifest.json`, and Reviewability Gate #5 to `review-package-publisher`. Never generate or modify application code, commit changes, or open a pull request.
 
-## Enforce the pipeline
+## Run preflight Gates #1 and #2 before writing
 
-Require the product PRD, prototype, API contract, `clarification.md` with confirmed project/feature/version context and `Gate: PASS`, plus `user-flow.md`, `state-machine.md`, and `sequence-diagram.md` from the exact same directory.
+1. Inspect likely frontend roots read-only using `package.json`, `src/`, framework/build configs, routes, dependencies, and system names in supplied sources.
+2. Present the most likely frontend project, absolute root, evidence, confidence, and viable alternatives. Wait for developer confirmation; never choose on their behalf.
+3. Resolve a concise lowercase kebab-case feature name.
+4. Inspect `<confirmed-root>/docs/frontend-design/<feature-name>/` read-only.
+5. Recommend continuing the current `YYYY-MM-DD[-vN]` or creating a new version. Create a new version only for an independent PRD iteration, behavior-changing source revision, completed-plan successor, or explicit request.
+6. Present the exact output directory and planned Feishu title `[Frontend Design] <Feature> / <Version>`. Wait for confirmation before local or Feishu writes.
+7. Lock project, feature, version, output directory, and planned document title for all downstream skills.
 
-For an end-to-end request where intermediate artifacts do not yet exist, use the other plugin skills in this strict order:
+Same-version clarification answers, review comments, evidence additions, diagram corrections, and wording changes must not create a new version.
 
-1. Use `requirement-clarification` to run read-only project discovery and wait for Human Gate #1.
-2. Resolve the feature and recommended version, then wait for Human Gate #2 before creating files.
-3. Run requirement consistency analysis and stop when Human Gate #3 is `Waiting Confirmation`.
-4. Run `user-flow-generator`.
-5. Run `state-machine-generator`.
-6. Run `sequence-diagram-generator`.
-7. Return here only after all prerequisite outputs exist in the confirmed version and every gate still passes.
+## Enforce the V5 pipeline
 
-If a source is missing, artifact paths disagree, or a new ambiguity appears, return it to the same version's clarification artifact, block the gate, and pause without creating or updating the plan. Do not collapse the pipeline into an untraceable single-pass summary, rediscover the project, or create a new version during the same iteration.
+For an end-to-end request, run these responsibilities in order:
 
-## Assemble the plan
+1. `source-evidence-manager`: persist PRD, prototype, and API evidence; upload conversation images or captured Figma states to Feishu with `lark-cli` by default; require Source Gate #3 PASS.
+2. `requirement-clarification`: compare sources and pause on Clarification Gate #4 until all consequential `CL-xx` decisions are confirmed.
+3. `user-flow-generator`.
+4. `state-machine-generator`.
+5. `sequence-diagram-generator`.
+6. Return here to assemble the Plan Draft.
+7. `review-package-publisher`: update the Feishu document, pin its Revision, explicitly export the local plan, create sync metadata, and run Reviewability Gate #5.
 
-1. Read `prompt.md` for the output contract and `examples/customer-management.md` when a concrete shape is helpful.
-2. Reconcile all inputs and confirmed `CL-xx` decisions. Treat developer-confirmed decisions as highest priority; a new conflict must reopen the clarification gate.
-3. Summarize feature scope, actors, business rules, explicit non-goals, and acceptance outcomes.
-4. Define a semantic page/component tree based on visible responsibilities, without prescribing framework source files.
-5. Define page data, transient UI state, derived state, ownership, reset conditions, and mapped `SM-xx` states.
-6. Map lifecycle and user actions to `API-xx` operations and `SQ-xx` sequences, including loading, success, empty, failure, permission, cancellation, and refresh behavior.
-7. Describe validation, feedback, recovery, concurrency, and API-contract gaps.
-8. Split implementation work into dependency-ordered `FE-xx` tasks with scope, inputs, outputs, dependencies, and acceptance checks.
-9. Add confirmed items and unresolved issues sections plus a traceability matrix linking requirements, `CL`, `UF`, `SM`, `SQ`, `API`, and task IDs.
+If any input is missing, paths disagree, a gate blocks, or new ambiguity appears, return to the owning artifact in the same version and pause. Do not collapse the pipeline into an untraceable single pass.
 
-## Keep the plan reviewable
+## Assemble a self-explanatory plan
 
-- Include no unapproved assumptions or unresolved business decisions; route them back to the clarification gate.
-- Keep tasks framework-neutral unless the user supplied a target stack.
-- Do not infer components, APIs, permissions, or error behavior without evidence.
-- Do not include source-code snippets or scan unrelated repository code for background.
-- Preserve reviewer notes, approved decisions, and manual overrides when updating an existing plan in the same iteration. Never overwrite another independent version.
+Read `prompt.md` for the exact contract and the example when helpful.
 
-## Validate
+1. Start with a Review guide that identifies audience, status, Feishu evidence location, and requested review outcome.
+2. Explain the business problem, target users, scenarios, terms, goals, scope, non-goals, and acceptance outcomes without relying on the source chat.
+3. Include a source inventory and Prototype Catalog with `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
+4. Define a semantic page/component responsibility tree without prescribing framework source files.
+5. Summarize all `UF-xx`, state ownership/reset behavior for `SM-xx`, and exact `API-xx` / `SQ-xx` mappings.
+6. Describe validation, visible feedback, recovery, permissions, concurrency, cancellation, refresh behavior, and confirmed contract gaps.
+7. Split work into dependency-ordered `FE-xx` tasks with inputs, deliverables, dependencies, and testable acceptance checks.
+8. Include confirmed decisions, unresolved issues, and a traceability matrix linking `PRD`, `PT`, `API`, `CL`, `UF`, `SM`, `SQ`, and `FE` IDs.
 
-Verify that all artifacts use the confirmed project/feature/version, the clarification gate passes, every confirmed decision is implemented, every in-scope user goal is covered by a flow, every async interaction has modeled states, every API operation appears in a sequence, every declared failure has visible handling, and every task has a testable completion condition. Mark `Ready for Development` only when no blocking unresolved issue remains; otherwise do not finalize the plan.
+## Preserve evidence and review work
+
+- Developer-confirmed decisions have highest priority.
+- Never replace durable evidence with “see the screenshot above” or a chat reference.
+- Do not infer components, endpoints, permissions, states, or error behavior without evidence.
+- Preserve reviewer notes, approved decisions, and manual overrides during same-version regeneration.
+- Plan generation may write a Draft locally; only the publisher may replace it with an exported fixed Feishu Revision after drift checks.
+
+## Validate and publish
+
+Before publisher handoff, verify prerequisites share the same confirmed context, both upstream gates pass, every in-scope goal has a flow, every async interaction has states, every API appears in a sequence, every failure has visible handling, and every task has an acceptance condition.
+
+Set Draft status to `Ready for Publication` only when no source or clarification blocker remains. Final status becomes `Ready for Technical Review` after publication/export and `Ready for Development` only after approved Technical Review against the synchronized Revision.

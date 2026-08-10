@@ -1,38 +1,40 @@
 ---
 name: requirement-clarification
-description: Discover and confirm the target frontend project and feature version directory, then compare a product PRD, frontend prototype, and backend API contract to record confirmed decisions in clarification.md. Use before any frontend interaction artifact is created, when starting or continuing a feature design iteration, when source documents change, or whenever a downstream skill discovers a consequential ambiguity.
+description: Compare a persisted Product PRD, durable prototype evidence, backend API contract, and prior confirmed decisions for one confirmed frontend project/feature/version, then record consequential questions and developer decisions in clarification.md. Use after source-evidence-manager passes Source Gate #3, when source versions change, or whenever a downstream artifact reveals ambiguity affecting flows, states, APIs, permissions, validation, errors, or implementation.
 ---
 
 # Requirement Clarification
 
-Create or update only `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/clarification.md`. Do not generate downstream artifacts or application code.
+Create or update only `<confirmed-output-directory>/clarification.md`. Do not collect ephemeral prototype evidence, generate downstream models, publish a review document, or modify application code.
 
-## Run the two preflight gates before writing
+## Require preflight and evidence
 
-1. Inspect the current working directory and likely workspace roots read-only. Use `package.json`, `src/`, framework configs, routes, dependencies, and system names in the PRD or prototype as evidence.
-2. Present the most likely frontend project name, absolute root, evidence, and confidence. Ask the developer to confirm. If confidence is insufficient, present the viable candidates and wait. Never choose or write on the developer's behalf.
-3. Lock the confirmed frontend project root for the task. All downstream skills must reuse it.
-4. Resolve a concise lowercase kebab-case feature name from explicit user input or unambiguous evidence.
-5. Inspect `<confirmed-root>/docs/frontend-design/<feature-name>/` read-only. Recommend either continuing the latest version or creating a new `YYYY-MM-DD[-vN]` version.
-6. Create a new version only for an independent PRD iteration, behavior-changing prototype/API revision, completed-plan successor, or explicit request. Continue the same version for clarification answers, review edits, diagram corrections, and wording changes.
-7. Present the feature, action, and exact version path; ask the developer to confirm. Do not create the directory or any artifact until both project and version are confirmed.
+Require:
 
-## Audit uncertainty
+- Developer-confirmed project root, feature, version, and output directory from Gates #1 and #2.
+- `source-manifest.md` from that exact directory with `Source Gate: PASS`.
+- Readable PRD, `PT-xx` prototype evidence, and `API-xx` contract entries from the manifest.
 
-1. Read `prompt.md` for the artifact contract and `examples/customer-management.md` for the lifecycle shape.
-2. Require and inventory the PRD, readable prototype evidence, and API PRD, OpenAPI, or equivalent contract. Treat a missing consequential source as a clarification question.
-3. Compare PRD ↔ prototype, PRD ↔ API, and prototype ↔ API. Check validation, permissions, confirmations, loading, empty, success, failure, retry, cancellation, refresh, bulk/single behavior, pagination, concurrency, and data preservation where relevant.
-4. Assign each consequential issue a stable `CL-xx` ID. State the evidence, frontend impact, and one focused question. Offer bounded options only when supported; allow another developer decision.
-5. Never choose a project, version, endpoint, UI pattern, permission rule, business rule, or version of conflicting evidence on the user's behalf.
+If confirmed context is absent, route to `frontend-plan-generator` preflight. If a source is missing, inaccessible, chat-only, or the source gate is blocked, route to `source-evidence-manager` and pause without writing `clarification.md`.
 
-## Manage the business gate
+Read `prompt.md` for the artifact contract and the example when a concrete lifecycle is useful.
 
-- Set `Status: Cleared` and `Gate: PASS` when no consequential questions exist.
-- Set `Status: Waiting Confirmation` and `Gate: BLOCKED` when any `CL-xx` item is unresolved. Ask the focused questions and stop the pipeline.
-- After answers, update the same version's artifact with the confirmed decisions. Set `Status: Resolved` and `Gate: PASS` only when every blocker is resolved.
+## Audit consequential uncertainty
 
-Treat developer-confirmed decisions as higher priority than conflicting source documents. Preserve IDs, decisions, reviewer notes, and history; reopen an item rather than deleting history when new evidence invalidates it.
+1. Compare PRD ↔ prototype, PRD ↔ API, prototype ↔ API, and all sources ↔ prior decisions.
+2. Check validation, permissions, confirmations, loading, empty, success, failure, retry, cancellation, refresh, pagination, bulk/single behavior, concurrency, idempotency, and data preservation where relevant.
+3. Assign each consequential issue a stable `CL-xx` and cite exact `PRD-xx`, `PT-xx`, and `API-xx` evidence.
+4. State the frontend impact and ask one focused question. Offer bounded options only when evidence supports them, while allowing another developer decision.
+5. Never choose a source version, endpoint, UI pattern, permission rule, error policy, or business rule for the developer.
+
+## Manage Clarification Gate #4
+
+- `Status: Cleared`, `Clarification Gate: PASS` when no consequential issue exists.
+- `Status: Waiting Confirmation`, `Clarification Gate: BLOCKED` while any `CL-xx` is Open or Reopened.
+- `Status: Resolved`, `Clarification Gate: PASS` after every blocker receives a developer-confirmed decision.
+
+Developer-confirmed decisions outrank conflicting source documents. Preserve stable IDs, decision history, reviewer notes, and manual overrides; reopen invalidated items instead of deleting them.
 
 ## Hand off
 
-Permit `user-flow-generator` only when all three human gates pass. Hand off the confirmed absolute project root, feature name, version, exact output directory, source versions, gate status, and confirmed `CL-xx` decisions. If any downstream skill finds a new ambiguity, update this same `clarification.md`, block the gate, and pause.
+Permit `user-flow-generator` only when Source Gate #3 and Clarification Gate #4 pass. Hand off the exact paths, source IDs, Feishu evidence location, gate status, and resolved `CL-xx` decisions. A downstream ambiguity returns to this same version and blocks regeneration.

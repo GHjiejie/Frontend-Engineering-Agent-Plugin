@@ -1,0 +1,4 @@
+interface:
+  display_name: "Source Evidence Manager"
+  short_description: "Persist durable PRD, prototype, and API evidence."
+  default_prompt: "Use $source-evidence-manager to persist these sources and prototype images before interaction modeling."

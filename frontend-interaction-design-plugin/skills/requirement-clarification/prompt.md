@@ -1,12 +1,12 @@
 # Requirement Clarification Output Contract
 
-After project and version confirmation, write `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/clarification.md` in this exact section order:
+Write `<confirmed-output-directory>/clarification.md` in this order:
 
 1. `# <功能名称>需求澄清`
 2. `Status: Cleared | Waiting Confirmation | Resolved`
-3. `Gate: PASS | BLOCKED`
+3. `Clarification Gate: PASS | BLOCKED`
 4. `## 已确认运行上下文`
-5. `## 输入与版本`
+5. `## 来源与 Source Gate`
 6. `## 一致性检查摘要`
 7. `## 澄清问题`
 8. `## 已确认决策`
@@ -15,18 +15,14 @@ After project and version confirmation, write `<confirmed-frontend-project-root>
 Use these tables:
 
 ```markdown
-| 项目 | 已确认值 | 确认依据 |
-| --- | --- | --- |
-| Frontend Project Root | `/absolute/path` | Developer confirmation |
-| Feature | `feature-name` | Developer confirmation |
-| Version | `YYYY-MM-DD[-vN]` | Developer confirmation |
-| Output Directory | `/absolute/path/docs/frontend-design/feature/version` | Derived from confirmed values |
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
 
-| 来源 | 定位/版本 | 已确认范围 |
-| --- | --- | --- |
+| Source ID | Type | Locator / Version | Confirmed Scope | Evidence Location |
+| --- | --- | --- | --- | --- |
 
-| 检查维度 | 结果 | 证据 |
-| --- | --- | --- |
+| 检查维度 | 结果 | PRD Evidence | Prototype Evidence | API Evidence |
+| --- | --- | --- | --- | --- |
 
 | ID | 类别 | 场景与证据 | 问题 | 前端影响 | 状态 |
 | --- | --- | --- | --- | --- | --- |
@@ -35,6 +31,6 @@ Use these tables:
 | --- | --- | --- | --- | --- | --- |
 ```
 
-Allowed question states are `Open`, `Resolved`, and `Reopened`. An empty question table is valid only with `Status: Cleared` and `Gate: PASS`. Any `Open` or `Reopened` item requires `Status: Waiting Confirmation` and `Gate: BLOCKED`.
+Allowed question states are `Open`, `Resolved`, and `Reopened`. Any Open/Reopened item requires `Status: Waiting Confirmation` and `Clarification Gate: BLOCKED`.
 
-Do not write this artifact before project and version confirmation. Do not generate speculative answers, downstream diagrams, implementation tasks, or source code.
+Do not repeat source acquisition, invent answers, produce downstream models, or write code. Preserve reviewer notes and resolved history across same-version updates.

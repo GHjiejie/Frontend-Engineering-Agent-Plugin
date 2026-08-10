@@ -1,42 +1,46 @@
 {
   "name": "frontend-interaction-design-plugin",
-  "version": "3.0.0+codex.20260810092157",
-  "description": "Discovers and confirms the target frontend project and feature version, clarifies requirements, then produces reviewable interaction models and frontend development plans without generating code.",
+  "version": "5.0.0+codex.20260810124458",
+  "description": "Turns PRDs, durable prototype evidence, and API contracts into a Feishu-first review package and revision-pinned local frontend design snapshot without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"
   },
   "keywords": [
     "frontend",
     "interaction-design",
-    "project-discovery",
-    "feature-versioning",
+    "source-evidence",
+    "figma",
+    "feishu",
+    "lark-cli",
     "requirement-clarification",
-    "uncertainty-management",
     "user-flow",
     "state-machine",
     "sequence-diagram",
-    "development-plan"
+    "development-plan",
+    "technical-review"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Interaction Design",
-    "shortDescription": "Confirm project and version before frontend design.",
-    "longDescription": "Discover the target frontend project, require developer confirmation of the project and feature version directory, then check the PRD, prototype, and API contract for consequential ambiguity. Only after all three human gates pass does the strict pipeline produce user flows, frontend state models, API sequence diagrams, and an implementation-ready development plan. The plugin creates versioned design documents only and never generates or modifies application code.",
+    "shortDescription": "Create evidence-backed, Feishu-first frontend plans.",
+    "longDescription": "Confirm the target frontend project and feature version, persist PRD, prototype, and API evidence outside the chat, clarify consequential ambiguity, generate traceable interaction models, publish a self-explanatory Feishu review document with lark-cli, and export a revision-pinned local engineering snapshot. The plugin never generates or modifies application code.",
     "developerName": "Frontend Interaction Design Plugin Contributors",
     "category": "Productivity",
     "capabilities": [
-      "Requirements Analysis",
+      "Source Evidence Collection",
       "Frontend Project Discovery",
       "Feature Version Management",
-      "Uncertainty Management",
+      "Requirement Clarification",
       "Interaction Modeling",
       "API Mapping",
-      "Document Generation"
+      "Feishu Review Publishing",
+      "Revision-pinned Export",
+      "Reviewability Validation"
     ],
     "defaultPrompt": [
-      "Discover the target frontend project, confirm the feature version directory, and then check this PRD, prototype, and API contract.",
-      "After all three human gates pass, generate the versioned frontend interaction design package.",
-      "Create the final frontend development plan only from the confirmed project, version, and clarification decisions."
+      "Turn this PRD, prototype, and API contract into a Feishu-first frontend design package.",
+      "Persist these prototype images in Feishu, clarify gaps, and generate a reviewable frontend plan.",
+      "Capture this Figma scope, publish the plan to Feishu, and export the confirmed revision locally."
     ]
   }
 }

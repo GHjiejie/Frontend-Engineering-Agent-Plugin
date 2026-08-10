@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Package Publisher"
+  short_description: "Publish Feishu plans and export pinned local snapshots."
+  default_prompt: "Use $review-package-publisher to publish this plan to Feishu and export the confirmed revision locally."

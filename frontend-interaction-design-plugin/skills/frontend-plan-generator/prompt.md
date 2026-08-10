@@ -1,26 +1,67 @@
 # Frontend Development Plan Output Contract
 
-Write `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/frontend-development-plan.md` in this section order:
+Write the Draft to `<confirmed-output-directory>/frontend-development-plan.md`. After Feishu publication, `review-package-publisher` replaces it with the exact exported Revision only after drift checks.
+
+Use this section order:
 
 1. `# <Feature> Frontend Development Plan`
-2. `Status: Ready for Development | Blocked`
-3. `## 已确认运行上下文`
-4. `## 1. 功能背景与目标`
-5. `## 2. 本次开发范围`
-6. `## 3. 页面与交互实现`
-7. `## 4. User Flow 摘要`
-8. `## 5. 状态设计`
-9. `## 6. API 使用方案`
-10. `## 7. API 与交互 Mapping`
-11. `## 8. 异常与边界状态`
-12. `## 9. 关键开发决策`
-13. `## 10. 开发任务拆分`
-14. `## 11. 已确认事项`
-15. `## 12. 未解决问题`
-16. `## 追踪矩阵`
-17. `## Technical Review 清单`
+2. `Status: Draft | Ready for Publication | Ready for Technical Review | Ready for Development | Sync Drift | Blocked`
+3. `## Review Source`
+4. `## 1. Review 导读`
+5. `## 2. 功能背景与问题`
+6. `## 3. 目标用户与使用场景`
+7. `## 4. 输入资料与版本`
+8. `## 5. 原型页面与状态总览`
+9. `## 6. 本次开发范围与非目标`
+10. `## 7. 页面与组件职责`
+11. `## 8. User Flow`
+12. `## 9. 前端状态设计`
+13. `## 10. API 使用方案`
+14. `## 11. API 与交互 Mapping`
+15. `## 12. 异常与边界状态`
+16. `## 13. 关键开发决策`
+17. `## 14. 开发任务拆分`
+18. `## 15. 验收标准`
+19. `## 16. 已确认事项`
+20. `## 17. 未解决问题`
+21. `## 18. 追踪矩阵`
+22. `## 19. Technical Review 清单`
+23. `## 20. Revision 与同步信息`
 
-Include a semantic page tree:
+Required metadata:
+
+```markdown
+## Review Source
+
+- Feishu Document: <URL or Pending Publication>
+- Feishu Revision: <revision or Pending>
+- Synced At: <timestamp or Pending>
+- Export Mode: cloud-media | offline-media
+```
+
+Required tables:
+
+```markdown
+| Source ID | Type | Title / Scope | Version | Evidence Location |
+| --- | --- | --- | --- | --- |
+
+| Prototype ID | Page / State | Preview or Block | Original Source | What It Proves | Related Flow / State |
+| --- | --- | --- | --- | --- | --- |
+
+| 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | State ID |
+| --- | --- | --- | --- | --- | --- | --- |
+
+| 场景 | API ID | Method / Path | 触发时机 | 请求摘要 | 成功处理 | 失败处理 | Sequence |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+
+| Task ID | 任务 | 输入 | 交付物 | 依赖 | 验收标准 |
+| --- | --- | --- | --- | --- | --- |
+
+| Requirement / Source | Prototype | Clarification | User Flow | State | Sequence / API | Task |
+| --- | --- | --- | --- | --- | --- | --- |
+```
+
+Include a semantic responsibility tree such as:
 
 ```text
 FeaturePage
@@ -30,23 +71,4 @@ FeaturePage
 └── ConfirmDialog
 ```
 
-Include these tables:
-
-```markdown
-| Frontend Project Root | Feature | Version | Output Directory |
-| --- | --- | --- | --- |
-
-| 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | 关联 State ID |
-| --- | --- | --- | --- | --- | --- | --- |
-
-| 场景 | API ID | Method / Path | 触发时机 | 请求摘要 | 成功处理 | 失败处理 | 关联 Sequence |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-
-| Task ID | 任务 | 输入 | 交付物 | 依赖 | 验收标准 |
-| --- | --- | --- | --- | --- | --- |
-
-| 需求/来源 | Clarification | User Flow | State | Sequence / API | Task |
-| --- | --- | --- | --- | --- | --- |
-```
-
-Development tasks may describe page structure, API adapters, list behavior, dialogs, validation, tests, integration, and review. They must not contain generated source code or authorization for repository changes. If any blocking issue remains, set `Status: Blocked`; do not mark the package `Ready for Development`. Never write outside the confirmed version directory or overwrite another independent version.
+The Plan must let an uninvolved reviewer answer why the feature exists, who uses it, what is in/out, what each prototype state shows, which APIs are used, which decisions are confirmed, and what must be implemented. Do not include source code, guessed behavior, chat-only facts, or unresolved decisions disguised as tasks.
