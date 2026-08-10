@@ -63,6 +63,47 @@ PLAN_SECTIONS = (
     "## 19. Technical Review 清单",
     "## 20. Revision 与同步信息",
 )
+PLAN_DIAGRAM_SECTIONS = {
+    "UF": ("## 8. User Flow", "## 9. 前端状态设计", "flowchart"),
+    "SM": ("## 9. 前端状态设计", "## 10. API 使用方案", "stateDiagram"),
+    "SQ": ("## 11. API 与交互 Mapping", "## 12. 异常与边界状态", "sequenceDiagram"),
+}
+MARKDOWN_IMAGE = re.compile(r"!\[[^\]]*\]\([^\)]+\)|<img\b[^>]*>", re.IGNORECASE)
+
+
+def _section_body(document: str, start: str, end: str) -> str:
+    start_position = document.find(start)
+    if start_position < 0:
+        return ""
+    content_start = start_position + len(start)
+    end_position = document.find(end, content_start)
+    return document[content_start:] if end_position < 0 else document[content_start:end_position]
+
+
+def _diagram_block(section: str, identifier: str) -> str | None:
+    heading = re.search(
+        rf"^(?P<marks>#{{3,6}})\s+{re.escape(identifier)}(?:\s|$).*$",
+        section,
+        re.MULTILINE,
+    )
+    if not heading:
+        return None
+    level = len(heading.group("marks"))
+    next_heading = re.search(
+        rf"^#{{1,{level}}}\s+.+$", section[heading.end() :], re.MULTILINE
+    )
+    end = heading.end() + next_heading.start() if next_heading else len(section)
+    return section[heading.start() : end]
+
+
+def _has_diagram_visual(block: str, mermaid_type: str) -> bool:
+    mermaid = re.search(
+        r"```mermaid\s*(.*?)```", block, re.IGNORECASE | re.DOTALL
+    )
+    return bool(
+        (mermaid and re.search(re.escape(mermaid_type), mermaid.group(1), re.IGNORECASE))
+        or MARKDOWN_IMAGE.search(block)
+    )
 
 
 def _read(path: Path, errors: list[str]) -> str:
@@ -127,6 +168,20 @@ def validate_package(root: Path, require_ready_for_development: bool = False) ->
             errors.append(
                 f"{identifier} is referenced but not defined in {DEFINITION_FILES[prefix]}"
             )
+
+    for prefix, (start, end, mermaid_type) in PLAN_DIAGRAM_SECTIONS.items():
+        section = _section_body(plan, start, end)
+        for identifier in sorted(definitions[prefix]):
+            block = _diagram_block(section, identifier)
+            if block is None:
+                errors.append(
+                    f"{identifier} must have its own heading in the Plan section {start}"
+                )
+            elif not _has_diagram_visual(block, mermaid_type):
+                errors.append(
+                    f"{identifier} must include an inline {mermaid_type} Mermaid block "
+                    "or exported image in the Plan; a local artifact reference is not reviewable"
+                )
 
     manifest_errors = validate_manifest(root / "sync-manifest.json", strict=True)
     errors.extend(f"sync manifest: {error}" for error in manifest_errors)

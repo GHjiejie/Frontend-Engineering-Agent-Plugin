@@ -22,10 +22,12 @@ V5 的核心约束是：任何影响最终方案的信息都不得只存在于�
     ├── sequence-diagram.md
     ├── frontend-development-plan.md
     ├── sync-manifest.json
-    └── assets/prototype/       # 仅 offline-media 导出模式
+    └── assets/                 # 仅 offline-media 导出模式
+        ├── prototype/
+        └── diagrams/
 ```
 
-同时生成或更新一份飞书 Review 文档，用于内嵌原型图片、展示完整上下文和承载 Technical Review。
+同时生成或更新一份飞书 Review 文档，用于内嵌原型图片、User Flow、State Machine、Sequence Diagram，展示完整上下文并承载 Technical Review。`user-flow.md` 等本地文件是结构化生成源，不是 Reviewer 需要自行访问的替代文档。
 
 ## 七个 Skill
 
@@ -72,6 +74,7 @@ Project Discovery
 
 - 会话图片必须上传飞书并获得稳定 `PT-xx`，不得用“聊天中的第几张图”引用。
 - Figma 必须记录具体 Node/Frame URL 和截图时间，再将关键状态截图上传飞书。
+- 每个 `UF-xx`、`SM-xx`、`SQ-xx` 必须渲染成带标题和 ID 的图片，插入飞书对应章节，并保留相邻文字摘要和追踪 ID；只写“参考本地 Markdown”不能通过 Reviewability Gate。
 - 飞书在线文档不能依赖普通 `drive sync`；最终使用 `lark-cli docs +fetch --api-version v2 --doc <doc> --doc-format markdown --revision-id <id>` 显式导出。
 - `sync-manifest.json` 记录飞书 URL、Token、Revision、导出模式和同步状态。
 - 本地已有人工修改时进入 `Sync Drift`，不得静默覆盖。

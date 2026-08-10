@@ -11,9 +11,9 @@ Use this order:
 7. Scope and explicit non-goals.
 8. Requirement clarification and confirmed decisions.
 9. Page/component responsibility tree.
-10. User Flow.
-11. Frontend State Model.
-12. API plan and Sequence Diagrams.
+10. User Flow: one inline rendered visual per `UF-xx`, with ID/title caption, summary, and evidence IDs.
+11. Frontend State Model: one inline rendered visual per `SM-xx`, with ID/title caption, ownership/reset summary, and evidence IDs.
+12. API plan and Sequence Diagrams: one inline rendered visual per `SQ-xx`, with ID/title caption and `UF` / `SM` / `API` mapping.
 13. Exceptions and boundaries.
 14. Development task breakdown and acceptance criteria.
 15. Traceability matrix.
@@ -22,6 +22,14 @@ Use this order:
 18. Revision and local snapshot metadata.
 
 The opening sections must let an uninvolved reviewer answer why the feature exists, who uses it, what is in scope, what the prototype shows, and which decisions are confirmed without opening the source chat.
+
+## Review-surface completeness
+
+- The Feishu document must contain the actual User Flow, State Machine, and Sequence Diagram visuals. Local Markdown artifacts are structured composition sources and Coding Agent inputs, not reviewer-accessible substitutes.
+- Never write only “详见/参考 `user-flow.md`”, `state-machine.md`, or `sequence-diagram.md`. A local path may appear as engineering metadata only after the full review content is present.
+- Place each visual directly below its `UF-xx`, `SM-xx`, or `SQ-xx` heading. Keep a text summary and trace IDs adjacent so reviewers can still understand the behavior when media preview fails.
+- Use Feishu image/media blocks for the visual review surface. Do not rely on a Mermaid fenced code block being rendered by Feishu.
+- Preserve diagram labels and captions during same-version updates; replace the image for a changed ID rather than appending an ambiguous duplicate.
 
 Use durable document or block anchors for evidence references. Do not embed expiring download URLs as canonical sources.
 

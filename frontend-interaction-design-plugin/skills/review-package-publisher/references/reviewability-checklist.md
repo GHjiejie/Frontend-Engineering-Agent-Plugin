@@ -18,8 +18,11 @@ Gate #5 passes only when every applicable item is true.
 ## Plan consistency
 
 - Every in-scope user goal has a `UF-xx`.
+- Every `UF-xx` appears in the Feishu Plan as a labeled inline flowchart plus a plain-language summary; a `user-flow.md` reference alone fails the gate.
 - Every asynchronous UI surface has a relevant `SM-xx` success/failure model.
+- Every `SM-xx` appears in the Feishu Plan as a labeled inline state visual plus ownership/reset behavior; a `state-machine.md` reference alone fails the gate.
 - Every API operation used by the feature appears in an `SQ-xx` and API mapping.
+- Every `SQ-xx` appears in the Feishu Plan as a labeled inline sequence visual plus its `UF` / `SM` / `API` mapping; a `sequence-diagram.md` reference alone fails the gate.
 - Every declared failure has visible handling.
 - Every `FE-xx` task has a testable acceptance condition.
 - Every confirmed `CL-xx` decision appears in affected downstream artifacts.
@@ -30,6 +33,7 @@ Gate #5 passes only when every applicable item is true.
 - `sync-manifest.json` is valid and reports `in-sync`.
 - No unresolved local modification conflict exists.
 - Media references are stable, or offline media exists as declared.
+- The fetched fixed Revision still contains an image/media reference for every expected `UF-xx`, `SM-xx`, and `SQ-xx` in the correct Plan section.
 
 ## Status
 

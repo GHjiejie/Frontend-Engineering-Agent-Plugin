@@ -71,4 +71,55 @@ FeaturePage
 └── ConfirmDialog
 ```
 
+Required diagram composition:
+
+````markdown
+## 8. User Flow
+
+### UF-01 <用户目标>
+
+<用 2～5 句话说明入口、主路径、备选结果和可见终态。>
+
+```mermaid
+flowchart TD
+  ...
+```
+
+- Evidence / Decisions: PRD-xx, PT-xx, CL-xx
+
+## 9. 前端状态设计
+
+### SM-01 <页面或组件>
+
+<说明状态所有者、关键状态、失败/恢复和重置规则。>
+
+```mermaid
+stateDiagram-v2
+  ...
+```
+
+- Related Flows / Evidence: UF-xx, PT-xx, CL-xx
+
+## 11. API 与交互 Mapping
+
+### SQ-01 <交互场景>
+
+<说明触发条件、API、成功/失败后的 UI 结果。>
+
+```mermaid
+sequenceDiagram
+  ...
+```
+
+- Related Flow / State / API: UF-xx, SM-xx, API-xx
+````
+
+Composition rules:
+
+- Copy and reconcile the complete Mermaid body from the approved source artifact; do not abbreviate it into a list of IDs.
+- Include one independently renderable visual per `UF-xx`, `SM-xx`, and `SQ-xx`. Do not combine several IDs into an unlabeled image.
+- Keep a text summary and trace IDs beside each visual so the document remains understandable if image rendering is unavailable.
+- Never use “详见/参考 `user-flow.md`”, `state-machine.md`, or `sequence-diagram.md` as a substitute for inline review content.
+- The publisher converts these Mermaid blocks into Feishu image blocks while preserving headings, captions, summaries, and trace IDs.
+
 The Plan must let an uninvolved reviewer answer why the feature exists, who uses it, what is in/out, what each prototype state shows, which APIs are used, which decisions are confirmed, and what must be implemented. Do not include source code, guessed behavior, chat-only facts, or unresolved decisions disguised as tasks.

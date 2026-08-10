@@ -51,6 +51,28 @@ CustomerPage
 └── CustomerCreateDialog
 ```
 
+## 8. User Flow
+
+### UF-01 新建客户
+
+运营人员从客户列表打开新建弹窗，填写有效信息后提交；成功后关闭弹窗并刷新列表，失败时保留输入并展示可重试错误。
+
+```mermaid
+flowchart TD
+  A[进入客户列表 PT-01] --> B[点击新建客户]
+  B --> C[展示创建弹窗 PT-02]
+  C --> D{客户端校验通过?}
+  D -- 否 --> E[显示字段错误并保留输入]
+  E --> C
+  D -- 是 --> F[提交创建请求]
+  F --> G{创建成功?}
+  G -- 是 --> H[关闭弹窗并刷新列表]
+  G -- 否 --> I[显示错误并保留输入]
+  I --> C
+```
+
+- Evidence / Decisions: PRD-01、PT-01、PT-02、CL-03、CL-04。
+
 ## 9. 前端状态设计
 
 | 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | State ID |
@@ -58,12 +80,74 @@ CustomerPage
 | 客户列表 | customers、loading、error | CustomerPage | idle | LOAD、RESOLVE、REJECT | 离开页面 | SM-01 |
 | 创建弹窗 | opened、form、submitting、error | Dialog | closed | OPEN、SUBMIT、RESOLVE、REJECT | 成功或取消 | SM-02 |
 
+### SM-01 客户列表
+
+列表负责加载、成功、空态和可重试错误；创建成功触发刷新，离开页面后重置瞬时请求状态。
+
+```mermaid
+stateDiagram-v2
+  [*] --> Loading
+  Loading --> Ready: RESOLVE(items)
+  Loading --> Empty: RESOLVE([])
+  Loading --> Error: REJECT
+  Error --> Loading: RETRY
+  Ready --> Loading: REFRESH
+  Empty --> Loading: REFRESH
+```
+
+- Related Flows / Evidence: UF-01、PT-01、CL-04。
+
+### SM-02 创建弹窗
+
+弹窗在提交失败后保留表单，提交期间禁止重复提交，成功或取消时清理瞬时表单状态。
+
+```mermaid
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Editing: OPEN
+  Editing --> Editing: VALIDATION_REJECT
+  Editing --> Submitting: SUBMIT
+  Submitting --> Closed: RESOLVE
+  Submitting --> Failed: REJECT
+  Failed --> Submitting: RETRY
+  Failed --> Closed: CANCEL
+  Editing --> Closed: CANCEL
+```
+
+- Related Flows / Evidence: UF-01、PT-02、CL-03。
+
 ## 10. API 使用方案
 
 | 场景 | API ID | Method / Path | 触发时机 | 请求摘要 | 成功处理 | 失败处理 | Sequence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 创建客户 | API-01 | POST `/customers` | 有效提交 | `name`, `email` | 关闭并刷新 | 保留输入并显示错误 | SQ-01 |
 | 刷新列表 | API-02 | GET `/customers` | 页面加载、创建成功 | 分页参数 | 数据或空态 | 可重试错误 | SQ-01 |
+
+## 11. API 与交互 Mapping
+
+### SQ-01 创建客户并刷新列表
+
+有效提交触发创建接口；创建成功后再刷新列表。任一请求失败都进入对应的可见错误状态，不隐藏失败或自动重试。
+
+```mermaid
+sequenceDiagram
+  actor User
+  participant FE as Browser / Frontend
+  participant API as Backend / BFF
+  User->>FE: 提交有效客户表单
+  FE->>API: POST /customers (API-01)
+  alt 创建成功
+    API-->>FE: Customer
+    FE->>API: GET /customers (API-02)
+    API-->>FE: Customer list
+    FE-->>User: 关闭弹窗并显示刷新后的列表
+  else 创建失败
+    API-->>FE: Declared error
+    FE-->>User: 保留输入并显示错误
+  end
+```
+
+- Related Flow / State / API: UF-01、SM-01、SM-02、API-01、API-02。
 
 ## 14. 开发任务拆分
 

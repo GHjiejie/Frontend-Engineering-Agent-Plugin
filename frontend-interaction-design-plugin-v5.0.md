@@ -140,6 +140,16 @@ AI 可以发现问题、给出证据和推荐选项；涉及以下内容时必�
 
 同一轮澄清、Review 修改、图表修正和文案修正继续更新当前版本，由飞书 Revision 和 Git 记录细粒度历史；只有独立需求迭代才创建新版本。
 
+### 3.8 Review Surface Must Be Self-contained
+
+飞书 Plan 是 Reviewer 的完整评审面，不是本地文件目录的索引。
+
+- `user-flow.md`、`state-machine.md`、`sequence-diagram.md` 是结构化生成源和 Coding Agent 输入。
+- 每个 `UF-xx`、`SM-xx`、`SQ-xx` 的实际图、标题、语义摘要和追踪 ID 必须进入飞书对应章节。
+- “详见/参考 `user-flow.md`”等路径只能作为工程元数据，不能替代正文内容。
+- Reviewer 无需访问开发者工作区，也能看到主要流程、状态转换和前后端时序。
+- 即使图片暂时无法预览，相邻文字摘要也必须足以解释入口、分支、终态、恢复和 API 结果。
+
 ---
 
 ## 4. 事实源与交付载体
@@ -165,8 +175,8 @@ Model Inference（不得作为正式决策）
 | 载体 | 职责 | 是否主编辑面 | 是否允许包含图片 |
 | --- | --- | --- | --- |
 | Product PRD / API / Figma | 上游原始资料 | 否 | 是 |
-| 飞书 Review 文档 | 人类阅读、图片展示、评论与技术评审 | 是 | 是 |
-| 本地版本目录 | Git 留档、自动校验、Coding Agent 输入 | 否 | 默认引用飞书，可选离线图片 |
+| 飞书 Review 文档 | 人类阅读、原型与三类交互图展示、评论与技术评审 | 是 | 是，必须内嵌评审所需视觉内容 |
+| 本地版本目录 | 结构化生成源、Git 留档、自动校验、Coding Agent 输入 | 否 | 默认引用飞书，可选离线图片 |
 | 当前会话 | 输入和澄清渠道 | 否 | 可接收，但不得成为唯一存储 |
 
 ### 4.3 编辑与同步规则
@@ -183,6 +193,7 @@ Local Engineering Snapshot
 
 - 飞书文档是当前设计 Revision 的主编辑面。
 - `user-flow.md`、`state-machine.md`、`sequence-diagram.md` 等结构化产物可以在发布前作为本地 Draft 生成；它们是飞书 Plan 的输入，不是与飞书并行维护的第二份 Review 文档。
+- Plan 组装阶段必须把三个结构化产物的完整图表载荷合并进 Plan；发布阶段再把 Mermaid 载荷渲染为飞书图片 Block。不得要求 Reviewer 打开本地文件补全上下文。
 - 本地快照必须记录飞书文档 Token、Revision ID 和同步时间。
 - 首次发布完成后，`frontend-development-plan.md` 必须由确认的飞书 Revision 导出；其他结构化产物必须通过追踪 ID 与该 Revision 保持一致。
 - 下一次导出前发现本地文件发生人工修改时，必须先做差异检查。
@@ -380,9 +391,11 @@ Figma URL
                                    │
                                    ▼
                         Frontend Plan Generator
+                   （合并完整图、摘要与追踪 ID）
                                    │
                                    ▼
                        Review Package Publisher
+                  （渲染图表并插入飞书媒体 Block）
                                    │
                     ┌──────────────┴──────────────┐
                     ▼                             ▼
@@ -714,10 +727,10 @@ frontend-development-plan.md
 5. 原型页面与状态总览
 6. 本次开发范围与非目标
 7. 页面与组件职责
-8. User Flow
-9. 前端状态设计
+8. User Flow（逐个内嵌 UF 图、摘要和证据）
+9. 前端状态设计（逐个内嵌 SM 图、状态语义和证据）
 10. API 使用方案
-11. API 与交互 Mapping
+11. API 与交互 Mapping（逐个内嵌 SQ 图和 UF/SM/API 映射）
 12. 异常与边界状态
 13. 关键开发决策
 14. 开发任务拆分
@@ -745,6 +758,14 @@ Reviewer 只阅读 Plan 时，必须能够回答：
 
 Plan 不需要复制整份 PRD，但不得只写 ID 和结论。
 
+以下写法不满足自解释要求：
+
+```text
+User Flow：详见 user-flow.md
+State Machine：参考 state-machine.md
+Sequence Diagram：见 sequence-diagram.md
+```
+
 ### 15.5 Prototype Catalog
 
 Plan 中必须包含原型目录：
@@ -754,6 +775,18 @@ Plan 中必须包含原型目录：
 
 飞书文档中的“预览”直接内嵌图片；本地快照使用飞书 Block 链接或可选离线图片路径。
 
+### 15.6 Diagram Composition Contract
+
+Plan Draft 将本地结构化文件作为输入，但必须复制并校准完整内容，而不是仅生成引用：
+
+| Plan 章节 | 来源 | 每个 ID 的必需内容 | 飞书表现 |
+| --- | --- | --- | --- |
+| User Flow | `user-flow.md` | `UF-xx` 标题、流程摘要、完整 Mermaid、`PRD/PT/CL` | 带 Caption 的内嵌流程图 |
+| 前端状态设计 | `state-machine.md` | `SM-xx` 标题、所有者/重置摘要、完整 Mermaid、`UF/PT/CL` | 带 Caption 的内嵌状态图 |
+| API 与交互 Mapping | `sequence-diagram.md` | `SQ-xx` 标题、触发与 UI 结果摘要、完整 Mermaid、`UF/SM/API` | 带 Caption 的内嵌时序图 |
+
+每个 ID 必须对应一个可独立渲染、可独立替换的视觉单元。不得把多个 ID 合并为一张没有边界和 Caption 的大图。
+
 ---
 
 ## 16. Skill 7：Review Package Publisher
@@ -761,6 +794,7 @@ Plan 中必须包含原型目录：
 ### 16.1 职责
 
 - 将所有分析产物组织成完整飞书 Review 文档。
+- 将 Plan Draft 中每个 `UF-xx`、`SM-xx`、`SQ-xx` 的 Mermaid 载荷渲染为 PNG 或 SVG，并插入飞书对应章节。
 - 优先使用 `lark-cli` 创建、更新、读取和插入媒体。
 - 将指定飞书 Revision 显式导出到本地版本目录。
 - 生成同步元数据。
@@ -791,7 +825,29 @@ lark-cli docs +fetch --api-version v2 --doc <doc> \
 - 文档写入默认使用用户身份，遵守现有权限。
 - 未经用户授权不得扩大公开范围或添加外部协作者。
 - 所有原型图片必须具有 Caption 和 `PT-xx`。
+- 所有交互图必须具有 Caption 和对应的 `UF-xx`、`SM-xx` 或 `SQ-xx`。
+- 飞书评审面必须使用图片/媒体 Block 展示图表，不得假设 Mermaid fenced code 会被飞书自动渲染。
+- 图表下方必须保留语义摘要和追踪 ID；媒体加载失败时 Reviewer 仍能理解主要行为。
 - 关键章节必须能够被稳定定位，必要时保存 Block ID。
+
+图表发布采用以下单向组合链路：
+
+```text
+user-flow.md / state-machine.md / sequence-diagram.md
+                        ↓
+       frontend-development-plan.md Draft
+       （完整 Mermaid + 摘要 + Trace IDs）
+                        ↓
+           本地 Mermaid Renderer
+                        ↓
+        lark-cli 上传并插入媒体 Block
+                        ↓
+       Fetch 验证每个 ID 的媒体存在
+                        ↓
+          固定 Revision 并显式导出
+```
+
+如果当前环境没有可用的 Mermaid 渲染路径，Publisher 必须将发布状态设为 `Blocked` 并报告缺失能力；不得降级为只引用本地 Markdown 的“可发布”文档。
 
 ### 16.4 本地导出规则
 
@@ -799,7 +855,7 @@ lark-cli docs +fetch --api-version v2 --doc <doc> \
 - 输出必须记录文档 URL、Token、Revision ID 和同步时间。
 - 不得把临时图片 URL 当作长期引用。
 - 默认保留飞书图片 Block 链接和语义说明。
-- 离线模式下下载图片并改写为本地相对路径。
+- 离线模式下将原型图片下载到 `assets/prototype/`、交互图下载到 `assets/diagrams/`，并改写为本地相对路径。
 - 本地文件已被人工修改时，先生成差异并暂停覆盖。
 - 导出完成后运行结构、ID 和追踪矩阵校验。
 
@@ -828,7 +884,7 @@ lark-cli docs +fetch --api-version v2 --doc <doc> \
 `exportMode`：
 
 - `cloud-media`：图片保存在飞书，本地文档引用飞书证据。
-- `offline-media`：图片同时导出到本地 `assets/prototype/`。
+- `offline-media`：原型图片导出到本地 `assets/prototype/`，交互图导出到 `assets/diagrams/`。
 
 ---
 
@@ -862,9 +918,9 @@ lark-cli docs +fetch --api-version v2 --doc <doc> \
 └── 未解决问题
 
 交互与实现方案
-├── User Flow
-├── State Machine
-├── Sequence Diagram
+├── User Flow（UF-xx 标题 + 内嵌图 + 摘要 + Trace）
+├── State Machine（SM-xx 标题 + 内嵌图 + 摘要 + Trace）
+├── Sequence Diagram（SQ-xx 标题 + 内嵌图 + 摘要 + Trace）
 ├── 页面与组件职责
 ├── API Mapping
 └── 开发任务
@@ -915,8 +971,11 @@ Review 与同步
 #### 方案一致性
 
 - [ ] 每个主要用户目标都具有 `UF-xx`。
+- [ ] 每个 `UF-xx` 都在飞书 Plan 中具有带 ID/Caption 的内嵌流程图和文字摘要。
 - [ ] 每个异步交互都具有状态模型。
+- [ ] 每个 `SM-xx` 都在飞书 Plan 中具有带 ID/Caption 的内嵌状态图和所有者/重置说明。
 - [ ] 每个 API 调用都进入 Sequence 和 Mapping。
+- [ ] 每个 `SQ-xx` 都在飞书 Plan 中具有带 ID/Caption 的内嵌时序图和 `UF/SM/API` 映射。
 - [ ] 每个失败分支都有可见处理。
 - [ ] 每个开发任务都有可测试验收条件。
 - [ ] 所有 Developer Decision 均进入下游产物。
@@ -928,6 +987,7 @@ Review 与同步
 - [ ] `sync-manifest.json` 状态为 `in-sync`。
 - [ ] 不存在未处理的本地人工修改冲突。
 - [ ] 图片引用不是临时下载 URL。
+- [ ] 固定 Revision 的 Fetch 结果中，每个预期 `UF-xx`、`SM-xx`、`SQ-xx` 都仍有对应媒体引用；不存在仅引用本地文件的空壳章节。
 
 ### 18.3 状态
 
@@ -968,8 +1028,10 @@ Blocked
                 ├── frontend-development-plan.md
                 ├── sync-manifest.json
                 └── assets/
-                    └── prototype/
-                        └── ... 仅 offline-media 模式生成
+                    ├── prototype/
+                    │   └── ... 仅 offline-media 模式生成
+                    └── diagrams/
+                        └── UF-xx / SM-xx / SQ-xx ... 仅 offline-media 模式生成
 ```
 
 ### 19.1 `frontend-development-plan.md` 顶部必须包含

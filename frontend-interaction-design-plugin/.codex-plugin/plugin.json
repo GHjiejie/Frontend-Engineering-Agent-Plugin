@@ -1,6 +1,6 @@
 {
   "name": "frontend-interaction-design-plugin",
-  "version": "5.0.0+codex.20260810124458",
+  "version": "5.0.1+codex.20260810160008",
   "description": "Turns PRDs, durable prototype evidence, and API contracts into a Feishu-first review package and revision-pinned local frontend design snapshot without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"

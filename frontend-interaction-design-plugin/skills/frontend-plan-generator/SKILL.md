@@ -41,7 +41,7 @@ Read `prompt.md` for the exact contract and the example when helpful.
 2. Explain the business problem, target users, scenarios, terms, goals, scope, non-goals, and acceptance outcomes without relying on the source chat.
 3. Include a source inventory and Prototype Catalog with `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
 4. Define a semantic page/component responsibility tree without prescribing framework source files.
-5. Summarize all `UF-xx`, state ownership/reset behavior for `SM-xx`, and exact `API-xx` / `SQ-xx` mappings.
+5. Inline every review-relevant `UF-xx`, `SM-xx`, and `SQ-xx` into the Plan. For each ID include its title, Mermaid source, a plain-language summary, and evidence/decision IDs; do not replace content with a path or “see `*.md`”.
 6. Describe validation, visible feedback, recovery, permissions, concurrency, cancellation, refresh behavior, and confirmed contract gaps.
 7. Split work into dependency-ordered `FE-xx` tasks with inputs, deliverables, dependencies, and testable acceptance checks.
 8. Include confirmed decisions, unresolved issues, and a traceability matrix linking `PRD`, `PT`, `API`, `CL`, `UF`, `SM`, `SQ`, and `FE` IDs.
@@ -50,12 +50,13 @@ Read `prompt.md` for the exact contract and the example when helpful.
 
 - Developer-confirmed decisions have highest priority.
 - Never replace durable evidence with “see the screenshot above” or a chat reference.
+- Treat `user-flow.md`, `state-machine.md`, and `sequence-diagram.md` as composition sources, not reviewer-facing substitutes. A reviewer reading only the Plan must see the actual diagrams and their explanations.
 - Do not infer components, endpoints, permissions, states, or error behavior without evidence.
 - Preserve reviewer notes, approved decisions, and manual overrides during same-version regeneration.
 - Plan generation may write a Draft locally; only the publisher may replace it with an exported fixed Feishu Revision after drift checks.
 
 ## Validate and publish
 
-Before publisher handoff, verify prerequisites share the same confirmed context, both upstream gates pass, every in-scope goal has a flow, every async interaction has states, every API appears in a sequence, every failure has visible handling, and every task has an acceptance condition.
+Before publisher handoff, verify prerequisites share the same confirmed context, both upstream gates pass, every in-scope goal has a flow, every async interaction has states, every API appears in a sequence, every failure has visible handling, and every task has an acceptance condition. Also verify every `UF-xx`, `SM-xx`, and `SQ-xx` defined by the source artifacts appears in its Plan section with an inline Mermaid diagram. Missing or file-reference-only diagram content blocks publication.
 
 Set Draft status to `Ready for Publication` only when no source or clarification blocker remains. Final status becomes `Ready for Technical Review` after publication/export and `Ready for Development` only after approved Technical Review against the synchronized Revision.

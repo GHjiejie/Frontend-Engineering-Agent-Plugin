@@ -43,10 +43,10 @@ PLAN_SECTIONS = "\n\n".join(
         "## 5. 原型页面与状态总览\n\nPT-01",
         "## 6. 本次开发范围与非目标",
         "## 7. 页面与组件职责",
-        "## 8. User Flow\n\nUF-01",
-        "## 9. 前端状态设计\n\nSM-01",
+        "## 8. User Flow\n\n### UF-01 Create customer\n\nCreate a customer and show a visible result.\n\n```mermaid\nflowchart TD\n  A --> B\n```",
+        "## 9. 前端状态设计\n\n### SM-01 Customer page\n\nOwn loading and recovery states.\n\n```mermaid\nstateDiagram-v2\n  [*] --> Ready\n```",
         "## 10. API 使用方案\n\nAPI-01",
-        "## 11. API 与交互 Mapping\n\nSQ-01",
+        "## 11. API 与交互 Mapping\n\n### SQ-01 Create request\n\nMap the request to visible UI states.\n\n```mermaid\nsequenceDiagram\n  User->>Frontend: Submit\n```",
         "## 12. 异常与边界状态",
         "## 13. 关键开发决策\n\nCL-01",
         "## 14. 开发任务拆分\n\nFE-01",
@@ -65,9 +65,9 @@ class ValidationScriptsTest(unittest.TestCase):
         files = {
             "source-manifest.md": "Status: Ready\nSource Gate: PASS\nPRD-01 PT-01 API-01\n",
             "clarification.md": "Status: Resolved\nClarification Gate: PASS\nCL-01\nPRD-01 PT-01 API-01\n",
-            "user-flow.md": "UF-01 PRD-01 PT-01 CL-01\n",
-            "state-machine.md": "SM-01 UF-01 PT-01 CL-01\n",
-            "sequence-diagram.md": "SQ-01 API-01 UF-01 SM-01 CL-01\n",
+            "user-flow.md": "UF-01 PRD-01 PT-01 CL-01\n```mermaid\nflowchart TD\n  A --> B\n```\n",
+            "state-machine.md": "SM-01 UF-01 PT-01 CL-01\n```mermaid\nstateDiagram-v2\n  [*] --> Ready\n```\n",
+            "sequence-diagram.md": "SQ-01 API-01 UF-01 SM-01 CL-01\n```mermaid\nsequenceDiagram\n  User->>Frontend: Submit\n```\n",
             "frontend-development-plan.md": PLAN_SECTIONS,
         }
         for name, content in files.items():
@@ -116,6 +116,42 @@ class ValidationScriptsTest(unittest.TestCase):
             flow.write_text(flow.read_text(encoding="utf-8") + "PT-99\n", encoding="utf-8")
             errors = validate_design_package.validate_package(root)
             self.assertTrue(any("PT-99 is referenced" in error for error in errors))
+
+    def test_local_diagram_reference_is_not_reviewable(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.create_valid_package(root)
+            plan = root / "frontend-development-plan.md"
+            content = plan.read_text(encoding="utf-8")
+            content = content.replace(
+                "Create a customer and show a visible result.\n\n```mermaid\nflowchart TD\n  A --> B\n```",
+                "详见 user-flow.md。",
+            )
+            plan.write_text(content, encoding="utf-8")
+            errors = validate_design_package.validate_package(root)
+            self.assertTrue(
+                any("UF-01 must include an inline flowchart" in error for error in errors)
+            )
+
+    def test_exported_diagram_image_is_reviewable(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.create_valid_package(root)
+            plan = root / "frontend-development-plan.md"
+            content = plan.read_text(encoding="utf-8")
+            content = content.replace(
+                "```mermaid\nflowchart TD\n  A --> B\n```",
+                "![UF-01 Create customer](https://example.feishu.cn/media/uf-01)",
+                1,
+            )
+            plan.write_text(content, encoding="utf-8")
+            manifest_path = root / "sync-manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["fileDigests"]["frontend-development-plan.md"] = hashlib.sha256(
+                content.encode("utf-8")
+            ).hexdigest()
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertEqual([], validate_design_package.validate_package(root))
 
 
 if __name__ == "__main__":
