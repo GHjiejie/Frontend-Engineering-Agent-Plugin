@@ -1,4 +1,4 @@
 interface:
   display_name: "User Flow Generator"
-  short_description: "Generate user flows from clarified product decisions."
-  default_prompt: "Use $user-flow-generator to generate a Mermaid user flow after the clarification gate passes."
+  short_description: "Generate versioned flows from confirmed product decisions."
+  default_prompt: "Use $user-flow-generator to generate the user flow in the confirmed frontend project and feature version."

@@ -1,25 +1,25 @@
 ---
 name: state-machine-generator
-description: Convert an approved user-flow artifact, frontend prototype, and passed clarification gate into explicit page and component state models with transition tables and Mermaid diagrams. Use when Codex is asked to define loading, empty, success, error, dialog, submitting, permission, cancellation, or recovery behavior, or to write frontend-design/{feature-name}/state-machine.md after clarification.md and user-flow.md are approved.
+description: Convert an approved versioned user-flow artifact, frontend prototype, and confirmed decisions into explicit page and component state models with transition tables and Mermaid diagrams. Use to define loading, empty, data, error, dialog, submitting, success, failed, disabled, cancellation, or recovery behavior only after the project, version, and clarification gates pass.
 ---
 
 # State Machine Generator
 
-Create only `frontend-design/<feature-name>/state-machine.md`. Do not generate code or write the user-flow, sequence, or plan artifacts.
+Create only `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/state-machine.md`. Do not generate code or write the user-flow, sequence, or plan artifacts.
 
 ## Require inputs
 
-Require `clarification.md` with `Gate: PASS`, the approved `user-flow.md`, and readable prototype evidence. If any input is unavailable or the gate is blocked, pause without creating or updating `state-machine.md`.
+Require `clarification.md` with confirmed project/feature/version context and `Gate: PASS`, the approved `user-flow.md` from that same directory, and readable prototype evidence. If any input is unavailable, paths disagree, or a gate is blocked, return to `requirement-clarification` and pause without creating or updating `state-machine.md`. Never select a different project or version.
 
 ## Model states
 
 1. Read `prompt.md` for the output contract and `examples/customer-management.md` when a concrete shape is helpful.
 2. Build a coverage matrix from each `UF-xx` step to the page or component that renders feedback.
-3. Model a page state for every asynchronous data surface. Consider `idle`, `loading`, `empty`, `success`, `error`, and `permission-denied` only when relevant.
-4. Model a component state for every dialog, form, upload, destructive confirmation, or multi-step control. Include opened/closed, editing, validating, submitting, success, failure, retry, and cancellation only when evidence or confirmed `CL-xx` decisions require them.
+3. Model a page state for every asynchronous data surface. Consider `loading`, `empty`, `data`, and `error` only when relevant.
+4. Model component states such as dialog open/close, submitting, success, failed, disabled, retry, and cancellation only when evidence or confirmed `CL-xx` decisions require them. Do not manufacture states merely for completeness.
 5. Assign stable state-machine IDs such as `SM-01` and stable event names such as `LOAD`, `SUBMIT`, `RESOLVE`, `REJECT`, and `CANCEL`.
 6. Define every transition as current state + event + optional guard + next state + visible effect.
-7. If any guard, transition, feedback, reset, retry, or cancellation behavior is unresolved, return it to `requirement-clarification-generator`, block the gate, and stop.
+7. If any guard, transition, feedback, reset, retry, or cancellation behavior is unresolved, return it to `requirement-clarification` in the same version, block the gate, and stop.
 8. Write Mermaid `stateDiagram-v2` diagrams and transition tables with `CL-xx` traceability.
 
 ## Preserve evidence
@@ -32,4 +32,4 @@ Require `clarification.md` with `Gate: PASS`, the approved `user-flow.md`, and r
 
 ## Validate and hand off
 
-Verify that every event has a valid source state, all async paths have confirmed success and failure outcomes, cancellation has a confirmed target or is confirmed unavailable, visible effects agree with evidence, and no state is unreachable. End with a handoff confirming the gate still passes and listing state IDs for `sequence-diagram-generator`.
+Verify that the artifact path matches the confirmed context, every event has a valid source state, all async paths have confirmed success and failure outcomes, cancellation has a confirmed target or is confirmed unavailable, visible effects agree with evidence, and no state is unreachable. End with a handoff confirming all gates still pass and listing state IDs for `sequence-diagram-generator`.

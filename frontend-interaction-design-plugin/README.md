@@ -1,6 +1,6 @@
 # Frontend Interaction Design Plugin
 
-将产品 PRD、前端原型和后端 API 契约转换为可评审、可版本管理的前端交互设计文档。V2 在所有建模之前增加需求澄清 Gate，禁止 AI 自行补全业务决策。
+将产品 PRD、前端原型和后端 API 契约转换为可评审、可版本管理的前端交互设计文档。V3 在需求澄清之前增加“目标前端项目”和“Feature 版本目录”两个强制人工 Gate：AI 负责发现与推荐，开发者负责关键决策。
 
 ## 输入与输出
 
@@ -10,7 +10,14 @@
 - Figma、Axure、截图或文字形式的前端原型
 - 后端 API PRD、OpenAPI 或等价接口契约
 
-输出到 `frontend-design/<feature-name>/`：
+输出到已确认的版本目录：
+
+```text
+<confirmed-frontend-project-root>/
+└── docs/frontend-design/<feature-name>/<YYYY-MM-DD[-vN]>/
+```
+
+目录内包含：
 
 1. `clarification.md`
 2. `user-flow.md`
@@ -18,9 +25,17 @@
 4. `sequence-diagram.md`
 5. `frontend-development-plan.md`
 
+## 三个人工 Gate
+
+1. 只读扫描当前工作区，推荐目标前端项目；开发者确认后锁定 `frontend-project-root`。
+2. 识别 Feature 与历史版本，推荐继续当前版本或创建 `YYYY-MM-DD[-vN]`；开发者确认后锁定输出目录。
+3. 对 PRD、Prototype、API 做一致性检查；所有影响流程、状态、API 或实现的歧义均由开发者确认。
+
+在 Gate #1 和 Gate #2 通过前，不得创建 `docs/frontend-design` 文件。后续 Skill 必须复用锁定的项目、Feature 和版本，不得重新推断。
+
 ## 严格流水线
 
-`requirement-clarification-generator` → `user-flow-generator` → `state-machine-generator` → `sequence-diagram-generator` → `frontend-plan-generator`
+`Project Discovery` → `Human Gate #1` → `Feature / Version Resolve` → `Human Gate #2` → `requirement-clarification` → `Human Gate #3` → `user-flow-generator` → `state-machine-generator` → `sequence-diagram-generator` → `frontend-plan-generator`
 
 `clarification.md` 始终生成：
 
@@ -32,7 +47,7 @@
 
 ## 使用示例
 
-- “先检查这个 PRD、Figma 原型和 OpenAPI 是否存在冲突。”
+- “先识别这个需求对应的前端项目和版本目录，确认后再检查 PRD、Figma 原型和 OpenAPI。”
 - “澄清全部问题后，根据已确认决策生成用户流程。”
 - “根据已确认的用户流程和原型补齐页面状态机。”
 - “把用户流程、状态模型和 OpenAPI 映射成前后端时序图。”
@@ -41,6 +56,6 @@
 
 ## 边界
 
-插件只分析和生成设计文档，不生成应用代码，不修改代码仓库，不创建业务组件，也不提交 PR。信息缺失、冲突或存在多种合理解释时，必须生成澄清问题并暂停，不能把推测写成已确认事实。
+插件只分析和生成版本化设计文档，不生成应用代码，不修改前端源码，不创建业务组件，也不提交 Git Commit 或 PR。不得未经确认选择前端项目、创建新版本、覆盖历史独立版本，或把业务推测写成已确认事实。
 
 当前 Codex 插件规范使用 `.codex-plugin/plugin.json`；它对应架构设计中的 `plugin.yaml` 角色。

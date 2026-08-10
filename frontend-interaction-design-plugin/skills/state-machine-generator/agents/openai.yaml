@@ -1,4 +1,4 @@
 interface:
   display_name: "State Machine Generator"
-  short_description: "Model approved frontend page and component states."
-  default_prompt: "Use $state-machine-generator to model states from approved flows and clarification decisions."
+  short_description: "Model versioned frontend UI and interaction states."
+  default_prompt: "Use $state-machine-generator to model frontend states in the confirmed feature version."

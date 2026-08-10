@@ -1,4 +1,4 @@
 interface:
   display_name: "Sequence Diagram Generator"
-  short_description: "Map approved UI states and API contracts into sequences."
-  default_prompt: "Use $sequence-diagram-generator to map approved flows, states, and APIs into sequence diagrams."
+  short_description: "Map confirmed versioned UI behavior to API sequences."
+  default_prompt: "Use $sequence-diagram-generator to map the confirmed feature flows, states, and APIs into sequence diagrams."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Plan Generator"
-  short_description: "Assemble clarified interaction artifacts into a delivery plan."
-  default_prompt: "Use $frontend-plan-generator to create the final plan only after the clarification gate passes."
+  short_description: "Orchestrate confirmed inputs into a versioned delivery plan."
+  default_prompt: "Use $frontend-plan-generator to confirm the project and version, run the gated pipeline, and create the final frontend development plan."

@@ -1,5 +1,11 @@
 # 客户管理前后端交互时序（节选）
 
+## 已确认运行上下文
+
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+| `/workspace/console-ui` | `customer-management` | `2026-08-10` | `/workspace/console-ui/docs/frontend-design/customer-management/2026-08-10` |
+
 ## 输入、覆盖范围与澄清 Gate
 
 `clarification.md`: Status `Resolved`, Gate `PASS`；本节引用 CL-03、CL-04。
@@ -22,8 +28,8 @@
 ```mermaid
 sequenceDiagram
     actor User
-    participant Frontend
-    participant API as Backend API
+    participant Frontend as Browser / Frontend
+    participant API as Backend / BFF
 
     User->>Frontend: 点击提交
     alt 表单无效
@@ -57,4 +63,4 @@ sequenceDiagram
 
 ## 下游交接
 
-- 澄清 Gate 仍为 PASS；`frontend-plan-generator` 可消费 API-01、API-02 和 SQ-01。
+- 三个 Gate 仍为 PASS；`frontend-plan-generator` 可在同一版本目录消费 API-01、API-02 和 SQ-01。

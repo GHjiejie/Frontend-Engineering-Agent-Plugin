@@ -1,21 +1,25 @@
 # User Flow Output Contract
 
-Write `frontend-design/<feature-name>/user-flow.md` in the source language unless the user requests another language.
+Write `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/user-flow.md` in the source language unless the user requests another language.
 
 Use this exact section order:
 
 1. `# <功能名称>用户流程`
-2. `## 范围、来源与澄清 Gate`
-3. `## 参与者与前置条件`
-4. `## 页面与交互元素`
-5. `## 流程清单`
-6. One `## UF-xx <流程名称>` section per meaningful goal
-7. `## 澄清决策引用`
-8. `## 下游交接`
+2. `## 已确认运行上下文`
+3. `## 范围、来源与澄清 Gate`
+4. `## 参与者与前置条件`
+5. `## 页面与交互元素`
+6. `## 流程清单`
+7. One `## UF-xx <流程名称>` section per meaningful goal
+8. `## 澄清决策引用`
+9. `## 下游交接`
 
 Required tables:
 
 ```markdown
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+
 | 来源 | 定位 | 已确认信息 |
 | --- | --- | --- |
 
@@ -31,4 +35,4 @@ Required tables:
 
 For each flow, include preconditions, numbered user/UI steps, a Mermaid `flowchart TD`, evidence-backed alternative branches, and the resulting visible UI state.
 
-Use short stable Mermaid node IDs such as `A`, `B`, and `C1`. Quote labels containing punctuation. Do not place unresolved questions, assumptions, implementation tasks, source code, endpoint guesses, or component architecture in this artifact. A newly discovered ambiguity must block generation through `clarification.md`.
+Use short stable Mermaid node IDs such as `A`, `B`, and `C1`. Quote labels containing punctuation. Do not place unresolved questions, assumptions, implementation tasks, source code, endpoint guesses, or component architecture in this artifact. A newly discovered ambiguity must block generation through the same version's `clarification.md`. Never write outside the confirmed output directory.

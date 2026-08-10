@@ -1,5 +1,11 @@
 # 客户管理状态模型（节选）
 
+## 已确认运行上下文
+
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+| `/workspace/console-ui` | `customer-management` | `2026-08-10` | `/workspace/console-ui/docs/frontend-design/customer-management/2026-08-10` |
+
 ## 输入、覆盖范围与澄清 Gate
 
 `clarification.md`: Status `Resolved`, Gate `PASS`；本节引用 CL-03、CL-04。
@@ -49,4 +55,4 @@ stateDiagram-v2
 
 ## 下游交接
 
-- 澄清 Gate 仍为 PASS；`sequence-diagram-generator` 应将创建请求映射到 `SM-02.submitting → closed/failed`。
+- 三个 Gate 仍为 PASS；`sequence-diagram-generator` 应在同一版本目录将创建请求映射到 `SM-02.submitting → closed/failed`。

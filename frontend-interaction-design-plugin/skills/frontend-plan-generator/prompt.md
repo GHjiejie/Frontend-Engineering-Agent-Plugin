@@ -1,17 +1,24 @@
 # Frontend Development Plan Output Contract
 
-Write `frontend-design/<feature-name>/frontend-development-plan.md` in this section order:
+Write `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/frontend-development-plan.md` in this section order:
 
-1. `# <功能名称>前端开发方案`
-2. `## 1. 功能概述与澄清 Gate`
-3. `## 2. 页面与组件设计`
-4. `## 3. 状态设计`
-5. `## 4. API 调用方案`
-6. `## 5. 交互与异常处理`
-7. `## 6. 开发任务拆分`
-8. `## 7. 追踪矩阵`
-9. `## 8. 已确认决策与约束`
-10. `## 9. 前端 Review 清单`
+1. `# <Feature> Frontend Development Plan`
+2. `Status: Ready for Development | Blocked`
+3. `## 已确认运行上下文`
+4. `## 1. 功能背景与目标`
+5. `## 2. 本次开发范围`
+6. `## 3. 页面与交互实现`
+7. `## 4. User Flow 摘要`
+8. `## 5. 状态设计`
+9. `## 6. API 使用方案`
+10. `## 7. API 与交互 Mapping`
+11. `## 8. 异常与边界状态`
+12. `## 9. 关键开发决策`
+13. `## 10. 开发任务拆分`
+14. `## 11. 已确认事项`
+15. `## 12. 未解决问题`
+16. `## 追踪矩阵`
+17. `## Technical Review 清单`
 
 Include a semantic page tree:
 
@@ -26,6 +33,9 @@ FeaturePage
 Include these tables:
 
 ```markdown
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+
 | 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | 关联 State ID |
 | --- | --- | --- | --- | --- | --- | --- |
 
@@ -39,4 +49,4 @@ Include these tables:
 | --- | --- | --- | --- | --- | --- |
 ```
 
-Development tasks may describe page structure, API adapters, list behavior, dialogs, validation, tests, integration, and review. They must not contain unresolved decisions, generated source code, or authorization for repository changes. If any required table cell depends on an unconfirmed choice, block the gate instead of completing the plan.
+Development tasks may describe page structure, API adapters, list behavior, dialogs, validation, tests, integration, and review. They must not contain generated source code or authorization for repository changes. If any blocking issue remains, set `Status: Blocked`; do not mark the package `Ready for Development`. Never write outside the confirmed version directory or overwrite another independent version.

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Requirement Clarification Generator"
-  short_description: "Detect conflicts and block unsafe requirement assumptions."
-  default_prompt: "Use $requirement-clarification-generator to check this PRD, prototype, and API contract before interaction design."

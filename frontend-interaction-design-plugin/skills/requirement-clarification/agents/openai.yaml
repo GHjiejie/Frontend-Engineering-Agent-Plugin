@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirement Clarification"
+  short_description: "Confirm project, version, and consequential decisions."
+  default_prompt: "Use $requirement-clarification to confirm the target frontend project and feature version before clarifying this PRD, prototype, and API contract."

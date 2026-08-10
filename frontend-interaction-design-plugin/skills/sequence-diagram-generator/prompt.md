@@ -1,19 +1,23 @@
 # Sequence Diagram Output Contract
 
-Write `frontend-design/<feature-name>/sequence-diagram.md` in this section order:
+Write `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/sequence-diagram.md` in this section order:
 
 1. `# <功能名称>前后端交互时序`
-2. `## 输入、覆盖范围与澄清 Gate`
-3. `## API 清单`
-4. `## Flow / State / API 映射`
-5. One `## SQ-xx <场景名称>` section per meaningful interaction
-6. `## API 契约依据`
-7. `## 澄清决策引用`
-8. `## 下游交接`
+2. `## 已确认运行上下文`
+3. `## 输入、覆盖范围与澄清 Gate`
+4. `## API 清单`
+5. `## Flow / State / API 映射`
+6. One `## SQ-xx <场景名称>` section per meaningful interaction
+7. `## API 契约依据`
+8. `## 澄清决策引用`
+9. `## 下游交接`
 
 Required tables:
 
 ```markdown
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+
 | API ID | Method | Path | 用途 | 请求摘要 | 成功响应 | 已声明错误 | 来源 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 
@@ -26,4 +30,4 @@ Required tables:
 
 For each sequence, include preconditions, a Mermaid `sequenceDiagram`, request/response notes, and state-transition effects. Use `alt`, `else`, and `opt` for real branches. Keep participant names stable across diagrams.
 
-Never display secrets, fabricate backend internals, or emit an incomplete sequence around a consequential API gap. Return the gap to `requirement-clarification-generator` and wait for confirmation before writing this artifact.
+Never display secrets, fabricate databases or backend internals, or emit an incomplete sequence around a consequential API gap. Return the gap to `requirement-clarification` in the same version and wait for confirmation before writing this artifact. Never write outside the confirmed directory.

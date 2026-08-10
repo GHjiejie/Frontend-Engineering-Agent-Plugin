@@ -1,15 +1,15 @@
 ---
 name: sequence-diagram-generator
-description: Map approved user flows and frontend state machines to a confirmed backend API contract after the clarification gate passes, producing frontend/backend interaction sequences with request, response, error, and UI-state transitions. Use when Codex is asked which action calls which endpoint or to write frontend-design/{feature-name}/sequence-diagram.md after clarification.md, user-flow.md, and state-machine.md are approved.
+description: Map approved versioned user flows and frontend state machines to a confirmed backend API contract, producing frontend/backend interaction sequences with request, response, error, and UI-state transitions. Use to show which action calls which endpoint or write sequence-diagram.md only after the project, version, and clarification gates pass.
 ---
 
 # Sequence Diagram Generator
 
-Create only `frontend-design/<feature-name>/sequence-diagram.md`. Do not generate code or write the other pipeline artifacts.
+Create only `<confirmed-frontend-project-root>/docs/frontend-design/<feature-name>/<confirmed-version>/sequence-diagram.md`. Do not generate code or write the other pipeline artifacts.
 
 ## Require inputs
 
-Require `clarification.md` with `Gate: PASS`, approved `user-flow.md`, `state-machine.md`, and a readable backend API PRD, OpenAPI document, or equivalent interface contract. If a source is missing or the gate is blocked, pause without creating or updating `sequence-diagram.md`. Do not derive endpoints from UI labels.
+Require `clarification.md` with confirmed project/feature/version context and `Gate: PASS`, approved `user-flow.md` and `state-machine.md` from that same directory, and a readable backend API PRD, OpenAPI document, or equivalent contract. If a source is missing, paths disagree, or a gate is blocked, return to `requirement-clarification` and pause without creating or updating `sequence-diagram.md`. Never select another project/version or derive endpoints from UI labels.
 
 ## Map interactions
 
@@ -17,9 +17,9 @@ Require `clarification.md` with `Gate: PASS`, approved `user-flow.md`, `state-ma
 2. Build an API inventory with method, path, purpose, authentication, request fields, response shape, declared errors, and source location.
 3. Map each API-triggering `UF-xx` action to the affected `SM-xx` transition. Assign a stable sequence ID such as `SQ-01`.
 4. Create one sequence per meaningful load or mutation flow. Do not create a separate diagram for trivial clicks that never cross a system boundary.
-5. Use `User`, `Frontend`, and `Backend API` as baseline participants. Add gateways, services, databases, or third parties only when the supplied contract explicitly exposes them.
+5. Use `User`, `Browser / Frontend`, and `Backend / BFF` as baseline participants. Add downstream services only when supplied evidence explicitly exposes them. Never invent a database or internal service.
 6. Show client-side validation short-circuits, request dispatch, response handling, visible state changes, refreshes, retries, cancellation, and declared error branches only when their behavior is confirmed.
-7. Route any missing or conflicting endpoint, request, response, error, permission, idempotency, pagination, or cancellation decision back to `requirement-clarification-generator`; block the gate and stop.
+7. Route any missing or conflicting endpoint, request, response, error, permission, idempotency, pagination, or cancellation decision back to `requirement-clarification` in the same version; block the gate and stop.
 8. Write Mermaid `sequenceDiagram` blocks and a traceability table with `CL-xx` references.
 
 ## Preserve the API contract
@@ -32,4 +32,4 @@ Require `clarification.md` with `Gate: PASS`, approved `user-flow.md`, `state-ma
 
 ## Validate and hand off
 
-Verify that every called endpoint exists in the API inventory, every request corresponds to a user action or lifecycle event, every confirmed response reaches a modeled UI state, and success/failure branches agree with the state machine and clarification decisions. End with a gate confirmation and the sequences that `frontend-plan-generator` may consume.
+Verify that the artifact path matches the confirmed context, every called endpoint exists in the API inventory, every request corresponds to a user action or lifecycle event, every confirmed response reaches a modeled UI state, and success/failure branches agree with the state machine and clarification decisions. End with confirmation that all gates still pass and the sequences that `frontend-plan-generator` may consume.

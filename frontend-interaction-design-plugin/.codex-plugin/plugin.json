@@ -1,13 +1,15 @@
 {
   "name": "frontend-interaction-design-plugin",
-  "version": "2.0.0+codex.20260810085411",
-  "description": "Clarifies product requirements, frontend prototypes, and backend API contracts before producing reviewable interaction models and frontend development plans without generating code.",
+  "version": "3.0.0+codex.20260810092157",
+  "description": "Discovers and confirms the target frontend project and feature version, clarifies requirements, then produces reviewable interaction models and frontend development plans without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"
   },
   "keywords": [
     "frontend",
     "interaction-design",
+    "project-discovery",
+    "feature-versioning",
     "requirement-clarification",
     "uncertainty-management",
     "user-flow",
@@ -18,21 +20,23 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Interaction Design",
-    "shortDescription": "Clarify requirements before creating frontend design plans.",
-    "longDescription": "Check a product PRD, frontend prototype, and backend API contract for conflicts, missing rules, and ambiguous behavior before a strict pipeline produces user flows, frontend state models, API sequence diagrams, and an implementation-ready development plan. The clarification gate blocks downstream generation until every consequential question is confirmed. The plugin creates design documents only and never generates or modifies application code.",
+    "shortDescription": "Confirm project and version before frontend design.",
+    "longDescription": "Discover the target frontend project, require developer confirmation of the project and feature version directory, then check the PRD, prototype, and API contract for consequential ambiguity. Only after all three human gates pass does the strict pipeline produce user flows, frontend state models, API sequence diagrams, and an implementation-ready development plan. The plugin creates versioned design documents only and never generates or modifies application code.",
     "developerName": "Frontend Interaction Design Plugin Contributors",
     "category": "Productivity",
     "capabilities": [
       "Requirements Analysis",
+      "Frontend Project Discovery",
+      "Feature Version Management",
       "Uncertainty Management",
       "Interaction Modeling",
       "API Mapping",
       "Document Generation"
     ],
     "defaultPrompt": [
-      "Check this PRD, prototype, and API contract for conflicts before generating the frontend design package.",
-      "Clarify every unresolved product, UI, and API decision, then generate the interaction artifacts.",
-      "Create the final frontend development plan only after the clarification gate passes."
+      "Discover the target frontend project, confirm the feature version directory, and then check this PRD, prototype, and API contract.",
+      "After all three human gates pass, generate the versioned frontend interaction design package.",
+      "Create the final frontend development plan only from the confirmed project, version, and clarification decisions."
     ]
   }
 }

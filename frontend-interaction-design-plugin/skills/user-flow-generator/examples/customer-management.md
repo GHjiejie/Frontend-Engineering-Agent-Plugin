@@ -1,5 +1,11 @@
 # 客户管理用户流程（节选）
 
+## 已确认运行上下文
+
+| Frontend Project Root | Feature | Version | Output Directory |
+| --- | --- | --- | --- |
+| `/workspace/console-ui` | `customer-management` | `2026-08-10` | `/workspace/console-ui/docs/frontend-design/customer-management/2026-08-10` |
+
 ## 范围、来源与澄清 Gate
 
 `clarification.md`: Status `Resolved`, Gate `PASS`。
@@ -57,4 +63,4 @@ flowchart TD
 
 ## 下游交接
 
-- 澄清 Gate 仍为 PASS；`state-machine-generator` 可基于 UF-01 建模列表加载状态与创建弹窗状态。
+- 三个 Gate 仍为 PASS；`state-machine-generator` 必须在同一版本目录基于 UF-01 建模列表与创建弹窗状态。
