@@ -59,6 +59,7 @@ An `in-sync` package must include SHA-256 digests for synchronized files so late
 
 ## Media rules
 
-- `cloud-media`: keep semantic captions, `PT-xx` / `UF-xx` / `SM-xx` / `SQ-xx`, and stable Feishu block links locally.
-- `offline-media`: download prototype images to `assets/prototype/` and rendered diagrams to `assets/diagrams/`; use deterministic filenames beginning with the matching stable ID and record exported files in the source manifest.
+- `cloud-media`: keep semantic captions and preserve every linked `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` with its stable Feishu block target.
+- `offline-media`: download prototype images to `assets/prototype/` and rendered diagrams to `assets/diagrams/`; use deterministic filenames beginning with the matching stable ID, point each visual-artifact ID to its local asset or anchor, and record exported files in the source manifest.
 - Do not use expiring signed media URLs in either mode.
+- Do not strip links from visual-artifact IDs during fixed-revision Markdown export. If the export format loses block-link semantics, Gate #5 remains blocked until the links are restored and the fixed revision is exported again.

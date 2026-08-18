@@ -13,6 +13,8 @@ Gate #5 passes only when every applicable item is true.
 - PRD, prototype, and API sources have stable IDs, locators, versions, scopes, and access states.
 - Every pasted prototype image is stored in Feishu and has a `PT-xx`, page/state name, and caption.
 - Every Figma capture records the exact node/frame URL and capture time.
+- Every standalone `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` reference in prose, lists, and table cells is individually linked to its exact image, diagram, or canonical section block; canonical target headings and diagram/code contents are exempt.
+- Every visual-artifact link resolves inside the expected Review document, points to the matching ID, and does not fall back to the document home or an expiring media URL when a precise block target is available.
 - Reviewers can access the document, or the Plan contains a durable replacement summary.
 
 ## Plan consistency
@@ -32,7 +34,7 @@ Gate #5 passes only when every applicable item is true.
 - The local Plan records the Feishu URL and exact Revision.
 - `sync-manifest.json` is valid and reports `in-sync`.
 - No unresolved local modification conflict exists.
-- Media references are stable, or offline media exists as declared.
+- Media and visual-artifact ID links are stable, or offline media and local anchors exist as declared.
 - The fetched fixed Revision still contains an image/media reference for every expected `UF-xx`, `SM-xx`, and `SQ-xx` in the correct Plan section.
 
 ## Status

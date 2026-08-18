@@ -37,8 +37,9 @@ If paths, feature/version values, source IDs, or gates disagree, block publicati
 6. Render each Mermaid payload into a readable PNG or SVG with an available local Mermaid renderer. If no rendering path is available, block publication and report the missing capability; do not publish a file-reference-only substitute.
 7. Upload and insert each rendered diagram into its matching Feishu section with `lark-cli`, preserving the ID/title caption, adjacent plain-language summary, and evidence IDs. Replace the publishing-only Mermaid source block with the media block so reviewers see the visual rather than duplicated implementation syntax. Local render files are disposable publishing intermediates, not canonical evidence.
 8. Update the rest of the document into the contract order without deleting reviewer comments or unrelated approved notes.
-9. Verify the final content by fetching the document and checking that every expected diagram ID has an image/media block in the correct section. A Mermaid source block alone is not sufficient for the Feishu Review surface.
-10. Record the exact final Revision ID. Do not continue editing that revision after it is selected for export.
+9. After the final block structure exists, resolve the stable target for every prototype image, User Flow diagram, state diagram, and Sequence Diagram. Turn every standalone `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence in prose, lists, and tables into an individual link to the exact block; never wrap several IDs in one link.
+10. Verify the final content by fetching the document. Check that every expected diagram ID has an image/media block in the correct section and that every linked target resolves in the expected document. A Mermaid source block alone, document-home link, expiring media URL, missing link, or mismatched target fails publication.
+11. Record the exact final Revision ID. Do not continue editing that revision after it is selected for export.
 
 The Feishu document is the main human Review surface. Include enough context for a product manager or developer who did not join the source conversation.
 
@@ -46,7 +47,7 @@ The Feishu document is the main human Review surface. Include enough context for
 
 1. Check whether the local `frontend-development-plan.md` changed since the last recorded sync. If so, mark `Sync Drift` and stop before overwrite.
 2. Fetch the exact Revision ID as Markdown using the installed CLI's supported fixed-revision option.
-3. Normalize media references. Keep stable Feishu document/block references in `cloud-media`; download prototype media to `assets/prototype/` and rendered interaction diagrams to `assets/diagrams/` only in `offline-media`.
+3. Normalize media references. In `cloud-media`, preserve stable Feishu block targets on every linked visual-artifact ID. In `offline-media`, download prototype media to `assets/prototype/` and rendered interaction diagrams to `assets/diagrams/`, then point each `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` to its deterministic local asset or anchor.
 4. Replace the local plan with the exported content only after the drift check passes.
 5. Write `sync-manifest.json` using `references/local-export-contract.md`.
 6. Resolve the plugin root from this `SKILL.md`, then run `../../scripts/verify_sync_manifest.py` and `../../scripts/validate_design_package.py`.

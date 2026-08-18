@@ -10,7 +10,7 @@ Record for every item:
 - Original source locator.
 - Figma node/frame ID when applicable.
 - Capture time and timezone.
-- Feishu block locator.
+- Stable, copyable Feishu image-block link and block ID. If Feishu cannot link the image block directly, use the uniquely paired caption block immediately adjacent to it and record that fallback explicitly.
 - What is visibly confirmed.
 - Behavior that remains unknown.
 
@@ -34,3 +34,5 @@ Record for every item:
 - `offline-media`: additionally download media to `<output>/assets/prototype/` and reference the exported copy. The local copy remains a derivative of a specific Feishu revision.
 
 Do not use short-lived signed URLs as durable Markdown image sources.
+
+The recorded target must jump to the exact evidence block, not merely open the Review document. Preserve the target block during same-version updates whenever possible so downstream `PT-xx` links remain stable.

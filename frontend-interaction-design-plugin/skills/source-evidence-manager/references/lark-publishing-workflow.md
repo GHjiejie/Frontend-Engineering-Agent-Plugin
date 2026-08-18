@@ -18,8 +18,8 @@ The installed CLI guidance is authoritative when command flags differ from examp
 1. Create one document after Gate #2, titled `[Frontend Design] <Feature> / <Version>`, or reuse the current version's documented token.
 2. Insert a source index before uploading evidence.
 3. Insert local or clipboard images with the supported media-insert shortcut.
-4. Save returned document, block, and file tokens in `source-manifest.md`.
-5. Fetch the relevant section to verify every uploaded image and caption.
+4. Save returned document, block, and file tokens in `source-manifest.md`, including a stable link that opens each exact image block or its uniquely paired caption block.
+5. Fetch the relevant section and resolve each stored block locator to verify every uploaded image, caption, and `PT-xx` target.
 
 ## Safety
 
@@ -34,3 +34,4 @@ The installed CLI guidance is authoritative when command flags differ from examp
 - Prefer clipboard insertion only when the user supplied an image through the clipboard; otherwise use the real local file.
 - A URL image may be inserted through supported document update syntax or downloaded first according to the installed guidance.
 - Download media only for explicit offline export or verification; Feishu remains the default image store.
+- Do not use a signed media/download URL as an ID target. Links carried by `PT-xx` must be durable document/block locators.

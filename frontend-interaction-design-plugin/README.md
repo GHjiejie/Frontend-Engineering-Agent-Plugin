@@ -75,6 +75,7 @@ Project Discovery
 - 会话图片必须上传飞书并获得稳定 `PT-xx`，不得用“聊天中的第几张图”引用。
 - Figma 必须记录具体 Node/Frame URL 和截图时间，再将关键状态截图上传飞书。
 - 每个 `UF-xx`、`SM-xx`、`SQ-xx` 必须渲染成带标题和 ID 的图片，插入飞书对应章节，并保留相邻文字摘要和追踪 ID；只写“参考本地 Markdown”不能通过 Reviewability Gate。
+- 最终 Review 文档中出现的 `PT-xx`、`UF-xx`、`SM-xx`、`SQ-xx` 必须逐个链接到对应图片、流程图、状态图或时序图的精确 Block；不得只链接文档首页或使用临时媒体 URL。
 - 飞书在线文档不能依赖普通 `drive sync`；最终使用 `lark-cli docs +fetch --api-version v2 --doc <doc> --doc-format markdown --revision-id <id>` 显式导出。
 - `sync-manifest.json` 记录飞书 URL、Token、Revision、导出模式和同步状态。
 - 本地已有人工修改时进入 `Sync Drift`，不得静默覆盖。

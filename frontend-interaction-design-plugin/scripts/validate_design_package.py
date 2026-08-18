@@ -7,6 +7,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 from verify_sync_manifest import validate_manifest
 
@@ -106,12 +107,70 @@ def _has_diagram_visual(block: str, mermaid_type: str) -> bool:
     )
 
 
+VISUAL_ID_PATTERN = re.compile(r"\b(?:PT|UF|SM|SQ)-\d{2,}\b")
+MARKDOWN_LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)\s]+)(?:\s+['\"][^'\"]*['\"])?\)")
+FENCED_CODE_PATTERN = re.compile(r"(?:^|\n)(?:```|~~~).*?(?:\n```|\n~~~)(?=\n|$)", re.DOTALL)
+HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s+")
+EXPIRING_QUERY_KEYS = {
+    "expires",
+    "signature",
+    "x-amz-expires",
+    "x-amz-signature",
+    "x-oss-signature",
+}
+
+
 def _read(path: Path, errors: list[str]) -> str:
     try:
         return path.read_text(encoding="utf-8")
     except OSError as exc:
         errors.append(f"cannot read {path.name}: {exc}")
         return ""
+
+
+def _validate_visual_id_links(plan: str) -> list[str]:
+    """Require navigable visual IDs in final-plan prose, lists, and tables."""
+    errors: list[str] = []
+    without_fences = FENCED_CODE_PATTERN.sub("\n", plan)
+
+    for line_number, line in enumerate(without_fences.splitlines(), start=1):
+        if HEADING_PATTERN.match(line):
+            continue
+
+        def inspect_link(match: re.Match[str]) -> str:
+            label, target = match.groups()
+            identifiers = list(dict.fromkeys(VISUAL_ID_PATTERN.findall(label)))
+            if len(identifiers) > 1:
+                errors.append(
+                    f"line {line_number}: visual IDs must be linked individually: "
+                    + ", ".join(identifiers)
+                )
+            if identifiers:
+                parsed = urlsplit(target)
+                query_keys = {key.lower() for key in parse_qs(parsed.query)}
+                if query_keys & EXPIRING_QUERY_KEYS:
+                    errors.append(
+                        f"line {line_number}: {identifiers[0]} uses an expiring link target"
+                    )
+                if (
+                    parsed.scheme in {"http", "https"}
+                    and "/docx/" in parsed.path
+                    and not parsed.query
+                    and not parsed.fragment
+                ):
+                    errors.append(
+                        f"line {line_number}: {identifiers[0]} points to a document home, "
+                        "not an exact block"
+                    )
+            return ""
+
+        unlinked_text = MARKDOWN_LINK_PATTERN.sub(inspect_link, line)
+        for identifier in VISUAL_ID_PATTERN.findall(unlinked_text):
+            errors.append(
+                f"line {line_number}: {identifier} must link to its exact visual-artifact target"
+            )
+
+    return errors
 
 
 def validate_package(root: Path, require_ready_for_development: bool = False) -> list[str]:
@@ -182,6 +241,8 @@ def validate_package(root: Path, require_ready_for_development: bool = False) ->
                     f"{identifier} must include an inline {mermaid_type} Mermaid block "
                     "or exported image in the Plan; a local artifact reference is not reviewable"
                 )
+
+    errors.extend(_validate_visual_id_links(plan))
 
     manifest_errors = validate_manifest(root / "sync-manifest.json", strict=True)
     errors.extend(f"sync manifest: {error}" for error in manifest_errors)

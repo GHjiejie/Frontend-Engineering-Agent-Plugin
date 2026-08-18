@@ -25,8 +25,8 @@ Use these tables:
 | Source ID | Type | Title | Locator | Version / Revision | Captured At | Scope | Access | Evidence Location | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-| Prototype ID | Page / State | Preview or Block | Original Source | Captured At | What It Proves | Unknown Behavior |
-| --- | --- | --- | --- | --- | --- | --- |
+| Prototype ID | Page / State | Preview / Block Link | Block ID | Original Source | Captured At | What It Proves | Unknown Behavior |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 
 | ID | Issue | Frontend Impact | Required Action | Status |
 | --- | --- | --- | --- | --- |
@@ -36,6 +36,8 @@ Rules:
 
 - Use absolute local paths in confirmed runtime context.
 - Use stable Feishu document/block locators, not expiring media download URLs.
+- Make every `PT-xx` in the Prototype Catalog a Markdown link to its exact image block or uniquely paired caption block, and keep the raw block ID in the adjacent field for recovery and validation.
+- Do not combine multiple prototype IDs into one link or use the document-home URL when an exact block link exists.
 - Keep source IDs stable when refreshing evidence; record a new version or capture time instead of renumbering unrelated downstream artifacts.
 - Any open blocking issue requires `Status: Waiting Source` and `Source Gate: BLOCKED`.
 - Do not place business decisions in this file; route them to `clarification.md`.

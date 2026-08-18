@@ -1,7 +1,7 @@
 {
   "name": "frontend-interaction-design-plugin",
-  "version": "5.0.1+codex.20260810160008",
-  "description": "Turns PRDs, durable prototype evidence, and API contracts into a Feishu-first review package and revision-pinned local frontend design snapshot without generating code.",
+  "version": "5.1.0+codex.20260818084158",
+  "description": "Turns PRDs, durable prototype evidence, and API contracts into a Feishu-first review package with rendered diagrams, precise block-linked navigation, and a revision-pinned local frontend design snapshot without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"
   },
@@ -17,13 +17,14 @@
     "state-machine",
     "sequence-diagram",
     "development-plan",
-    "technical-review"
+    "technical-review",
+    "evidence-navigation"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Interaction Design",
     "shortDescription": "Create evidence-backed, Feishu-first frontend plans.",
-    "longDescription": "Confirm the target frontend project and feature version, persist PRD, prototype, and API evidence outside the chat, clarify consequential ambiguity, generate traceable interaction models, publish a self-explanatory Feishu review document with lark-cli, and export a revision-pinned local engineering snapshot. The plugin never generates or modifies application code.",
+    "longDescription": "Confirm the target frontend project and feature version, persist PRD, prototype, and API evidence outside the chat, clarify consequential ambiguity, generate traceable interaction models, publish rendered diagrams with precise evidence and diagram block navigation in a self-explanatory Feishu review document, and export a revision-pinned local engineering snapshot. The plugin never generates or modifies application code.",
     "developerName": "Frontend Interaction Design Plugin Contributors",
     "category": "Productivity",
     "capabilities": [
@@ -34,6 +35,7 @@
       "Interaction Modeling",
       "API Mapping",
       "Feishu Review Publishing",
+      "Block-linked Evidence Navigation",
       "Revision-pinned Export",
       "Reviewability Validation"
     ],

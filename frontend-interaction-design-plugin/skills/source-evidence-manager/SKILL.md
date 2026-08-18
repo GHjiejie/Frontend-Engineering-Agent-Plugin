@@ -32,14 +32,14 @@ Read these references before acting:
 1. Inspect the supplied image; never guess a local file path for an unavailable attachment.
 2. Give each page or visible state a `PT-xx`, concise name, and caption.
 3. Insert it into the confirmed Feishu document with `lark-cli` by default.
-4. Record the Feishu block locator and what the image does and does not prove.
+4. Record a stable, copyable Feishu image-block link (or its uniquely paired caption-block link when the image block cannot be linked directly), the block ID, and what the image does and does not prove. A document-home URL is not an adequate block locator when an exact block can be resolved.
 5. If a static image omits transitions, validation, failure, permission, or async behavior, leave those facts unresolved for `requirement-clarification`.
 
 ### Figma and other prototype URLs
 
 1. Resolve the exact file/page/frame/node in scope; do not use only a file home URL when a precise node can be identified.
 2. Capture the relevant pages and key visible states with available Figma or browser capabilities.
-3. Upload each capture to the Feishu document, assign `PT-xx`, and retain the original node URL, node ID, and capture time.
+3. Upload each capture to the Feishu document, assign `PT-xx`, retain the original node URL, node ID, and capture time, and record the exact Feishu image/caption block link used by downstream references.
 4. Block the source gate if the URL is inaccessible, the relevant node range is unclear, or essential states cannot be captured.
 
 ## Use Feishu safely
@@ -65,4 +65,4 @@ Otherwise set `Source Gate: BLOCKED`, list focused remediation items, and stop b
 
 ## Validate and hand off
 
-Verify all locators, unique IDs, prototype captions, access states, confirmed paths, and Gate status. Hand off the exact `source-manifest.md` path, Feishu URL/token when available, source IDs, and source-gate result. Permit `requirement-clarification` only when Gate #3 passes.
+Verify all locators, unique IDs, prototype captions, access states, confirmed paths, and Gate status. Open or fetch every recorded prototype block locator to confirm that it resolves inside the expected Review document. Hand off the exact `source-manifest.md` path, Feishu URL/token when available, source IDs, block links, and source-gate result. Permit `requirement-clarification` only when Gate #3 passes.

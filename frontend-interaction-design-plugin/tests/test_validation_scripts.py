@@ -39,8 +39,8 @@ PLAN_SECTIONS = "\n\n".join(
         "## 1. Review 导读",
         "## 2. 功能背景与问题",
         "## 3. 目标用户与使用场景",
-        "## 4. 输入资料与版本\n\nPRD-01 PT-01 API-01",
-        "## 5. 原型页面与状态总览\n\nPT-01",
+        "## 4. 输入资料与版本\n\nPRD-01 [PT-01](https://example.feishu.cn/docx/abc?block_id=pt01-image) API-01",
+        "## 5. 原型页面与状态总览\n\n[PT-01](https://example.feishu.cn/docx/abc?block_id=pt01-image)",
         "## 6. 本次开发范围与非目标",
         "## 7. 页面与组件职责",
         "## 8. User Flow\n\n### UF-01 Create customer\n\nCreate a customer and show a visible result.\n\n```mermaid\nflowchart TD\n  A --> B\n```",
@@ -152,6 +152,29 @@ class ValidationScriptsTest(unittest.TestCase):
             ).hexdigest()
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             self.assertEqual([], validate_design_package.validate_package(root))
+
+    def test_unlinked_visual_id_in_plan_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.create_valid_package(root)
+            plan = root / "frontend-development-plan.md"
+            plan.write_text(plan.read_text(encoding="utf-8") + "See PT-01.\n", encoding="utf-8")
+            errors = validate_design_package.validate_package(root)
+            self.assertTrue(any("PT-01 must link" in error for error in errors))
+
+    def test_grouped_visual_ids_in_one_link_are_rejected(self) -> None:
+        plan = "[PT-01、PT-02](https://example.feishu.cn/docx/abc?block_id=prototype)\n"
+        errors = validate_design_package._validate_visual_id_links(plan)
+        self.assertTrue(any("linked individually" in error for error in errors))
+
+    def test_document_home_visual_link_is_rejected(self) -> None:
+        plan = "[UF-01](https://example.feishu.cn/docx/abc)\n"
+        errors = validate_design_package._validate_visual_id_links(plan)
+        self.assertTrue(any("document home" in error for error in errors))
+
+    def test_heading_and_diagram_contents_are_exempt(self) -> None:
+        plan = "## UF-01 新增客户\n\n```mermaid\nA[PT-01] --> B[SM-01]\n```\n"
+        self.assertEqual([], validate_design_package._validate_visual_id_links(plan))
 
 
 if __name__ == "__main__":

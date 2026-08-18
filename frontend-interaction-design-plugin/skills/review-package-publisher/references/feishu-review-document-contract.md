@@ -33,4 +33,17 @@ The opening sections must let an uninvolved reviewer answer why the feature exis
 
 Use durable document or block anchors for evidence references. Do not embed expiring download URLs as canonical sources.
 
+## Linked visual-artifact IDs
+
+The stable IDs are also the document's navigation surface:
+
+- Link every standalone `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence in prose, lists, and table cells.
+- `PT-xx` jumps to its exact prototype image block. If Feishu cannot link an image block directly, link the uniquely paired caption block immediately adjacent to that image.
+- `UF-xx`, `SM-xx`, and `SQ-xx` jump to their exact diagram block. Fall back to the canonical section-heading block only when direct diagram linking is unavailable.
+- Link each ID separately when several appear together; one combined link must not represent multiple targets.
+- Keep original source locators, such as Figma node URLs, separately. They do not replace Review-document block links.
+- Canonical destination headings and IDs rendered inside diagrams/code blocks do not link to themselves.
+
+Resolve block links only after the final document structure exists, then verify every target against the published document. A generic document-home URL, an inaccessible or mismatched block, an expiring media/download URL, or an unlinked visual ID fails Reviewability Gate #5.
+
 Preserve existing review comments and approved notes when republishing the same feature/version.

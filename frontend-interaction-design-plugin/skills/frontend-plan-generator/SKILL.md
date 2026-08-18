@@ -39,12 +39,14 @@ Read `prompt.md` for the exact contract and the example when helpful.
 
 1. Start with a Review guide that identifies audience, status, Feishu evidence location, and requested review outcome.
 2. Explain the business problem, target users, scenarios, terms, goals, scope, non-goals, and acceptance outcomes without relying on the source chat.
-3. Include a source inventory and Prototype Catalog with `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
+3. Include a source inventory and Prototype Catalog with individually linked `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
 4. Define a semantic page/component responsibility tree without prescribing framework source files.
 5. Inline every review-relevant `UF-xx`, `SM-xx`, and `SQ-xx` into the Plan. For each ID include its title, Mermaid source, a plain-language summary, and evidence/decision IDs; do not replace content with a path or “see `*.md`”.
 6. Describe validation, visible feedback, recovery, permissions, concurrency, cancellation, refresh behavior, and confirmed contract gaps.
 7. Split work into dependency-ordered `FE-xx` tasks with inputs, deliverables, dependencies, and testable acceptance checks.
 8. Include confirmed decisions, unresolved issues, and a traceability matrix linking `PRD`, `PT`, `API`, `CL`, `UF`, `SM`, `SQ`, and `FE` IDs.
+
+Treat visual-artifact IDs as navigation, not plain labels. In prose, lists, and table cells, link every `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence to its exact image, diagram, or canonical section block. When a cell mentions several IDs, link each ID separately. Canonical destination headings and IDs rendered inside a diagram are exempt. Preserve the original Figma/source URL separately from the Feishu Review target.
 
 ## Preserve evidence and review work
 

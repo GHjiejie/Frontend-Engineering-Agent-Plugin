@@ -45,7 +45,7 @@ Required tables:
 | Source ID | Type | Title / Scope | Version | Evidence Location |
 | --- | --- | --- | --- | --- |
 
-| Prototype ID | Page / State | Preview or Block | Original Source | What It Proves | Related Flow / State |
+| Prototype ID | Page / State | Preview / Block Link | Original Source | What It Proves | Related Flow / State |
 | --- | --- | --- | --- | --- | --- |
 
 | 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | State ID |
@@ -60,6 +60,15 @@ Required tables:
 | Requirement / Source | Prototype | Clarification | User Flow | State | Sequence / API | Task |
 | --- | --- | --- | --- | --- | --- | --- |
 ```
+
+## Linked ID contract
+
+- Render every `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` reference in prose, lists, and table cells as an individual Markdown link.
+- `PT-xx` targets the exact Feishu image block, or its uniquely paired caption block when direct image linking is unavailable.
+- `UF-xx`, `SM-xx`, and `SQ-xx` target their exact diagram block; use the canonical section-heading block only when Feishu cannot link the diagram block directly.
+- Keep original Figma, PRD, and API locators in their own fields; they do not replace the Review-document target.
+- Do not group several IDs inside one link, link to a generic document home when a precise block exists, or use expiring signed media URLs.
+- Canonical destination headings and IDs drawn inside diagram/code blocks do not need to link to themselves.
 
 Include a semantic responsibility tree such as:
 

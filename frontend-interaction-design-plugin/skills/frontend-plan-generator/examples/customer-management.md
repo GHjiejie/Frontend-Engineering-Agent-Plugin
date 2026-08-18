@@ -27,15 +27,15 @@ Status: Ready for Technical Review
 | Source ID | Type | Title / Scope | Version | Evidence Location |
 | --- | --- | --- | --- | --- |
 | PRD-01 | PRD | 客户列表与新增 | v3 | 飞书“输入资料”章节 |
-| PT-01、PT-02 | Prototype | 列表与创建弹窗 | Figma nodes 12:34、12:56 | 飞书原型图片 Blocks |
+| [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | Prototype | 列表与创建弹窗 | Figma nodes 12:34、12:56 | 飞书原型图片 Blocks |
 | API-01、API-02 | API | 创建与查询 | Customer API v2 | API 文档链接 |
 
 ## 5. 原型页面与状态总览
 
-| Prototype ID | Page / State | Preview or Block | Original Source | What It Proves | Related Flow / State |
+| Prototype ID | Page / State | Preview / Block Link | Original Source | What It Proves | Related Flow / State |
 | --- | --- | --- | --- | --- | --- |
-| PT-01 | 客户列表默认状态 | 飞书图片 Block | Figma node 12:34 | 搜索区、表格和新增入口 | UF-01、SM-01 |
-| PT-02 | 新建客户弹窗 | 飞书图片 Block | Figma node 12:56 | 字段、提交和取消操作 | UF-01、SM-02 |
+| [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image) | 客户列表默认状态 | [查看原型图片](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image) | Figma node 12:34 | 搜索区、表格和新增入口 | [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram) |
+| [PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | 新建客户弹窗 | [查看原型图片](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | Figma node 12:56 | 字段、提交和取消操作 | [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) |
 
 ## 6. 本次开发范围与非目标
 
@@ -71,14 +71,14 @@ flowchart TD
   I --> C
 ```
 
-- Evidence / Decisions: PRD-01、PT-01、PT-02、CL-03、CL-04。
+- Evidence / Decisions: PRD-01、[PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、CL-03、CL-04。
 
 ## 9. 前端状态设计
 
 | 状态域 | 数据/状态 | 所有者 | 初始值 | 变化事件 | 重置条件 | State ID |
 | --- | --- | --- | --- | --- | --- | --- |
-| 客户列表 | customers、loading、error | CustomerPage | idle | LOAD、RESOLVE、REJECT | 离开页面 | SM-01 |
-| 创建弹窗 | opened、form、submitting、error | Dialog | closed | OPEN、SUBMIT、RESOLVE、REJECT | 成功或取消 | SM-02 |
+| 客户列表 | customers、loading、error | CustomerPage | idle | LOAD、RESOLVE、REJECT | 离开页面 | [SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram) |
+| 创建弹窗 | opened、form、submitting、error | Dialog | closed | OPEN、SUBMIT、RESOLVE、REJECT | 成功或取消 | [SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) |
 
 ### SM-01 客户列表
 
@@ -95,7 +95,7 @@ stateDiagram-v2
   Empty --> Loading: REFRESH
 ```
 
-- Related Flows / Evidence: UF-01、PT-01、CL-04。
+- Related Flows / Evidence: [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、CL-04。
 
 ### SM-02 创建弹窗
 
@@ -114,14 +114,14 @@ stateDiagram-v2
   Editing --> Closed: CANCEL
 ```
 
-- Related Flows / Evidence: UF-01、PT-02、CL-03。
+- Related Flows / Evidence: [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、CL-03。
 
 ## 10. API 使用方案
 
 | 场景 | API ID | Method / Path | 触发时机 | 请求摘要 | 成功处理 | 失败处理 | Sequence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 创建客户 | API-01 | POST `/customers` | 有效提交 | `name`, `email` | 关闭并刷新 | 保留输入并显示错误 | SQ-01 |
-| 刷新列表 | API-02 | GET `/customers` | 页面加载、创建成功 | 分页参数 | 数据或空态 | 可重试错误 | SQ-01 |
+| 创建客户 | API-01 | POST `/customers` | 有效提交 | `name`, `email` | 关闭并刷新 | 保留输入并显示错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
+| 刷新列表 | API-02 | GET `/customers` | 页面加载、创建成功 | 分页参数 | 数据或空态 | 可重试错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
 
 ## 11. API 与交互 Mapping
 
@@ -147,21 +147,21 @@ sequenceDiagram
   end
 ```
 
-- Related Flow / State / API: UF-01、SM-01、SM-02、API-01、API-02。
+- Related Flow / State / API: [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram)、API-01、API-02。
 
 ## 14. 开发任务拆分
 
 | Task ID | 任务 | 输入 | 交付物 | 依赖 | 验收标准 |
 | --- | --- | --- | --- | --- | --- |
-| FE-01 | 页面结构与列表状态 | PT-01、SM-01 | 列表交互 | — | 加载、空、成功、错误可独立验收 |
+| FE-01 | 页面结构与列表状态 | [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram) | 列表交互 | — | 加载、空、成功、错误可独立验收 |
 | FE-02 | API 适配 | API-01、API-02 | 请求/响应边界 | — | 映射符合 API v2 |
-| FE-03 | 创建弹窗 | PT-02、UF-01、SM-02 | 表单与反馈 | FE-02 | 成功、失败、取消和重复提交符合决策 |
+| FE-03 | 创建弹窗 | [PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、[UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) | 表单与反馈 | FE-02 | 成功、失败、取消和重复提交符合决策 |
 
 ## 18. 追踪矩阵
 
 | Requirement / Source | Prototype | Clarification | User Flow | State | Sequence / API | Task |
 | --- | --- | --- | --- | --- | --- | --- |
-| PRD-01 新增客户 | PT-01、PT-02 | CL-03、CL-04 | UF-01 | SM-01、SM-02 | SQ-01 / API-01、API-02 | FE-01～FE-03 |
+| PRD-01 新增客户 | [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | CL-03、CL-04 | [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram) | [SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) / API-01、API-02 | FE-01～FE-03 |
 
 ## 19. Technical Review 清单
 
