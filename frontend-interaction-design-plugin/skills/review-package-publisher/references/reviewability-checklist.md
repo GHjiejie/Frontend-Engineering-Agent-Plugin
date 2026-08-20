@@ -11,6 +11,9 @@ Gate #5 passes only when every applicable item is true.
 ## Sources and prototype
 
 - PRD, prototype, and API sources have stable IDs, locators, versions, scopes, and access states.
+- Every user-uploaded or local PRD, API contract, permission matrix, or equivalent source is stored as a labeled Feishu file card with original filename, file token, block ID, byte size, SHA-256, upload time, and verified download status.
+- Every standalone `PRD-xx` and `API-xx` reference, source title, and open/download action links to the exact attachment block or a durable accessible canonical source. Static filenames and local/repository paths alone fail the gate.
+- Every source attachment can be previewed or downloaded by the publishing identity, and reviewers inherit access through the Review document without public-sharing expansion.
 - Every pasted prototype image is stored in Feishu and has a `PT-xx`, page/state name, and caption.
 - Every Figma capture records the exact node/frame URL and capture time.
 - Every standalone `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` reference in prose, lists, and table cells is individually linked to its exact image, diagram, or canonical section block; canonical target headings and diagram/code contents are exempt.
@@ -34,7 +37,7 @@ Gate #5 passes only when every applicable item is true.
 - The local Plan records the Feishu URL and exact Revision.
 - `sync-manifest.json` is valid and reports `in-sync`.
 - No unresolved local modification conflict exists.
-- Media and visual-artifact ID links are stable, or offline media and local anchors exist as declared.
+- Source attachment, media, and navigable ID links are stable, or declared offline source/media files and local anchors exist.
 - The fetched fixed Revision still contains an image/media reference for every expected `UF-xx`, `SM-xx`, and `SQ-xx` in the correct Plan section.
 
 ## Status

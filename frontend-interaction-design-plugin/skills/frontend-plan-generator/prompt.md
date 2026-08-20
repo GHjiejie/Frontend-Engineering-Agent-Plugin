@@ -42,8 +42,8 @@ Required metadata:
 Required tables:
 
 ```markdown
-| Source ID | Type | Title / Scope | Version | Evidence Location |
-| --- | --- | --- | --- | --- |
+| Source ID | Type | Title / Scope | Version | Open / Download | Original Locator |
+| --- | --- | --- | --- | --- | --- |
 
 | Prototype ID | Page / State | Preview / Block Link | Original Source | What It Proves | Related Flow / State |
 | --- | --- | --- | --- | --- | --- |
@@ -61,12 +61,14 @@ Required tables:
 | --- | --- | --- | --- | --- | --- | --- |
 ```
 
-## Linked ID contract
+## Linked evidence ID contract
 
-- Render every `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` reference in prose, lists, and table cells as an individual Markdown link.
+- Render every `PRD-xx`, `API-xx`, `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` reference in prose, lists, and table cells as an individual Markdown link.
+- A user-uploaded or local `PRD-xx` / `API-xx` targets its exact Feishu file-card block. Its title and `查看/下载原文件` action use the same stable target; the visible file card provides preview/download.
+- A cloud-native `PRD-xx` / `API-xx` may target its durable canonical source. Use a versioned Feishu attachment snapshot when the source is mutable or reviewer access is uncertain.
 - `PT-xx` targets the exact Feishu image block, or its uniquely paired caption block when direct image linking is unavailable.
 - `UF-xx`, `SM-xx`, and `SQ-xx` target their exact diagram block; use the canonical section-heading block only when Feishu cannot link the diagram block directly.
-- Keep original Figma, PRD, and API locators in their own fields; they do not replace the Review-document target.
+- Keep original local paths, repository locators, Figma URLs, and canonical PRD/API locators in their own fields; they do not replace a required Feishu attachment.
 - Do not group several IDs inside one link, link to a generic document home when a precise block exists, or use expiring signed media URLs.
 - Canonical destination headings and IDs drawn inside diagram/code blocks do not need to link to themselves.
 
@@ -131,4 +133,4 @@ Composition rules:
 - Never use “详见/参考 `user-flow.md`”, `state-machine.md`, or `sequence-diagram.md` as a substitute for inline review content.
 - The publisher converts these Mermaid blocks into Feishu image blocks while preserving headings, captions, summaries, and trace IDs.
 
-The Plan must let an uninvolved reviewer answer why the feature exists, who uses it, what is in/out, what each prototype state shows, which APIs are used, which decisions are confirmed, and what must be implemented. Do not include source code, guessed behavior, chat-only facts, or unresolved decisions disguised as tasks.
+The Plan must let an uninvolved reviewer answer why the feature exists, who uses it, what is in/out, what each source file contains, how to open or download the reviewed PRD/API version, what each prototype state shows, which APIs are used, which decisions are confirmed, and what must be implemented. Do not include source code, guessed behavior, chat-only facts, or unresolved decisions disguised as tasks.

@@ -23,6 +23,7 @@ V5 的核心约束是：任何影响最终方案的信息都不得只存在于�
     ├── frontend-development-plan.md
     ├── sync-manifest.json
     └── assets/                 # 仅 offline-media 导出模式
+        ├── sources/
         ├── prototype/
         └── diagrams/
 ```
@@ -31,7 +32,7 @@ V5 的核心约束是：任何影响最终方案的信息都不得只存在于�
 
 ## 七个 Skill
 
-1. `source-evidence-manager`：确认项目与版本后，持久化 PRD、原型和 API 证据；会话图片和 Figma 截图优先使用 `lark-cli` 上传飞书。
+1. `source-evidence-manager`：确认项目与版本后，持久化 PRD、原型和 API 证据；本地来源文件上传为可下载的飞书文件卡片，会话图片和 Figma 截图上传为媒体证据。
 2. `requirement-clarification`：比较 PRD、Prototype、API 和已确认决策，记录 `CL-xx`。
 3. `user-flow-generator`：生成引用 `PT-xx` 和 `CL-xx` 的用户流程。
 4. `state-machine-generator`：生成可见 UI 状态及转换模型。
@@ -73,6 +74,7 @@ Project Discovery
 ## 飞书与同步边界
 
 - 会话图片必须上传飞书并获得稳定 `PT-xx`，不得用“聊天中的第几张图”引用。
+- 用户上传或本地提供的 PRD、API 合同、权限矩阵等来源文件必须作为带标签的飞书文件卡片上传；`PRD-xx` / `API-xx`、标题和查看/下载操作都要链接到精确附件 Block，静态文件名不能通过 Source Gate。
 - Figma 必须记录具体 Node/Frame URL 和截图时间，再将关键状态截图上传飞书。
 - 每个 `UF-xx`、`SM-xx`、`SQ-xx` 必须渲染成带标题和 ID 的图片，插入飞书对应章节，并保留相邻文字摘要和追踪 ID；只写“参考本地 Markdown”不能通过 Reviewability Gate。
 - 最终 Review 文档中出现的 `PT-xx`、`UF-xx`、`SM-xx`、`SQ-xx` 必须逐个链接到对应图片、流程图、状态图或时序图的精确 Block；不得只链接文档首页或使用临时媒体 URL。

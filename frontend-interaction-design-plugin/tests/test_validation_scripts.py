@@ -39,13 +39,13 @@ PLAN_SECTIONS = "\n\n".join(
         "## 1. Review 导读",
         "## 2. 功能背景与问题",
         "## 3. 目标用户与使用场景",
-        "## 4. 输入资料与版本\n\nPRD-01 [PT-01](https://example.feishu.cn/docx/abc?block_id=pt01-image) API-01",
+        "## 4. 输入资料与版本\n\n| Source ID | Type | Title / Scope | Version | Open / Download | Original Locator |\n| --- | --- | --- | --- | --- | --- |\n| [PRD-01](https://example.feishu.cn/docx/abc#prd01-file) | PRD | [Customer PRD](https://example.feishu.cn/docx/abc#prd01-file) | v1 | [Download file](https://example.feishu.cn/docx/abc#prd01-file) | `requirements.md` |\n| [API-01](https://example.feishu.cn/docx/abc#api01-file) | API | [Customer API](https://example.feishu.cn/docx/abc#api01-file) | v1 | [Download file](https://example.feishu.cn/docx/abc#api01-file) | `openapi.yaml` |",
         "## 5. 原型页面与状态总览\n\n[PT-01](https://example.feishu.cn/docx/abc?block_id=pt01-image)",
         "## 6. 本次开发范围与非目标",
         "## 7. 页面与组件职责",
         "## 8. User Flow\n\n### UF-01 Create customer\n\nCreate a customer and show a visible result.\n\n```mermaid\nflowchart TD\n  A --> B\n```",
         "## 9. 前端状态设计\n\n### SM-01 Customer page\n\nOwn loading and recovery states.\n\n```mermaid\nstateDiagram-v2\n  [*] --> Ready\n```",
-        "## 10. API 使用方案\n\nAPI-01",
+        "## 10. API 使用方案\n\n[API-01](https://example.feishu.cn/docx/abc#api01-file)",
         "## 11. API 与交互 Mapping\n\n### SQ-01 Create request\n\nMap the request to visible UI states.\n\n```mermaid\nsequenceDiagram\n  User->>Frontend: Submit\n```",
         "## 12. 异常与边界状态",
         "## 13. 关键开发决策\n\nCL-01",
@@ -175,6 +175,49 @@ class ValidationScriptsTest(unittest.TestCase):
     def test_heading_and_diagram_contents_are_exempt(self) -> None:
         plan = "## UF-01 新增客户\n\n```mermaid\nA[PT-01] --> B[SM-01]\n```\n"
         self.assertEqual([], validate_design_package._validate_visual_id_links(plan))
+
+    def test_unlinked_source_id_in_plan_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.create_valid_package(root)
+            plan = root / "frontend-development-plan.md"
+            plan.write_text(plan.read_text(encoding="utf-8") + "See PRD-01.\n", encoding="utf-8")
+            errors = validate_design_package.validate_package(root)
+            self.assertTrue(any("PRD-01 must link" in error for error in errors))
+
+    def test_grouped_source_ids_in_one_link_are_rejected(self) -> None:
+        plan = "[API-01、API-02](https://example.feishu.cn/docx/abc#api-file)\n"
+        errors = validate_design_package._validate_source_id_links(plan)
+        self.assertTrue(any("source IDs must be linked individually" in error for error in errors))
+
+    def test_review_document_home_source_link_is_rejected(self) -> None:
+        plan = (
+            "## Review Source\n\n"
+            "- Feishu Document: https://example.feishu.cn/docx/abc\n\n"
+            "[PRD-01](https://example.feishu.cn/docx/abc)\n"
+        )
+        errors = validate_design_package._validate_source_id_links(plan)
+        self.assertTrue(any("source attachment block" in error for error in errors))
+
+    def test_external_canonical_source_document_is_allowed(self) -> None:
+        plan = (
+            "## Review Source\n\n"
+            "- Feishu Document: https://example.feishu.cn/docx/abc\n\n"
+            "[PRD-01](https://product.feishu.cn/docx/prd)\n"
+        )
+        self.assertEqual([], validate_design_package._validate_source_id_links(plan))
+
+    def test_static_source_inventory_title_and_action_are_rejected(self) -> None:
+        plan = (
+            "## 4. 输入资料与版本\n\n"
+            "| Source ID | Type | Title / Scope | Version | Open / Download | Original Locator |\n"
+            "| --- | --- | --- | --- | --- | --- |\n"
+            "| [PRD-01](https://example.feishu.cn/docx/abc#prd-file) | PRD | Static title | v1 | Static filename.md | `/tmp/file.md` |\n"
+            "## 5. 原型页面与状态总览\n"
+        )
+        errors = validate_design_package._validate_source_inventory(plan)
+        self.assertTrue(any("title must be linked" in error for error in errors))
+        self.assertTrue(any("open/download action" in error for error in errors))
 
 
 if __name__ == "__main__":

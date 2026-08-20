@@ -23,7 +23,7 @@ Same-version clarification answers, review comments, evidence additions, diagram
 
 For an end-to-end request, run these responsibilities in order:
 
-1. `source-evidence-manager`: persist PRD, prototype, and API evidence; upload conversation images or captured Figma states to Feishu with `lark-cli` by default; require Source Gate #3 PASS.
+1. `source-evidence-manager`: persist PRD, prototype, and API evidence; upload local/conversation source files as downloadable Feishu file cards and prototype images as media blocks with `lark-cli`; require Source Gate #3 PASS.
 2. `requirement-clarification`: compare sources and pause on Clarification Gate #4 until all consequential `CL-xx` decisions are confirmed.
 3. `user-flow-generator`.
 4. `state-machine-generator`.
@@ -39,14 +39,14 @@ Read `prompt.md` for the exact contract and the example when helpful.
 
 1. Start with a Review guide that identifies audience, status, Feishu evidence location, and requested review outcome.
 2. Explain the business problem, target users, scenarios, terms, goals, scope, non-goals, and acceptance outcomes without relying on the source chat.
-3. Include a source inventory and Prototype Catalog with individually linked `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
+3. Include a source inventory whose `PRD-xx` / `API-xx` IDs, titles, and open/download actions link to verified source attachments or canonical sources, plus a Prototype Catalog with individually linked `PT-xx`, page/state names, preview/block links, original locators, and what each image proves.
 4. Define a semantic page/component responsibility tree without prescribing framework source files.
 5. Inline every review-relevant `UF-xx`, `SM-xx`, and `SQ-xx` into the Plan. For each ID include its title, Mermaid source, a plain-language summary, and evidence/decision IDs; do not replace content with a path or “see `*.md`”.
 6. Describe validation, visible feedback, recovery, permissions, concurrency, cancellation, refresh behavior, and confirmed contract gaps.
 7. Split work into dependency-ordered `FE-xx` tasks with inputs, deliverables, dependencies, and testable acceptance checks.
 8. Include confirmed decisions, unresolved issues, and a traceability matrix linking `PRD`, `PT`, `API`, `CL`, `UF`, `SM`, `SQ`, and `FE` IDs.
 
-Treat visual-artifact IDs as navigation, not plain labels. In prose, lists, and table cells, link every `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence to its exact image, diagram, or canonical section block. When a cell mentions several IDs, link each ID separately. Canonical destination headings and IDs rendered inside a diagram are exempt. Preserve the original Figma/source URL separately from the Feishu Review target.
+Treat source and visual-artifact IDs as navigation, not plain labels. In prose, lists, and table cells, link every `PRD-xx` and `API-xx` to its exact Feishu file card or durable canonical source, and every `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` to its exact image, diagram, or canonical section block. Link each ID separately when several appear together. Canonical destination headings and IDs rendered inside a diagram are exempt. Preserve original local paths, repository locators, and Figma/source URLs separately from reviewer-facing targets.
 
 ## Preserve evidence and review work
 

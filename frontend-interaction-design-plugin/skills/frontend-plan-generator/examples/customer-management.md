@@ -24,11 +24,11 @@ Status: Ready for Technical Review
 
 ## 4. 输入资料与版本
 
-| Source ID | Type | Title / Scope | Version | Evidence Location |
-| --- | --- | --- | --- | --- |
-| PRD-01 | PRD | 客户列表与新增 | v3 | 飞书“输入资料”章节 |
-| [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | Prototype | 列表与创建弹窗 | Figma nodes 12:34、12:56 | 飞书原型图片 Blocks |
-| API-01、API-02 | API | 创建与查询 | Customer API v2 | API 文档链接 |
+| Source ID | Type | Title / Scope | Version | Open / Download | Original Locator |
+| --- | --- | --- | --- | --- | --- |
+| [PRD-01](https://example.feishu.cn/docx/customer-plan#prd01-file) | PRD | [客户列表与新增](https://example.feishu.cn/docx/customer-plan#prd01-file) | v3 | [查看/下载原文件](https://example.feishu.cn/docx/customer-plan#prd01-file) | `requirements/customer-management.md` |
+| [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | Prototype | 列表与创建弹窗 | Captured nodes 12:34、12:56 | [查看飞书原型 Blocks](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image) | Figma nodes 12:34、12:56 |
+| [API-01](https://example.feishu.cn/docx/customer-plan#api-file)、[API-02](https://example.feishu.cn/docx/customer-plan#api-file) | API | [创建与查询](https://example.feishu.cn/docx/customer-plan#api-file) | Customer API v2 | [查看/下载 OpenAPI](https://example.feishu.cn/docx/customer-plan#api-file) | `openapi/customer-v2.yaml` |
 
 ## 5. 原型页面与状态总览
 
@@ -71,7 +71,7 @@ flowchart TD
   I --> C
 ```
 
-- Evidence / Decisions: PRD-01、[PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、CL-03、CL-04。
+- Evidence / Decisions: [PRD-01](https://example.feishu.cn/docx/customer-plan#prd01-file)、[PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、CL-03、CL-04。
 
 ## 9. 前端状态设计
 
@@ -120,8 +120,8 @@ stateDiagram-v2
 
 | 场景 | API ID | Method / Path | 触发时机 | 请求摘要 | 成功处理 | 失败处理 | Sequence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 创建客户 | API-01 | POST `/customers` | 有效提交 | `name`, `email` | 关闭并刷新 | 保留输入并显示错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
-| 刷新列表 | API-02 | GET `/customers` | 页面加载、创建成功 | 分页参数 | 数据或空态 | 可重试错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
+| 创建客户 | [API-01](https://example.feishu.cn/docx/customer-plan#api-file) | POST `/customers` | 有效提交 | `name`, `email` | 关闭并刷新 | 保留输入并显示错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
+| 刷新列表 | [API-02](https://example.feishu.cn/docx/customer-plan#api-file) | GET `/customers` | 页面加载、创建成功 | 分页参数 | 数据或空态 | 可重试错误 | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) |
 
 ## 11. API 与交互 Mapping
 
@@ -147,21 +147,21 @@ sequenceDiagram
   end
 ```
 
-- Related Flow / State / API: [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram)、API-01、API-02。
+- Related Flow / State / API: [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram)、[API-01](https://example.feishu.cn/docx/customer-plan#api-file)、[API-02](https://example.feishu.cn/docx/customer-plan#api-file)。
 
 ## 14. 开发任务拆分
 
 | Task ID | 任务 | 输入 | 交付物 | 依赖 | 验收标准 |
 | --- | --- | --- | --- | --- | --- |
 | FE-01 | 页面结构与列表状态 | [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram) | 列表交互 | — | 加载、空、成功、错误可独立验收 |
-| FE-02 | API 适配 | API-01、API-02 | 请求/响应边界 | — | 映射符合 API v2 |
+| FE-02 | API 适配 | [API-01](https://example.feishu.cn/docx/customer-plan#api-file)、[API-02](https://example.feishu.cn/docx/customer-plan#api-file) | 请求/响应边界 | — | 映射符合 API v2 |
 | FE-03 | 创建弹窗 | [PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image)、[UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) | 表单与反馈 | FE-02 | 成功、失败、取消和重复提交符合决策 |
 
 ## 18. 追踪矩阵
 
 | Requirement / Source | Prototype | Clarification | User Flow | State | Sequence / API | Task |
 | --- | --- | --- | --- | --- | --- | --- |
-| PRD-01 新增客户 | [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | CL-03、CL-04 | [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram) | [SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) / API-01、API-02 | FE-01～FE-03 |
+| [PRD-01](https://example.feishu.cn/docx/customer-plan#prd01-file) 新增客户 | [PT-01](https://example.feishu.cn/docx/customer-plan?block_id=pt01-image)、[PT-02](https://example.feishu.cn/docx/customer-plan?block_id=pt02-image) | CL-03、CL-04 | [UF-01](https://example.feishu.cn/docx/customer-plan?block_id=uf01-diagram) | [SM-01](https://example.feishu.cn/docx/customer-plan?block_id=sm01-diagram)、[SM-02](https://example.feishu.cn/docx/customer-plan?block_id=sm02-diagram) | [SQ-01](https://example.feishu.cn/docx/customer-plan?block_id=sq01-diagram) / [API-01](https://example.feishu.cn/docx/customer-plan#api-file)、[API-02](https://example.feishu.cn/docx/customer-plan#api-file) | FE-01～FE-03 |
 
 ## 19. Technical Review 清单
 

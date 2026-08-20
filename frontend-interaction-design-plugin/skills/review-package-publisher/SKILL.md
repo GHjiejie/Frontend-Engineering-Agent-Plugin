@@ -32,13 +32,13 @@ If paths, feature/version values, source IDs, or gates disagree, block publicati
 1. Confirm `lark-cli` is available; otherwise block publication unless the user explicitly authorizes another Feishu path.
 2. Read the installed `lark-doc` and `lark-shared` guidance plus every referenced create/update/fetch/media instruction required for this operation.
 3. Use `lark-cli` by default; do not silently replace it with browser automation or a different API.
-4. Reuse the current feature/version document and preserve prototype blocks.
+4. Reuse the current feature/version document and preserve verified source-file cards and prototype blocks.
 5. Compose the Review document from the Plan, not from links to local artifacts. Require one labeled diagram payload for every `UF-xx`, `SM-xx`, and `SQ-xx`.
 6. Render each Mermaid payload into a readable PNG or SVG with an available local Mermaid renderer. If no rendering path is available, block publication and report the missing capability; do not publish a file-reference-only substitute.
 7. Upload and insert each rendered diagram into its matching Feishu section with `lark-cli`, preserving the ID/title caption, adjacent plain-language summary, and evidence IDs. Replace the publishing-only Mermaid source block with the media block so reviewers see the visual rather than duplicated implementation syntax. Local render files are disposable publishing intermediates, not canonical evidence.
-8. Update the rest of the document into the contract order without deleting reviewer comments or unrelated approved notes.
-9. After the final block structure exists, resolve the stable target for every prototype image, User Flow diagram, state diagram, and Sequence Diagram. Turn every standalone `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence in prose, lists, and tables into an individual link to the exact block; never wrap several IDs in one link.
-10. Verify the final content by fetching the document. Check that every expected diagram ID has an image/media block in the correct section and that every linked target resolves in the expected document. A Mermaid source block alone, document-home link, expiring media URL, missing link, or mismatched target fails publication.
+8. Update the rest of the document into the contract order without deleting reviewer comments, source-file cards, or unrelated approved notes. For every local/uploaded source, keep one labeled file card under `原始来源附件`, with its summary and open/download action.
+9. After the final block structure exists, resolve stable targets for every PRD/API source, prototype image, User Flow diagram, state diagram, and Sequence Diagram. Turn every standalone `PRD-xx`, `API-xx`, `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` occurrence in prose, lists, and tables into an individual link to its file card, canonical source, or exact visual block; never wrap several IDs in one link.
+10. Verify the final content by fetching the document. Check that every local/uploaded source ID has a labeled file block whose token can be previewed or downloaded, every diagram ID has an image/media block in the correct section, and every linked target resolves as declared. A static source filename, local-only path, Mermaid-only diagram, document-home link used instead of an exact block, expiring media URL, missing link, inaccessible attachment, or mismatched target fails publication.
 11. Record the exact final Revision ID. Do not continue editing that revision after it is selected for export.
 
 The Feishu document is the main human Review surface. Include enough context for a product manager or developer who did not join the source conversation.
@@ -47,7 +47,7 @@ The Feishu document is the main human Review surface. Include enough context for
 
 1. Check whether the local `frontend-development-plan.md` changed since the last recorded sync. If so, mark `Sync Drift` and stop before overwrite.
 2. Fetch the exact Revision ID as Markdown using the installed CLI's supported fixed-revision option.
-3. Normalize media references. In `cloud-media`, preserve stable Feishu block targets on every linked visual-artifact ID. In `offline-media`, download prototype media to `assets/prototype/` and rendered interaction diagrams to `assets/diagrams/`, then point each `PT-xx`, `UF-xx`, `SM-xx`, and `SQ-xx` to its deterministic local asset or anchor.
+3. Normalize media references. In `cloud-media`, preserve stable Feishu file-card/canonical targets for `PRD-xx` / `API-xx` and block targets for visual IDs. In `offline-media`, download declared source attachments to `assets/sources/`, prototype media to `assets/prototype/`, and rendered interaction diagrams to `assets/diagrams/`, then point each navigable ID to its deterministic local asset or anchor.
 4. Replace the local plan with the exported content only after the drift check passes.
 5. Write `sync-manifest.json` using `references/local-export-contract.md`.
 6. Resolve the plugin root from this `SKILL.md`, then run `../../scripts/verify_sync_manifest.py` and `../../scripts/validate_design_package.py`.
@@ -58,7 +58,7 @@ Do not use ordinary Drive folder sync for the online document; it skips online d
 
 Validate the checklist in `references/reviewability-checklist.md`.
 
-Run `../../scripts/validate_design_package.py` against the exported package. Treat a missing diagram, an unlabeled diagram, or a section that only points to `user-flow.md`, `state-machine.md`, or `sequence-diagram.md` as Gate #5 failure.
+Run `../../scripts/validate_design_package.py` against the exported package. Treat a static or unlinked PRD/API source, missing or inaccessible source attachment, missing diagram, unlabeled diagram, or a section that only points to `user-flow.md`, `state-machine.md`, or `sequence-diagram.md` as Gate #5 failure.
 
 Allowed package states:
 

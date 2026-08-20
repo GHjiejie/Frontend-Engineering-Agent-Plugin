@@ -1,7 +1,7 @@
 {
   "name": "frontend-interaction-design-plugin",
   "version": "5.1.0+codex.20260818084158",
-  "description": "Turns PRDs, durable prototype evidence, and API contracts into a Feishu-first review package with rendered diagrams, precise block-linked navigation, and a revision-pinned local frontend design snapshot without generating code.",
+  "description": "Turns PRDs, downloadable source attachments, durable prototype evidence, and API contracts into a Feishu-first review package with rendered diagrams, precise block-linked navigation, and a revision-pinned local frontend design snapshot without generating code.",
   "author": {
     "name": "Frontend Interaction Design Plugin Contributors"
   },
@@ -18,17 +18,19 @@
     "sequence-diagram",
     "development-plan",
     "technical-review",
-    "evidence-navigation"
+    "evidence-navigation",
+    "source-attachments"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Interaction Design",
     "shortDescription": "Create evidence-backed, Feishu-first frontend plans.",
-    "longDescription": "Confirm the target frontend project and feature version, persist PRD, prototype, and API evidence outside the chat, clarify consequential ambiguity, generate traceable interaction models, publish rendered diagrams with precise evidence and diagram block navigation in a self-explanatory Feishu review document, and export a revision-pinned local engineering snapshot. The plugin never generates or modifies application code.",
+    "longDescription": "Confirm the target frontend project and feature version, persist uploaded PRD and API files as downloadable Feishu attachments, preserve prototype evidence outside the chat, clarify consequential ambiguity, generate traceable interaction models, publish rendered diagrams with precise evidence navigation, and export a revision-pinned local engineering snapshot. The plugin never generates or modifies application code.",
     "developerName": "Frontend Interaction Design Plugin Contributors",
     "category": "Productivity",
     "capabilities": [
       "Source Evidence Collection",
+      "Downloadable Source Attachments",
       "Frontend Project Discovery",
       "Feature Version Management",
       "Requirement Clarification",

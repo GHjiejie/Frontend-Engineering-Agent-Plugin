@@ -108,6 +108,7 @@ def _has_diagram_visual(block: str, mermaid_type: str) -> bool:
 
 
 VISUAL_ID_PATTERN = re.compile(r"\b(?:PT|UF|SM|SQ)-\d{2,}\b")
+SOURCE_ID_PATTERN = re.compile(r"\b(?:PRD|API)-\d{2,}\b")
 MARKDOWN_LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)\s]+)(?:\s+['\"][^'\"]*['\"])?\)")
 FENCED_CODE_PATTERN = re.compile(r"(?:^|\n)(?:```|~~~).*?(?:\n```|\n~~~)(?=\n|$)", re.DOTALL)
 HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s+")
@@ -118,6 +119,11 @@ EXPIRING_QUERY_KEYS = {
     "x-amz-signature",
     "x-oss-signature",
 }
+REVIEW_DOCUMENT_PATTERN = re.compile(
+    r"^\s*-\s*Feishu Document:\s*`?(https?://[^`\s]+)`?\s*$",
+    re.MULTILINE,
+)
+SOURCE_ACTION_PATTERN = re.compile(r"查看|下载|打开|open|download", re.IGNORECASE)
 
 
 def _read(path: Path, errors: list[str]) -> str:
@@ -147,7 +153,9 @@ def _validate_visual_id_links(plan: str) -> list[str]:
                 )
             if identifiers:
                 parsed = urlsplit(target)
-                query_keys = {key.lower() for key in parse_qs(parsed.query)}
+                query_keys = {
+                    key.lower() for key in parse_qs(parsed.query, keep_blank_values=True)
+                }
                 if query_keys & EXPIRING_QUERY_KEYS:
                     errors.append(
                         f"line {line_number}: {identifiers[0]} uses an expiring link target"
@@ -168,6 +176,111 @@ def _validate_visual_id_links(plan: str) -> list[str]:
         for identifier in VISUAL_ID_PATTERN.findall(unlinked_text):
             errors.append(
                 f"line {line_number}: {identifier} must link to its exact visual-artifact target"
+            )
+
+    return errors
+
+
+def _document_base(url: str) -> tuple[str, str, str]:
+    parsed = urlsplit(url)
+    return parsed.scheme.lower(), parsed.netloc.lower(), parsed.path.rstrip("/")
+
+
+def _validate_source_id_links(plan: str) -> list[str]:
+    """Require PRD/API IDs to open a source attachment or canonical source."""
+    errors: list[str] = []
+    without_fences = FENCED_CODE_PATTERN.sub("\n", plan)
+    review_match = REVIEW_DOCUMENT_PATTERN.search(without_fences)
+    review_base = _document_base(review_match.group(1)) if review_match else None
+
+    for line_number, line in enumerate(without_fences.splitlines(), start=1):
+        if HEADING_PATTERN.match(line):
+            continue
+
+        def inspect_link(match: re.Match[str]) -> str:
+            label, target = match.groups()
+            identifiers = list(dict.fromkeys(SOURCE_ID_PATTERN.findall(label)))
+            if len(identifiers) > 1:
+                errors.append(
+                    f"line {line_number}: source IDs must be linked individually: "
+                    + ", ".join(identifiers)
+                )
+            if identifiers:
+                parsed = urlsplit(target)
+                query_keys = {
+                    key.lower() for key in parse_qs(parsed.query, keep_blank_values=True)
+                }
+                if query_keys & EXPIRING_QUERY_KEYS:
+                    errors.append(
+                        f"line {line_number}: {identifiers[0]} uses an expiring source link"
+                    )
+                if (
+                    review_base
+                    and _document_base(target) == review_base
+                    and not parsed.query
+                    and not parsed.fragment
+                ):
+                    errors.append(
+                        f"line {line_number}: {identifiers[0]} points to the Review document "
+                        "home, not a source attachment block"
+                    )
+                if parsed.scheme == "file" or target.startswith(("/Users/", "/home/")):
+                    errors.append(
+                        f"line {line_number}: {identifiers[0]} points to a local-only path"
+                    )
+            return ""
+
+        unlinked_text = MARKDOWN_LINK_PATTERN.sub(inspect_link, line)
+        for identifier in SOURCE_ID_PATTERN.findall(unlinked_text):
+            errors.append(
+                f"line {line_number}: {identifier} must link to its source attachment "
+                "or durable canonical source"
+            )
+
+    return errors
+
+
+def _validate_source_inventory(plan: str) -> list[str]:
+    """Require a reviewer-usable source table instead of static source labels."""
+    errors: list[str] = []
+    section = _section_body(
+        plan, "## 4. 输入资料与版本", "## 5. 原型页面与状态总览"
+    )
+    header = next(
+        (line for line in section.splitlines() if re.search(r"\|\s*Source ID\s*\|", line)),
+        None,
+    )
+    if header is None:
+        return ["source inventory must contain a Source ID table"]
+    if not re.search(r"Open\s*/\s*Download|查看\s*/\s*下载", header, re.IGNORECASE):
+        errors.append("source inventory must contain an Open / Download column")
+
+    section_start = plan.find("## 4. 输入资料与版本")
+    first_line = plan[:section_start].count("\n") + 1 if section_start >= 0 else 1
+    for offset, line in enumerate(section.splitlines()):
+        line_number = first_line + offset
+        if not line.lstrip().startswith("|") or not SOURCE_ID_PATTERN.search(line):
+            continue
+        links = MARKDOWN_LINK_PATTERN.findall(line)
+        source_id_links = [
+            (label, target) for label, target in links if SOURCE_ID_PATTERN.search(label)
+        ]
+        action_links = [
+            (label, target) for label, target in links if SOURCE_ACTION_PATTERN.search(label)
+        ]
+        title_links = [
+            (label, target)
+            for label, target in links
+            if not SOURCE_ID_PATTERN.search(label)
+            and not SOURCE_ACTION_PATTERN.search(label)
+        ]
+        if not source_id_links:
+            errors.append(f"line {line_number}: source inventory Source ID must be linked")
+        if not title_links:
+            errors.append(f"line {line_number}: source inventory title must be linked")
+        if not action_links:
+            errors.append(
+                f"line {line_number}: source inventory must provide a linked open/download action"
             )
 
     return errors
@@ -243,6 +356,8 @@ def validate_package(root: Path, require_ready_for_development: bool = False) ->
                 )
 
     errors.extend(_validate_visual_id_links(plan))
+    errors.extend(_validate_source_id_links(plan))
+    errors.extend(_validate_source_inventory(plan))
 
     manifest_errors = validate_manifest(root / "sync-manifest.json", strict=True)
     errors.extend(f"sync manifest: {error}" for error in manifest_errors)
